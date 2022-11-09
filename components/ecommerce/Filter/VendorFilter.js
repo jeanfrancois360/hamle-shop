@@ -57,9 +57,9 @@ const VendorFilter = ({ updateProductFilters }) => {
 
   return (
     <>
-      <div className='custome-checkbox'>
+      <div className="custome-checkbox">
         <CheckBox
-          heading='Select Size'
+          heading="Select Size"
           filters={sizes}
           handleCheckBox={(e) => {
             handleCheckBox(

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import CategoryTab from '../components/ecommerce/categoryTab';
 import FeatchDeals from '../components/ecommerce/fetchDeals';
 import Layout from '../components/layout/Layout';
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import Intro2 from '../components/sliders/Intro2';
 import FetchTabSlider from './../components/ecommerce/fetchTabSlider';
 import Banner5 from './../components/elements/Banner5';
@@ -13,31 +15,31 @@ function Index2() {
   return (
     <>
       <IntroPopup />
-      <Layout noBreadcrumb='d-none' headerStyle='header-style-1'>
-        <section className='home-slider style-2 position-relative mb-50'>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-xl-8 col-lg-12'>
-                <div className='home-slide-cover'>
+      <Layout noBreadcrumb="d-none" headerStyle="header-style-1">
+        <section className="home-slider style-2 position-relative mb-50">
+          <div className="container">
+            <div className="row">
+              <div className="col-xl-8 col-lg-12">
+                <div className="home-slide-cover">
                   <Intro2 />
                 </div>
               </div>
 
-              <div className='col-lg-4 d-none d-xl-block'>
-                <div className='banner-img style-3 animated animated'>
-                  <div className='banner-text mt-50'>
-                    <h2 className='mb-50'>
+              <div className="col-lg-4 d-none d-xl-block">
+                <div className="banner-img style-3 animated animated">
+                  <div className="banner-text mt-50">
+                    <h2 className="mb-50">
                       Delivered <br />
                       to
-                      <span className='text-brand'>
+                      <span className="text-brand">
                         your
                         <br />
                         home
                       </span>
                     </h2>
-                    <Link href='/products'>
-                      <a className='btn btn-xs'>
-                        Shop Now <i className='fi-rs-arrow-small-right'></i>
+                    <Link href="/products">
+                      <a className="btn btn-xs">
+                        Shop Now <i className="fi-rs-arrow-small-right"></i>
                       </a>
                     </Link>
                   </div>
@@ -47,18 +49,18 @@ function Index2() {
           </div>
         </section>
 
-        <section className='banners mb-15'>
-          <div className='container'>
-            <div className='row'>
+        <section className="banners mb-15">
+          <div className="container">
+            <div className="row">
               <Banner5 />
             </div>
           </div>
         </section>
 
-        <section className='product-tabs section-padding position-relative'>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-lg-12'>
+        <section className="product-tabs section-padding position-relative">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-12">
                 <CategoryTab />
               </div>
             </div>
@@ -70,23 +72,23 @@ function Index2() {
                     </div>
                 </section> */}
 
-        <section className='section-padding pb-5'>
-          <div className='container'>
+        <section className="section-padding pb-5">
+          <div className="container">
             <FetchTabSlider />
           </div>
         </section>
 
-        <section className='section-padding pb-5'>
-          <div className='container'>
+        <section className="section-padding pb-5">
+          <div className="container">
             <div
-              className='section-title wow animate__animated animate__fadeIn'
-              data-wow-delay='0'
+              className="section-title wow animate__animated animate__fadeIn"
+              data-wow-delay="0"
             >
-              <h3 className=''>Deals Of The Day</h3>
-              <Link href='/products'>
-                <a className='show-all'>
+              <h3 className="">Deals Of The Day</h3>
+              <Link href="/products">
+                <a className="show-all">
                   All Deals
-                  <i className='fi-rs-angle-right'></i>
+                  <i className="fi-rs-angle-right"></i>
                 </a>
               </Link>
             </div>
@@ -94,21 +96,21 @@ function Index2() {
           </div>
         </section>
 
-        <section className='popular-categories section-padding'>
-          <div className='container'>
-            <div className='section-title'>
-              <div className='title'>
+        <section className="popular-categories section-padding">
+          <div className="container">
+            <div className="section-title">
+              <div className="title">
                 <h3>Shop by Categories</h3>
-                <Link href='/products'>
-                  <a className='show-all'>
+                <Link href="/products">
+                  <a className="show-all">
                     All Categories
-                    <i className='fi-rs-angle-right'></i>
+                    <i className="fi-rs-angle-right"></i>
                   </a>
                 </Link>
               </div>
             </div>
-            <div className='carausel-8-columns-cover position-relative'>
-              <div className='carausel-8-columns' id='carausel-8-columns'>
+            <div className="carausel-8-columns-cover position-relative">
+              <div className="carausel-8-columns" id="carausel-8-columns">
                 <CategorySlider2 />
               </div>
             </div>

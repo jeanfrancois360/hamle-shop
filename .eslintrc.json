@@ -1,0 +1,15 @@
+{
+  "extends": ["next", "next/core-web-vitals", "eslint:recommended"],
+  "globals": {
+    "React": "readonly"
+  },
+  "rules": {
+    "react/no-unescaped-entities": 0,
+    "@next/next/no-page-custom-font": 0,
+    "no-unused-vars": 0,
+    "@next/next/no-img-element": 0,
+    "react-hooks/exhaustive-deps": 0,
+    "no-irregular-whitespace": 0,
+    "jsx-a11y/alt-text": 0
+  }
+}

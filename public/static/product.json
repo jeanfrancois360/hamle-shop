@@ -1,175 +1,175 @@
 [
-    {
-        "title": "PSG Jersey",
-        "slug": "psg-jersey",
-        "moreLove": true,
-        "id": "1",
-        "price": 238.85,
-        "oldPrice": 245.8,
-        "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi, quasi, odio minus dolore impedit fuga eum eligendi? Officia doloremque facere quia. Voluptatum, accusantium!",
-        "images": [
-            {
-                "img": "/assets/imgs/shop/psg.jpeg"
-            },
-            {
-                "img": "/assets/imgs/shop/real-madrid.jpeg"
-            }
-        ],
-        "totalSell": 27,
-        "gallery": [
-            {
-                "thumb": "/assets/imgs/shop/psg.jpeg"
-            },
-            {
-                "thumb": "/assets/imgs/shop/real-madrid.jpeg"
-            },
-            {
-                "thumb": "/assets/imgs/shop/mercurial.jpeg"
-            }
-        ],
-        "condition": "new",
-        "vendor": "Hemle",
-        "color": "blue",
-        "brand": "armani",
-        "category": "clothing",
-        "featured": false,
-        "trending": true,
-        "discount": {
-            "banner": "/assets/imgs/banner/banner-5.png",
-            "percentage": 14,
-            "expireDate": null,
-            "isActive": true
-        },
-        "variations": [
-            "red",
-            "yellow",
-            "white",
-            "orange",
-            "cyan",
-            "green",
-            "purple"
-        ],
-        "weight": 150,
-        "tags": "broccoli",
-        "sizes": "s",
-        "stock": 0,
-        "review": 10,
-        "rating": 3,
-        "ratingScore": 90,
-        "created": ""
+  {
+    "title": "PSG Jersey",
+    "slug": "psg-jersey",
+    "moreLove": true,
+    "id": "1",
+    "price": 238.85,
+    "oldPrice": 245.8,
+    "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi, quasi, odio minus dolore impedit fuga eum eligendi? Officia doloremque facere quia. Voluptatum, accusantium!",
+    "images": [
+      {
+        "img": "/assets/imgs/shop/psg.jpeg"
+      },
+      {
+        "img": "/assets/imgs/shop/real-madrid.jpeg"
+      }
+    ],
+    "totalSell": 27,
+    "gallery": [
+      {
+        "thumb": "/assets/imgs/shop/psg.jpeg"
+      },
+      {
+        "thumb": "/assets/imgs/shop/real-madrid.jpeg"
+      },
+      {
+        "thumb": "/assets/imgs/shop/mercurial.jpeg"
+      }
+    ],
+    "condition": "new",
+    "vendor": "Hemle",
+    "color": "blue",
+    "brand": "armani",
+    "category": "clothing",
+    "featured": false,
+    "trending": true,
+    "discount": {
+      "banner": "/assets/imgs/banner/banner-5.png",
+      "percentage": 14,
+      "expireDate": null,
+      "isActive": true
     },
-    {
-        "title": "Real Madrid Jersey",
-        "slug": "real-madrid-jersey",
-        "moreLove": true,
-        "id": "2",
-        "price": 78,
-        "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi, quasi, odio minus dolore impedit fuga eum eligendi? Officia doloremque facere quia. Voluptatum, accusantium!",
-        "images": [
-            {
-                "img": "/assets/imgs/shop/real-madrid.jpeg"
-            },
-            {
-                "img": "/assets/imgs/shop/psg.jpeg"
-            }
-        ],
-        "totalSell": 27,
-        "gallery": [
-            {
-                "thumb": "/assets/imgs/shop/psg.jpeg"
-            },
-            {
-                "thumb": "/assets/imgs/shop/real-madrid.jpeg"
-            },
-            {
-                "thumb": "/assets/imgs/shop/mercurial.jpeg"
-            }
-        ],
-        "condition": "refurbished",
-        "vendor": "stouffer",
-        "color": "blue",
-        "brand": "armani",
-        "category": "jeans",
-        "featured": true,
-        "trending": false,
-        "discount": {
-            "banner": "/assets/imgs/banner/banner-6.png",
-            "percentage": 4,
-            "expireDate": null,
-            "isActive": false
-        },
-        "variations": [
-            "red",
-            "yellow",
-            "white",
-            "orange",
-            "cyan",
-            "green",
-            "purple"
-        ],
-        "weight": 150,
-        "tags": "broccoli",
-        "sizes": "s",
-        "review": 10,
-        "rating": 4,
-        "ratingScore": 90,
-        "created": "2021-02-03T06:48:07"
+    "variations": [
+      "red",
+      "yellow",
+      "white",
+      "orange",
+      "cyan",
+      "green",
+      "purple"
+    ],
+    "weight": 150,
+    "tags": "broccoli",
+    "sizes": "s",
+    "stock": 0,
+    "review": 10,
+    "rating": 3,
+    "ratingScore": 90,
+    "created": ""
+  },
+  {
+    "title": "Real Madrid Jersey",
+    "slug": "real-madrid-jersey",
+    "moreLove": true,
+    "id": "2",
+    "price": 78,
+    "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi, quasi, odio minus dolore impedit fuga eum eligendi? Officia doloremque facere quia. Voluptatum, accusantium!",
+    "images": [
+      {
+        "img": "/assets/imgs/shop/real-madrid.jpeg"
+      },
+      {
+        "img": "/assets/imgs/shop/psg.jpeg"
+      }
+    ],
+    "totalSell": 27,
+    "gallery": [
+      {
+        "thumb": "/assets/imgs/shop/psg.jpeg"
+      },
+      {
+        "thumb": "/assets/imgs/shop/real-madrid.jpeg"
+      },
+      {
+        "thumb": "/assets/imgs/shop/mercurial.jpeg"
+      }
+    ],
+    "condition": "refurbished",
+    "vendor": "stouffer",
+    "color": "blue",
+    "brand": "armani",
+    "category": "jeans",
+    "featured": true,
+    "trending": false,
+    "discount": {
+      "banner": "/assets/imgs/banner/banner-6.png",
+      "percentage": 4,
+      "expireDate": null,
+      "isActive": false
     },
-    {
-        "title": "Mercurial",
-        "slug": "mercurial",
-        "moreLove": true,
-        "id": "3",
-        "price": 35,
-        "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi, quasi, odio minus dolore impedit fuga eum eligendi? Officia doloremque facere quia. Voluptatum, accusantium!",
-        "images": [
-            {
-                "img": "/assets/imgs/shop/mercurial.jpeg"
-            },
-            {
-                "img": "/assets/imgs/shop/mercurial.jpeg"
-            }
-        ],
-        "totalSell": 27,
-        "gallery": [
-            {
-                "thumb": "/assets/imgs/shop/psg.jpeg"
-            },
-            {
-                "thumb": "/assets/imgs/shop/real-madrid.jpeg"
-            },
-            {
-                "thumb": "/assets/imgs/shop/mercurial.jpeg"
-            }
-        ],
-        "condition": "new",
-        "vendor": "starKist",
-        "color": "blue",
-        "brand": "armani",
-        "category": "accessories",
-        "featured": true,
-        "trending": true,
-        "discount": {
-            "banner": "/assets/imgs/banner/banner-7.png",
-            "percentage": 4,
-            "expireDate": null,
-            "isActive": false
-        },
-        "variations": [
-            "red",
-            "yellow",
-            "white",
-            "orange",
-            "cyan",
-            "green",
-            "purple"
-        ],
-        "weight": 150,
-        "tags": "fruit",
-        "sizes": "s",
-        "review": 10,
-        "rating": 5,
-        "ratingScore": 90,
-        "created": ""
-    }
+    "variations": [
+      "red",
+      "yellow",
+      "white",
+      "orange",
+      "cyan",
+      "green",
+      "purple"
+    ],
+    "weight": 150,
+    "tags": "broccoli",
+    "sizes": "s",
+    "review": 10,
+    "rating": 4,
+    "ratingScore": 90,
+    "created": "2021-02-03T06:48:07"
+  },
+  {
+    "title": "Mercurial",
+    "slug": "mercurial",
+    "moreLove": true,
+    "id": "3",
+    "price": 35,
+    "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi, quasi, odio minus dolore impedit fuga eum eligendi? Officia doloremque facere quia. Voluptatum, accusantium!",
+    "images": [
+      {
+        "img": "/assets/imgs/shop/mercurial.jpeg"
+      },
+      {
+        "img": "/assets/imgs/shop/mercurial.jpeg"
+      }
+    ],
+    "totalSell": 27,
+    "gallery": [
+      {
+        "thumb": "/assets/imgs/shop/psg.jpeg"
+      },
+      {
+        "thumb": "/assets/imgs/shop/real-madrid.jpeg"
+      },
+      {
+        "thumb": "/assets/imgs/shop/mercurial.jpeg"
+      }
+    ],
+    "condition": "new",
+    "vendor": "starKist",
+    "color": "blue",
+    "brand": "armani",
+    "category": "accessories",
+    "featured": true,
+    "trending": true,
+    "discount": {
+      "banner": "/assets/imgs/banner/banner-7.png",
+      "percentage": 4,
+      "expireDate": null,
+      "isActive": false
+    },
+    "variations": [
+      "red",
+      "yellow",
+      "white",
+      "orange",
+      "cyan",
+      "green",
+      "purple"
+    ],
+    "weight": 150,
+    "tags": "fruit",
+    "sizes": "s",
+    "review": 10,
+    "rating": 5,
+    "ratingScore": 90,
+    "created": ""
+  }
 ]

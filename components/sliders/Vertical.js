@@ -14,13 +14,13 @@ const VerticalSlider = () => {
         pagination={{
           clickable: true,
         }}
-        className='custom-class'
+        className="custom-class"
       >
         <ul>
           <SwiperSlide>
             <li>
               Get great devices up to 50% off
-              <Link href='/products'>
+              <Link href="/products">
                 <a>View details</a>
               </Link>
             </li>
@@ -31,7 +31,7 @@ const VerticalSlider = () => {
           <SwiperSlide>
             <li>
               Trendy 25silver jewelry, save up 35% off today
-              <Link href='/products'>
+              <Link href="/products">
                 <a>Shop now</a>
               </Link>
             </li>
