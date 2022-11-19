@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { fetchByCatagory } from '../../redux/action/product';
+import { fetchByCategory } from '../../redux/action/product';
 import BestSeller from '../sliders/BestSeller';
 import Discount from '../sliders/Discount';
 import Featured from '../sliders/Featured';
@@ -24,7 +24,7 @@ const FetchSlider = ({ productFilters }) => {
 
   const fetchProducts = async () => {
     // With Category
-    const allProducts = await fetchByCatagory('/static/product.json', {
+    const allProducts = await fetchByCategory('/static/product.json', {
       category: productFilters.category,
     });
 

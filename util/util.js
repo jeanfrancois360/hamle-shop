@@ -13,3 +13,7 @@ export const findProductIndexById = (list, id) => {
   const index = list.findIndex((item) => item.id === id);
   return index;
 };
+
+export const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
+};

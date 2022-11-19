@@ -39,7 +39,7 @@ const IntroPopup = () => {
                 <div className="deal-content  detail-info">
                   <h6 className="product-title">
                     <Link href="/shop-product-right">
-                      <a className="text-heading">T-Shirt Jersey</a>
+                      <a className="text-heading">Mercurial</a>
                     </Link>
                   </h6>
                   <div className="clearfix product-price-cover">

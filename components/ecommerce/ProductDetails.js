@@ -65,7 +65,7 @@ const ProductDetails = ({
                   <div className="col-md-6 col-sm-12 col-xs-12">
                     <div className="detail-info  pr-30 pl-30">
                       <span className="stock-status out-stock"> Sale Off </span>
-                      <h2 className="title-detail">{product.title}</h2>
+                      <h2 className="title-detail">{product.name}</h2>
                       <div className="product-detail-rating">
                         <div className="product-rate-cover text-end">
                           <div className="product-rate d-inline-block">
@@ -83,9 +83,9 @@ const ProductDetails = ({
                       <div className="clearfix product-price-cover">
                         <div className="product-price primary-color float-left">
                           <span className="current-price  text-brand">
-                            ${product.price}
+                            ${product.unit_price}
                           </span>
-                          <span>
+                          {/* <span>
                             <span className="save-price font-md color3 ml-15">
                               {product.discount.percentage}% Off
                             </span>
@@ -94,14 +94,14 @@ const ProductDetails = ({
                                 ? `$ ${product.oldPrice}`
                                 : null}
                             </span>
-                          </span>
+                          </span> */}
                         </div>
                       </div>
 
-                      <div className="short-desc mb-30">
+                      {/* <div className="short-desc mb-30">
                         <p className="font-lg">{product.desc}</p>
-                      </div>
-                      <div className="attr-detail attr-color mb-15">
+                      </div> */}
+                      {/* <div className="attr-detail attr-color mb-15">
                         <strong className="mr-10">Color</strong>
                         <ul className="list-filter color-filter">
                           {product.variations.map((clr, i) => (
@@ -112,7 +112,7 @@ const ProductDetails = ({
                             </li>
                           ))}
                         </ul>
-                      </div>
+                      </div> */}
                       <div className="attr-detail attr-size">
                         <strong className="mr-10">Size</strong>
                         <ul className="list-filter size-filter font-small">
@@ -199,7 +199,7 @@ const ProductDetails = ({
                         <li>
                           Availability:
                           <span className="in-stock text-success ml-5">
-                            {product.stock} Items In Stock
+                            {product.quantity} Items In Stock
                           </span>
                         </li>
                       </ul>

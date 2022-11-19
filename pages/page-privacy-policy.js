@@ -17,7 +17,7 @@ function Privacy() {
                           <h1 className="mb-5">Create an Account</h1>
                           <p>
                             Already have an account?{' '}
-                            <Link href="/page-login">
+                            <Link href="/login">
                               <a>Log in instead!</a>
                             </Link>
                           </p>

@@ -73,7 +73,7 @@ function Account() {
                           </a>
                         </li>
                         <li className="nav-item">
-                          <Link href="/page-login">
+                          <Link href="/login">
                             <a className="nav-link">
                               <i className="fi-rs-sign-out mr-10"></i>Logout
                             </a>
@@ -292,7 +292,7 @@ function Account() {
                           <div className="card-body">
                             <p>
                               Already have an account?{' '}
-                              <Link href="/page-login">
+                              <Link href="/login">
                                 <a>Log in instead!</a>
                               </Link>
                             </p>

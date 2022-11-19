@@ -9,7 +9,7 @@ const data = [
   {
     id: 1,
     title: 'Cake & Milk',
-    slug: 'jeans',
+    slug: 'jersey',
     img: 'cat-13.png',
     bg: 'bg-9',
   },
@@ -35,7 +35,7 @@ const data = [
   },
   {
     id: 5,
-    title: 'Snack',
+    title: 'Shoes',
     img: 'cat-3.png',
     bg: 'bg-13',
   },

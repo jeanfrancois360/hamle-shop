@@ -17,7 +17,7 @@ import Link from 'next/link';
 function Test() {
   return (
     <>
-      <IntroPopup />
+      {/* <IntroPopup /> */}
       <Layout noBreadcrumb="d-none" headerStyle="header-style-1">
         <div className="container mb-30">
           <div className="row flex-row-reverse">
@@ -80,7 +80,7 @@ function Test() {
                   </div>
                   <div className="content pt-10">
                     <h6>
-                      <a>Chen Cardigan</a>
+                      <a>Mercurial</a>
                     </h6>
                     <p className="price mb-0 mt-5">$99.50</p>
                     <div className="product-rate">
@@ -97,7 +97,7 @@ function Test() {
                   </div>
                   <div className="content pt-10">
                     <h6>
-                      <a>Chen Sweater</a>
+                      <a>PSG Jersey</a>
                     </h6>
                     <p className="price mb-0 mt-5">$89.50</p>
                     <div className="product-rate">
@@ -114,7 +114,7 @@ function Test() {
                   </div>
                   <div className="content pt-10">
                     <h6>
-                      <a>Colorful Jacket</a>
+                      <a>Real Madrid Jersey</a>
                     </h6>
                     <p className="price mb-0 mt-5">$25</p>
                     <div className="product-rate">

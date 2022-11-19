@@ -1,7 +1,22 @@
 // import fetch from 'isomorphic-unfetch'
+import axios from '../../axios';
 import filterProductList from '../../util/filterProduct';
 import searchItemsByText from '../../util/searchItemsByText';
 import * as Types from '../constants/actionTypes';
+
+export const getProducts = (total) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/products/index/${total}`);
+    dispatch({
+      type: Types.FETCHED_PRODUCTS,
+      payload: {
+        products: res.data.data.data,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 // Fetch Product fetchProduct
 export const fetchProduct = (searchTerm, url, filters) => async (dispatch) => {
@@ -43,7 +58,7 @@ export const fetchMoreProduct = (url, total) => async (dispatch) => {
 
 // Fetch Product By Catagory
 
-export const fetchByCatagory = async (url, filters) => {
+export const fetchByCategory = async (url, filters) => {
   try {
     const sendRequest = await fetch(url);
     const data = await sendRequest.json();

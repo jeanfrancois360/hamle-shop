@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-// import { fetchByCatagory } from "../../redux/action/product";
+// import { fetchByCategory } from "../../redux/action/product";
 import { server } from '../../config/index';
 import FeaturedSlider from '../sliders/Featured';
 import NewArrivalTabSlider from '../sliders/NewArrivalTab';

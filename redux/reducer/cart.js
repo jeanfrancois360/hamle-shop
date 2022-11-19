@@ -9,7 +9,7 @@ export default (state = [], action) => {
     case Types.INIT_LOCALSTORAGE:
       return [...action.payload.cart];
 
-    case Types.ADD_TO_CART:
+    case Types.ADD_TO_CART: {
       index = findProductIndexById(state, action.payload.product.id);
 
       if (index !== -1) {
@@ -25,14 +25,15 @@ export default (state = [], action) => {
 
         return [...state, action.payload.product];
       }
+    }
 
-    case Types.DELETE_FROM_CART:
+    case Types.DELETE_FROM_CART: {
       const newCartItems = deleteProduct(state, action.payload.productId);
       storage.set('dokani_cart', newCartItems);
 
       return [...newCartItems];
-
-    case Types.INCREASE_QUANTITY:
+    }
+    case Types.INCREASE_QUANTITY: {
       index = findProductIndexById(state, action.payload.productId);
       if (index === -1) return state;
 
@@ -40,8 +41,8 @@ export default (state = [], action) => {
       storage.set('dokani_cart', [...state]);
 
       return [...state];
-
-    case Types.DECREASE_QUANTITY:
+    }
+    case Types.DECREASE_QUANTITY: {
       index = findProductIndexById(state, action.payload.productId);
       if (index === -1) return state;
 
@@ -50,11 +51,11 @@ export default (state = [], action) => {
       storage.set('dokani_cart', [...state]);
 
       return [...state];
-
-    case Types.CLEAR_CART:
+    }
+    case Types.CLEAR_CART: {
       storage.set('dokani_cart', []);
       return [];
-
+    }
     default:
       return state;
   }

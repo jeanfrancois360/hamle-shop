@@ -56,7 +56,7 @@ const Intro2 = () => {
           >
             <div className="slider-content">
               <h1 className="display-2 mb-40">
-                Snacks box
+                Shoess box
                 <br />
                 daily save
               </h1>

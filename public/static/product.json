@@ -31,7 +31,7 @@
     "vendor": "Hemle",
     "color": "blue",
     "brand": "armani",
-    "category": "clothing",
+    "category": "jersey",
     "featured": false,
     "trending": true,
     "discount": {
@@ -50,7 +50,7 @@
       "purple"
     ],
     "weight": 150,
-    "tags": "broccoli",
+    "tags": "Jersey",
     "sizes": "s",
     "stock": 0,
     "review": 10,
@@ -89,7 +89,7 @@
     "vendor": "stouffer",
     "color": "blue",
     "brand": "armani",
-    "category": "jeans",
+    "category": "jersey",
     "featured": true,
     "trending": false,
     "discount": {
@@ -108,7 +108,7 @@
       "purple"
     ],
     "weight": 150,
-    "tags": "broccoli",
+    "tags": "Jersey",
     "sizes": "s",
     "review": 10,
     "rating": 4,
@@ -146,7 +146,7 @@
     "vendor": "starKist",
     "color": "blue",
     "brand": "armani",
-    "category": "accessories",
+    "category": "shoe",
     "featured": true,
     "trending": true,
     "discount": {
@@ -165,7 +165,7 @@
       "purple"
     ],
     "weight": 150,
-    "tags": "fruit",
+    "tags": "Shoe",
     "sizes": "s",
     "review": 10,
     "rating": 5,

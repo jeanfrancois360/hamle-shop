@@ -7,7 +7,7 @@ const BlogFilter = () => {
         <h2>
           <img
             className="w-36px mr-10"
-            src="/assets/imgs/theme/icons/category-1.svg"
+            src="/assets/imgs/theme/icons/icon-1.svg"
             alt=""
           />
           Recips Articles

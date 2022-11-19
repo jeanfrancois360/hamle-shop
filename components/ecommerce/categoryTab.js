@@ -4,8 +4,12 @@ import Cat1Tab from '../elements/FeaturedTab';
 import Cat2Tab from '../elements/NewArrivalTab';
 import Cat3Tab from '../elements/TrendingTab';
 import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from '../../redux/action/product';
 
 function CategoryTab() {
+  const dispatch = useDispatch();
+  const { items } = useSelector((state) => state.products);
   const [active, setActive] = useState('1');
   const [catAll, setCatAll] = useState([]);
   const [cat1, setCat1] = useState([]);
@@ -22,7 +26,7 @@ function CategoryTab() {
   const catP1 = async () => {
     const request = await fetch(`${server}/static/product.json`);
     const allProducts = await request.json();
-    const cat1Item = allProducts.filter((item) => item.category == 'jeans');
+    const cat1Item = allProducts.filter((item) => item.category == 'jersey');
     setCat1(cat1Item);
     setActive('2');
   };
@@ -44,7 +48,14 @@ function CategoryTab() {
 
   useEffect(() => {
     catPAll();
+    dispatch(getProducts(9));
   }, []);
+
+  useEffect(() => {
+    if (items) {
+      console.log({ items });
+    }
+  }, [items]);
 
   return (
     <>
@@ -93,7 +104,7 @@ function CategoryTab() {
           }
         >
           <div className="product-grid-4 row">
-            <Cat1Tab products={catAll} />
+            <Cat1Tab products={items} />
           </div>
         </div>
 
@@ -103,7 +114,7 @@ function CategoryTab() {
           }
         >
           <div className="product-grid-4 row">
-            <Cat1Tab products={cat1} />
+            <Cat1Tab products={items} />
           </div>
         </div>
 
@@ -113,7 +124,7 @@ function CategoryTab() {
           }
         >
           <div className="product-grid-4 row">
-            <Cat3Tab products={cat2} />
+            <Cat3Tab products={items} />
           </div>
         </div>
         <div
@@ -122,7 +133,7 @@ function CategoryTab() {
           }
         >
           <div className="product-grid-4 row">
-            <Cat2Tab products={cat3} />
+            <Cat2Tab products={items} />
           </div>
         </div>
       </div>

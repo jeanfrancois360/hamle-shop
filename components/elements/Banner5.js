@@ -10,13 +10,11 @@ const Banner5 = () => {
           className="banner-img wow animate__animated animate__fadeInUp"
           data-wow-delay="0"
         >
-          <img src="/assets/imgs/banner/banner-1.png" alt="" />
+          <img src="/assets/imgs/banner/small-banner.png" alt="" />
           <div className="banner-text">
             <h4>
-              Everyday Fresh & <br />
-              Clean with Our
-              <br />
-              Products
+              The best Shoes <br />
+              Online
             </h4>
             <Link href="/products">
               <a className="btn btn-xs">
@@ -31,12 +29,11 @@ const Banner5 = () => {
           className="banner-img wow animate__animated animate__fadeInUp"
           data-wow-delay=".2s"
         >
-          <img src="/assets/imgs/banner/banner-2.png" alt="" />
+          <img src="/assets/imgs/banner/small-banner.png" alt="" />
           <div className="banner-text">
             <h4>
-              Make your Breakfast
-              <br />
-              Healthy and Easy
+              The best Shoes <br />
+              Online
             </h4>
             <Link href="/products">
               <a className="btn btn-xs">
@@ -51,11 +48,11 @@ const Banner5 = () => {
           className="banner-img mb-sm-0 wow animate__animated animate__fadeInUp"
           data-wow-delay=".4s"
         >
-          <img src="/assets/imgs/banner/banner-3.png" alt="" />
+          <img src="/assets/imgs/banner/small-banner.png" alt="" />
           <div className="banner-text">
             <h4>
-              The best Organic <br />
-              Products Online
+              The best Shoes <br />
+              Online
             </h4>
             <Link href="/products">
               <a className="btn btn-xs">

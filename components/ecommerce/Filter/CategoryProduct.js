@@ -22,26 +22,19 @@ const CategoryProduct = ({ updateProductCategory }) => {
         <li onClick={(e) => selectCategory(e, '')}>
           <a>All</a>
         </li>
-        <li onClick={(e) => selectCategory(e, 'jeans')}>
+        <li onClick={(e) => selectCategory(e, 'jersey')}>
           <a>
-            <img src="/assets/imgs/theme/icons/category-1.svg" alt="" />
-            Milks & Dairies
+            <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
+            Jersey
           </a>
-          <span className="count">30</span>
+          <span className="count">2</span>
         </li>
         <li onClick={(e) => selectCategory(e, 'shoe')}>
           <a>
-            <img src="/assets/imgs/theme/icons/category-2.svg" alt="" />
-            Clothing
+            <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
+            Shoes
           </a>
-          <span className="count">35</span>
-        </li>
-        <li onClick={(e) => selectCategory(e, 'jacket')}>
-          <a>
-            <img src="/assets/imgs/theme/icons/category-3.svg" alt="" />
-            Pet Foods{' '}
-          </a>
-          <span className="count">42</span>
+          <span className="count">1</span>
         </li>
       </ul>
     </>

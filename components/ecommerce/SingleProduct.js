@@ -8,6 +8,7 @@ import { addToCart } from '../../redux/action/cart';
 import { addToCompare } from '../../redux/action/compareAction';
 import { openQuickView } from '../../redux/action/quickViewAction';
 import { addToWishlist } from '../../redux/action/wishlistAction';
+import { numberWithCommas } from '../../util/util';
 
 const SingleProduct = ({
   product,
@@ -30,6 +31,7 @@ const SingleProduct = ({
     addToWishlist(product);
     toast('Added to Wishlist !');
   };
+
   return (
     <>
       <div className="product-cart-wrap mb-30">
@@ -39,10 +41,14 @@ const SingleProduct = ({
               <a>
                 <img
                   className="default-img"
-                  src={product.images[0].img}
+                  src={'https://' + product.cover_image}
                   alt=""
                 />
-                <img className="hover-img" src={product.images[1].img} alt="" />
+                <img
+                  className="hover-img"
+                  src={'https://' + product.cover_image}
+                  alt=""
+                />
               </a>
             </Link>
           </div>
@@ -72,24 +78,25 @@ const SingleProduct = ({
           </div>
 
           <div className="product-badges product-badges-position product-badges-mrg">
-            {product.trending && <span className="hot">Hot</span>}
+            {/* {product.trending && <span className="hot">Hot</span>}
             {product.created && <span className="new">New</span>}
             {product.totalSell > 100 && <span className="best">Best Sell</span>}
             {product.discount.isActive && <span className="sale">Sale</span>}
             {product.discount.percentage >= 5 && (
               <span className="hot">{product.discount.percentage}%</span>
-            )}
+            )} */}
+            <span className="new">New</span>
           </div>
         </div>
         <div className="product-content-wrap">
           <div className="product-category">
             <Link href="/products">
-              <a>{product.brand}</a>
+              <a>{product.category.name}</a>
             </Link>
           </div>
           <h2>
             <Link href="/products/[slug]" as={`/products/${product.slug}`}>
-              <a>{product.title}</a>
+              <a>{product.name}</a>
             </Link>
           </h2>
 
@@ -99,7 +106,8 @@ const SingleProduct = ({
             </div>
             <span className="font-small ml-5 text-muted">
               {' '}
-              ({product.ratingScore})
+              {50}
+              {/* ({product.ratingScore}) */}
             </span>
           </div>
 
@@ -107,17 +115,17 @@ const SingleProduct = ({
             <span className="font-small text-muted">
               By{' '}
               <Link href="/vendor/1">
-                <a>NestFood</a>
+                <a>{product.author.name}</a>
               </Link>
             </span>
           </div>
 
           <div className="product-card-bottom">
             <div className="product-price">
-              <span>${product.price} </span>
-              <span className="old-price">
-                {product.oldPrice && `$ ${product.oldPrice}`}
-              </span>
+              <span>{numberWithCommas(product.unit_price)} XAF</span>
+              {/* <span className="old-price">
+                {product.unit_price && `$ ${product.unit_price}`}
+              </span> */}
             </div>
             <div className="add-cart">
               <a className="add" onClick={(e) => handleCart(product)}>

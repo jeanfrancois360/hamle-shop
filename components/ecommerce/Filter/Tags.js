@@ -5,15 +5,7 @@ import { updateProductFilters } from '../../../redux/action/productFiltersAction
 
 const Tags = ({ updateProductFilters }) => {
   const router = useRouter();
-  const tags = [
-    { value: '' },
-    { value: 'snack' },
-    { value: 'milk' },
-    { value: 'fruit' },
-    { value: 'broccoli' },
-    { value: 'salad' },
-    { value: 'appetizer' },
-  ];
+  const tags = [{ value: '' }, { value: 'Shoe' }, { value: 'Jersey' }];
   const [selectedTags, setTags] = useState([]);
   const [active, setActive] = useState(0);
   useEffect(() => {

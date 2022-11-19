@@ -26,10 +26,10 @@ const Footer = () => {
                       </button>
                     </form>
                   </div>
-                  <img
-                    src="/assets/imgs/banner/banner-9.png"
+                  {/* <img
+                    src="/assets/imgs/banner/nike-shoes.png"
                     alt="newsletter"
-                  />
+                  /> */}
                 </div>
               </div>
             </div>

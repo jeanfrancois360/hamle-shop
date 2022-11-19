@@ -300,7 +300,7 @@ const Header = ({
                             </Link>
                           </li>
                           <li>
-                            <Link href="/page-login">
+                            <Link href="/login">
                               <a>
                                 <i className="fi fi-rs-sign-out mr-10"></i>
                                 Sign out

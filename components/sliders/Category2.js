@@ -28,7 +28,7 @@ const CategorySlider2 = () => {
     },
     {
       id: 5,
-      title: 'Snack',
+      title: 'Shoes',
       img: 'category-5.svg',
     },
     {

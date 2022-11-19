@@ -24,7 +24,7 @@ const BlogSidebar = () => {
               <Link href="/products">
                 <a>
                   {' '}
-                  <img src="/assets/imgs/theme/icons/category-1.svg" alt="" />
+                  <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
                   Milks & Dairies
                 </a>
               </Link>
@@ -34,7 +34,7 @@ const BlogSidebar = () => {
               <Link href="/products">
                 <a>
                   {' '}
-                  <img src="/assets/imgs/theme/icons/category-2.svg" alt="" />
+                  <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
                   Clothing
                 </a>
               </Link>
@@ -82,7 +82,7 @@ const BlogSidebar = () => {
             <div className="content pt-10">
               <h5>
                 <Link href="/shop-product-detail">
-                  <a>Chen Cardigan</a>
+                  <a>Mercurial</a>
                 </Link>
               </h5>
               <p className="price mb-0 mt-5">$99.50</p>
@@ -98,7 +98,7 @@ const BlogSidebar = () => {
             <div className="content pt-10">
               <h6>
                 <Link href="/products">
-                  <a>Chen Sweater</a>
+                  <a>PSG Jersey</a>
                 </Link>
               </h6>
               <p className="price mb-0 mt-5">$89.50</p>
@@ -114,7 +114,7 @@ const BlogSidebar = () => {
             <div className="content pt-10">
               <h6>
                 <Link href="/products">
-                  <a>Colorful Jacket</a>
+                  <a>Real Madrid Jersey</a>
                 </Link>
               </h6>
               <p className="price mb-0 mt-5">$25</p>

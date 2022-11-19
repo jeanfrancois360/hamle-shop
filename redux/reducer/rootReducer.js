@@ -5,8 +5,10 @@ import wishlist from './wishlist';
 import quickView from './quickView';
 import compare from './compare';
 import productFilters from './productFilters';
+import auth from './auth';
 
 const rootReducer = combineReducers({
+  auth,
   products,
   cart,
   wishlist,
