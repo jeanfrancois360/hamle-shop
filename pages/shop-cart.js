@@ -10,6 +10,7 @@ import {
   increaseQuantity,
   openCart,
 } from '../redux/action/cart';
+import { useState } from 'react';
 
 const Cart = ({
   openCart,
@@ -23,7 +24,7 @@ const Cart = ({
 }) => {
   const price = () => {
     let price = 0;
-    cartItems.forEach((item) => (price += item.price * item.quantity));
+    cartItems.forEach((item) => (price += item.unit_price * item.qty));
 
     return price;
   };
@@ -79,13 +80,13 @@ const Cart = ({
                       {cartItems.map((item, i) => (
                         <tr key={i}>
                           <td className="image product-thumbnail">
-                            <img src={item.images[0].img} />
+                            <img src={'https://' + item.cover_image} />
                           </td>
 
                           <td className="product-des product-name">
                             <h6 className="product-name">
                               <Link href="/products">
-                                <a>{item.title}</a>
+                                <a>{item.name}</a>
                               </Link>
                             </h6>
                             <div className="product-rate-cover">
@@ -104,7 +105,9 @@ const Cart = ({
                             </div>
                           </td>
                           <td className="price" data-title="Price">
-                            <h4 className="text-brand">${item.price}</h4>
+                            <h4 className="text-brand">
+                              {item.unit_price} XAF
+                            </h4>
                           </td>
                           <td
                             className="text-center detail-info"
@@ -118,7 +121,7 @@ const Cart = ({
                                 >
                                   <i className="fi-rs-angle-small-down"></i>
                                 </a>
-                                <span className="qty-val">{item.quantity}</span>
+                                <span className="qty-val">{item.qty}</span>
                                 <a
                                   onClick={(e) => increaseQuantity(item.id)}
                                   className="qty-up"
@@ -130,7 +133,7 @@ const Cart = ({
                           </td>
                           <td className="text-right" data-title="Cart">
                             <h4 className="text-body">
-                              ${item.quantity * item.price}
+                              {item.qty * item.unit_price} XAF
                             </h4>
                           </td>
                           <td className="action" data-title="Remove">
@@ -522,7 +525,7 @@ const Cart = ({
                               </td>
                               <td className="cart_total_amount">
                                 <span className="font-lg fw-900 text-brand">
-                                  $ {price()}
+                                  {price()} XAF
                                 </span>
                               </td>
                             </tr>
@@ -538,7 +541,7 @@ const Cart = ({
                               <td className="cart_total_amount">
                                 <strong>
                                   <span className="font-xl fw-900 text-brand">
-                                    ${price()}
+                                    {price()} XAF
                                   </span>
                                 </strong>
                               </td>

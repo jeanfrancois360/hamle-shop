@@ -3,6 +3,7 @@ import axios from '../../axios';
 import filterProductList from '../../util/filterProduct';
 import searchItemsByText from '../../util/searchItemsByText';
 import * as Types from '../constants/actionTypes';
+import product from '../reducer/product';
 
 export const getProducts = (total) => async (dispatch) => {
   try {
@@ -13,6 +14,24 @@ export const getProducts = (total) => async (dispatch) => {
         products: res.data.data.data,
       },
     });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getProduct = (id) => async (dispatch) => {
+  try {
+    if (id !== undefined) {
+      const res = await axios.get(`/products/show/${id}`);
+      let products = [];
+      products.push(res.data.data);
+      dispatch({
+        type: Types.FETCHED_PRODUCT,
+        payload: {
+          product: products,
+        },
+      });
+    }
   } catch (error) {
     console.error(error);
   }

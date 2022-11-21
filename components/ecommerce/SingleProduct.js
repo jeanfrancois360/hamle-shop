@@ -19,17 +19,45 @@ const SingleProduct = ({
 }) => {
   const handleCart = (product) => {
     addToCart(product);
-    toast('Product added to Cart !');
+
+    toast.success('Product added to Cart !', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
   };
 
   const handleCompare = (product) => {
     addToCompare(product);
-    toast('Added to Compare list !');
+    toast('Added to Compare list !', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
   };
 
   const handleWishlist = (product) => {
     addToWishlist(product);
-    toast('Added to Wishlist !');
+    toast('Added to Wishlist !', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
   };
 
   return (
@@ -37,7 +65,7 @@ const SingleProduct = ({
       <div className="product-cart-wrap mb-30">
         <div className="product-img-action-wrap">
           <div className="product-img product-img-zoom">
-            <Link href="/products/[slug]" as={`/products/${product.slug}`}>
+            <Link href="/products/[id]" as={`/products/${product.id}`}>
               <a>
                 <img
                   className="default-img"
@@ -115,14 +143,15 @@ const SingleProduct = ({
             <span className="font-small text-muted">
               By{' '}
               <Link href="/vendor/1">
-                <a>{product.author.name}</a>
+                <a>{product.author_id}</a>
               </Link>
             </span>
           </div>
 
           <div className="product-card-bottom">
             <div className="product-price">
-              <span>{numberWithCommas(product.unit_price)} XAF</span>
+              {/* <span>{numberWithCommas(product.unit_price)} XAF</span> */}
+              <span>{product.unit_price} XAF</span>
               {/* <span className="old-price">
                 {product.unit_price && `$ ${product.unit_price}`}
               </span> */}

@@ -15,8 +15,6 @@ import Layout from './../components/layout/Layout';
 import { fetchProduct, fetchMoreProduct } from './../redux/action/product';
 
 const Products = ({ products, productFilters, fetchProduct }) => {
-  // console.log(products);
-
   let Router = useRouter(),
     searchTerm = Router.query.search,
     showLimit = 12,

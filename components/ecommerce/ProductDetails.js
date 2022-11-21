@@ -8,6 +8,7 @@ import {
 } from '../../redux/action/cart';
 import { addToCompare } from '../../redux/action/compareAction';
 import { addToWishlist } from '../../redux/action/wishlistAction';
+import { numberWithCommas } from '../../util/util';
 import ProductTab from '../elements/ProductTab';
 import RelatedSlider from '../sliders/Related';
 import ThumbSlider from '../sliders/Thumb';
@@ -83,7 +84,8 @@ const ProductDetails = ({
                       <div className="clearfix product-price-cover">
                         <div className="product-price primary-color float-left">
                           <span className="current-price  text-brand">
-                            ${product.unit_price}
+                            {numberWithCommas(product ? product.unit_price : 0)}{' '}
+                            XAF
                           </span>
                           {/* <span>
                             <span className="save-price font-md color3 ml-15">

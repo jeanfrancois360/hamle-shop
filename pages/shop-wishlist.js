@@ -50,7 +50,7 @@ const Wishlist = ({
                           <tr className="pt-30" key={i}>
                             <td className="image product-thumbnail pt-40">
                               <img
-                                src={product.images[0].img}
+                                src={'https://' + product.cover_image}
                                 alt=""
                                 className="img-fluid"
                               />
@@ -58,7 +58,7 @@ const Wishlist = ({
 
                             <td className="product-des product-name">
                               <h6 className="product-name  mb-10">
-                                <a>{product.title}</a>
+                                <a>{product.name}</a>
                               </h6>
                               <div className="product-rate-cover">
                                 <div className="product-rate d-inline-block">
@@ -76,13 +76,15 @@ const Wishlist = ({
                               </div>
                             </td>
                             <td className="price" data-title="Price">
-                              <h3 className="text-brand">${product.price}</h3>
+                              <h3 className="text-brand">
+                                {product.unit_price} XAF
+                              </h3>
                             </td>
                             <td
                               className="text-center detail-info"
                               data-title="Stock"
                             >
-                              {product.stock === 0 ? (
+                              {product.quantity === 0 ? (
                                 <span className="stock-status out-stock mb-0">
                                   Out of stock
                                 </span>
@@ -93,7 +95,7 @@ const Wishlist = ({
                               )}
                             </td>
                             <td className="text-right" data-title="Cart">
-                              {product.stock === 0 ? (
+                              {product.quantity === 0 ? (
                                 <button className="btn btn-sm btn-secondary">
                                   Contact Us
                                 </button>

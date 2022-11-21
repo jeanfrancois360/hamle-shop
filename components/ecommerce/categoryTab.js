@@ -51,12 +51,6 @@ function CategoryTab() {
     dispatch(getProducts(9));
   }, []);
 
-  useEffect(() => {
-    if (items) {
-      console.log({ items });
-    }
-  }, [items]);
-
   return (
     <>
       <div className="section-title style-2 wow animate__animated animate__fadeIn">

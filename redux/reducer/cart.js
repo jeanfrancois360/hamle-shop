@@ -13,15 +13,15 @@ export default (state = [], action) => {
       index = findProductIndexById(state, action.payload.product.id);
 
       if (index !== -1) {
-        state[index].quantity += 1;
-        storage.set('dokani_cart', [...state]);
+        state[index].qty += 1;
+        storage.set('hemle_cart', [...state]);
 
         return [...state];
       } else {
-        if (!action.payload.product.quantity) {
-          action.payload.product.quantity = 1;
+        if (!action.payload.product.qty) {
+          action.payload.product.qty = 1;
         }
-        storage.set('dokani_cart', [...state, action.payload.product]);
+        storage.set('hemle_cart', [...state, action.payload.product]);
 
         return [...state, action.payload.product];
       }
@@ -29,7 +29,7 @@ export default (state = [], action) => {
 
     case Types.DELETE_FROM_CART: {
       const newCartItems = deleteProduct(state, action.payload.productId);
-      storage.set('dokani_cart', newCartItems);
+      storage.set('hemle_cart', newCartItems);
 
       return [...newCartItems];
     }
@@ -37,8 +37,8 @@ export default (state = [], action) => {
       index = findProductIndexById(state, action.payload.productId);
       if (index === -1) return state;
 
-      state[index].quantity += 1;
-      storage.set('dokani_cart', [...state]);
+      state[index].qty += 1;
+      storage.set('hemle_cart', [...state]);
 
       return [...state];
     }
@@ -46,14 +46,14 @@ export default (state = [], action) => {
       index = findProductIndexById(state, action.payload.productId);
       if (index === -1) return state;
 
-      const quantity = state[index].quantity;
-      if (quantity > 1) state[index].quantity -= 1;
-      storage.set('dokani_cart', [...state]);
+      const qty = state[index].qty;
+      if (qty > 1) state[index].qty -= 1;
+      storage.set('hemle_cart', [...state]);
 
       return [...state];
     }
     case Types.CLEAR_CART: {
-      storage.set('dokani_cart', []);
+      storage.set('hemle_cart', []);
       return [];
     }
     default:

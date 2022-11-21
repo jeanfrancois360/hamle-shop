@@ -3,24 +3,22 @@ import * as Types from '../constants/actionTypes';
 
 // {items:[],filteredList:[]}
 
-export default (state = { items: [] }, action) => {
+export default (state = { items: [], item: {} }, action) => {
   switch (action.type) {
-    case Types.FETCHED_PRODUCT:
-      return {
-        ...state,
-        items: [...action.payload.products],
-      };
-
     case Types.FETCHED_PRODUCTS: {
       return {
         ...state,
         items: [...action.payload.products],
       };
     }
-
+    case Types.FETCHED_PRODUCT: {
+      return {
+        ...state,
+        item: [...action.payload.product],
+      };
+    }
     case Types.FETCHED_MORE_PRODUCT: {
       const mergeAllProducts = [...state.items, ...action.payload.products];
-      // console.log(mergeAllProducts);
       const limit =
         action.payload.total && mergeAllProducts.length > action.payload.total
           ? mergeAllProducts.splice(0, action.payload.total)

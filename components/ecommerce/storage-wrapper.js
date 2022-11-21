@@ -12,7 +12,7 @@ const saveStoredItems = (storedItems) => (dispatch) => {
 
 const StorageWrapper = (props) => {
   useEffect(() => {
-    const cart = storage.get('dokani_cart') || [];
+    const cart = storage.get('hemle_cart') || [];
     const wishlist = storage.get('dokani_wishlist') || [];
     const compare = storage.get('dokani_compare') || [];
 

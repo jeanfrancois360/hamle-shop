@@ -22,18 +22,46 @@ const ThumbSlider = ({ product }) => {
         thumbs={{ swiper: thumbsSwiper }}
         className="mySwiper2"
       >
-        {product.gallery.map((item) => (
-          <SwiperSlide key={item.thumb}>
-            <img src={item.thumb} />
-            {/* <Zoom
+        <SwiperSlide key={product.cover_image}>
+          <img src={'https://' + product.cover_image} />
+          {/* <Zoom
                             img={item.thumb}
                             zoomScale={5}
                             width={500}
                             height={500}
                             ransitionTime={0.5}
                         /> */}
-          </SwiperSlide>
-        ))}
+        </SwiperSlide>
+        <SwiperSlide key={product.image_1}>
+          <img src={'https://' + product.image_1} />
+          {/* <Zoom
+                            img={item.thumb}
+                            zoomScale={5}
+                            width={500}
+                            height={500}
+                            ransitionTime={0.5}
+                        /> */}
+        </SwiperSlide>
+        <SwiperSlide key={product.image_2}>
+          <img src={'https://' + product.image_2} />
+          {/* <Zoom
+                            img={item.thumb}
+                            zoomScale={5}
+                            width={500}
+                            height={500}
+                            ransitionTime={0.5}
+                        /> */}
+        </SwiperSlide>
+        <SwiperSlide key={product.image_3}>
+          <img src={'https://' + product.image_3} />
+          {/* <Zoom
+                            img={item.thumb}
+                            zoomScale={5}
+                            width={500}
+                            height={500}
+                            ransitionTime={0.5}
+                        /> */}
+        </SwiperSlide>
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}
@@ -43,11 +71,21 @@ const ThumbSlider = ({ product }) => {
         watchSlidesProgress={true}
         className="mySwiper"
       >
-        {product.gallery.map((item) => (
+        {/* {product.gallery.map((item) => (
           <SwiperSlide key={item.thumb}>
             <img src={item.thumb} />
           </SwiperSlide>
-        ))}
+        ))} */}
+
+        <SwiperSlide key={product.image_1}>
+          <img src={'https://' + product.image_1} />
+        </SwiperSlide>
+        <SwiperSlide key={product.image_2}>
+          <img src={'https://' + product.image_2} />
+        </SwiperSlide>
+        <SwiperSlide key={product.image_3}>
+          <img src={'https://' + product.image_3} />
+        </SwiperSlide>
       </Swiper>
     </div>
   );
