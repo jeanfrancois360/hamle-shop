@@ -14,7 +14,7 @@ import SingleProduct from './../components/ecommerce/SingleProduct';
 import Layout from './../components/layout/Layout';
 import { fetchProduct, getProducts } from './../redux/action/product';
 
-const Products = ({ products, productFilters, fetchProduct, getProducts }) => {
+const Products = ({ products, getProducts }) => {
   let Router = useRouter(),
     searchTerm = Router.query.search,
     showLimit = 12,
@@ -156,57 +156,29 @@ const Products = ({ products, productFilters, fetchProduct, getProducts }) => {
                   <h5 className="section-title style-1 mb-30">New products</h5>
                   <div className="bt-1 border-color-1"></div>
 
-                  <div className="single-post clearfix">
-                    <div className="image">
-                      <img src="/assets/imgs/shop/mercurial.jpeg" alt="#" />
-                    </div>
-                    <div className="content pt-10">
-                      <h6>
-                        <a>Mercurial</a>
-                      </h6>
-                      <p className="price mb-0 mt-5">$99.50</p>
-                      <div className="product-rate">
-                        <div
-                          className="product-rating"
-                          style={{ width: '90%' }}
-                        ></div>
+                  {products &&
+                    products.items.length > 0 &&
+                    products.items.slice(0, 3).map((product, index) => (
+                      <div key={index} className="single-post clearfix">
+                        <div className="image">
+                          <img src={'https://' + product.cover_image} alt="#" />
+                        </div>
+                        <div className="content pt-10">
+                          <h6>
+                            <a>{product.name}</a>
+                          </h6>
+                          <p className="price mb-0 mt-5">
+                            {product.unit_price} XAF
+                          </p>
+                          <div className="product-rate">
+                            <div
+                              className="product-rating"
+                              style={{ width: '90%' }}
+                            ></div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="single-post clearfix">
-                    <div className="image">
-                      <img src="/assets/imgs/shop/psg.jpeg" alt="#" />
-                    </div>
-                    <div className="content pt-10">
-                      <h6>
-                        <a>PSG Jersey</a>
-                      </h6>
-                      <p className="price mb-0 mt-5">$89.50</p>
-                      <div className="product-rate">
-                        <div
-                          className="product-rating"
-                          style={{ width: '80%' }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="single-post clearfix">
-                    <div className="image">
-                      <img src="/assets/imgs/shop/real-madrid.jpeg" alt="#" />
-                    </div>
-                    <div className="content pt-10">
-                      <h6>
-                        <a>Real Madrid Jersey</a>
-                      </h6>
-                      <p className="price mb-0 mt-5">$25</p>
-                      <div className="product-rate">
-                        <div
-                          className="product-rating"
-                          style={{ width: '60%' }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
+                    ))}
                 </div>
               </div>
             </div>
@@ -224,7 +196,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDidpatchToProps = {
-  fetchProduct,
   getProducts,
 };
 
