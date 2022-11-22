@@ -36,8 +36,9 @@ const Cart = ({
                 <h1 className="heading-2 mb-10">Checkout</h1>
                 <div className="d-flex justify-content-between">
                   <h6 className="text-body">
-                    There are <span className="text-brand">3</span> products in
-                    your cart
+                    There are{' '}
+                    <span className="text-brand">{cartItems.length}</span>{' '}
+                    products in your cart
                   </h6>
                 </div>
               </div>

@@ -12,9 +12,9 @@ import Pagination from './../components/ecommerce/Pagination';
 import QuickView from './../components/ecommerce/QuickView';
 import SingleProduct from './../components/ecommerce/SingleProduct';
 import Layout from './../components/layout/Layout';
-import { fetchProduct, fetchMoreProduct } from './../redux/action/product';
+import { fetchProduct, getProducts } from './../redux/action/product';
 
-const Products = ({ products, productFilters, fetchProduct }) => {
+const Products = ({ products, productFilters, fetchProduct, getProducts }) => {
   let Router = useRouter(),
     searchTerm = Router.query.search,
     showLimit = 12,
@@ -26,11 +26,14 @@ const Products = ({ products, productFilters, fetchProduct }) => {
   let [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetchProduct(searchTerm, '/static/product.json', productFilters);
-    cratePagination();
-  }, [productFilters, limit, pages, products.items.length]);
+    getProducts(9);
+  }, []);
 
-  const cratePagination = () => {
+  useEffect(() => {
+    createPagination();
+  }, [limit, pages, products.items.length]);
+
+  const createPagination = () => {
     // set pagination
     let arr = new Array(Math.ceil(products.items.length / limit))
       .fill()
@@ -253,6 +256,7 @@ const mapStateToProps = (state) => ({
 const mapDidpatchToProps = {
   // openCart,
   fetchProduct,
+  getProducts,
 };
 
 export default connect(mapStateToProps, mapDidpatchToProps)(Products);

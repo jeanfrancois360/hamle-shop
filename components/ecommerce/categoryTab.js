@@ -16,12 +16,13 @@ function CategoryTab() {
   const [cat2, setCat2] = useState([]);
   const [cat3, setCat3] = useState([]);
 
-  const catPAll = async () => {
-    const request = await fetch(`${server}/static/product.json`);
-    const allProducts = await request.json();
-    const catAllItem = allProducts.filter((item) => item.category);
-    setCatAll(catAllItem);
-    setActive('1');
+  const catPAll = async (items) => {
+    console.log({ items });
+    // const request = await fetch(`${server}/static/product.json`);
+    // const allProducts = await request.json();
+    // const catAllItem = allProducts.filter((item) => item.category);
+    // setCatAll(catAllItem);
+    // setActive('1');
   };
   const catP1 = async () => {
     const request = await fetch(`${server}/static/product.json`);
@@ -47,9 +48,14 @@ function CategoryTab() {
   };
 
   useEffect(() => {
-    catPAll();
     dispatch(getProducts(9));
   }, []);
+
+  useEffect(() => {
+    if (items && items.length > 0) {
+      catPAll(items);
+    }
+  }, [items]);
 
   return (
     <>

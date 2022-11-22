@@ -13,8 +13,17 @@ import IntroPopup from '../components/elements/IntroPopup';
 import CategorySlider2 from '../components/sliders/Category2';
 import Intro2 from '../components/sliders/Intro2';
 import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { getProducts } from '../redux/action/product';
+import QuickView from '../components/ecommerce/QuickView';
 
 function Test() {
+  const dispatch = useDispatch();
+  const { items } = useSelector((state) => state.products);
+  useEffect(() => {
+    dispatch(getProducts(3));
+  }, []);
   return (
     <>
       {/* <IntroPopup /> */}
@@ -74,62 +83,34 @@ function Test() {
                 <h5 className="section-title style-1 mb-30">New products</h5>
                 <div className="bt-1 border-color-1"></div>
 
-                <div className="single-post clearfix">
-                  <div className="image">
-                    <img src="/assets/imgs/shop/mercurial.jpeg" alt="#" />
-                  </div>
-                  <div className="content pt-10">
-                    <h6>
-                      <a>Mercurial</a>
-                    </h6>
-                    <p className="price mb-0 mt-5">$99.50</p>
-                    <div className="product-rate">
-                      <div
-                        className="product-rating"
-                        style={{ width: '90%' }}
-                      ></div>
+                {items &&
+                  items.length > 0 &&
+                  items.map((product, index) => (
+                    <div key={index} className="single-post clearfix">
+                      <div className="image">
+                        <img src={'https://' + product.cover_image} alt="#" />
+                      </div>
+                      <div className="content pt-10">
+                        <h6>
+                          <a>{product.name}</a>
+                        </h6>
+                        <p className="price mb-0 mt-5">
+                          {product.unit_price} XAF
+                        </p>
+                        <div className="product-rate">
+                          <div
+                            className="product-rating"
+                            style={{ width: '90%' }}
+                          ></div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="single-post clearfix">
-                  <div className="image">
-                    <img src="/assets/imgs/shop/psg.jpeg" alt="#" />
-                  </div>
-                  <div className="content pt-10">
-                    <h6>
-                      <a>PSG Jersey</a>
-                    </h6>
-                    <p className="price mb-0 mt-5">$89.50</p>
-                    <div className="product-rate">
-                      <div
-                        className="product-rating"
-                        style={{ width: '80%' }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-                <div className="single-post clearfix">
-                  <div className="image">
-                    <img src="/assets/imgs/shop/real-madrid.jpeg" alt="#" />
-                  </div>
-                  <div className="content pt-10">
-                    <h6>
-                      <a>Real Madrid Jersey</a>
-                    </h6>
-                    <p className="price mb-0 mt-5">$25</p>
-                    <div className="product-rate">
-                      <div
-                        className="product-rating"
-                        style={{ width: '60%' }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
+                  ))}
               </div>
             </div>
           </div>
         </div>
-
+        <QuickView />
         {/* <section className='popular-categories section-padding'>
           <div className='container'>
             <div className='section-title'>

@@ -3,7 +3,7 @@ import * as Types from '../constants/actionTypes';
 
 // {items:[],filteredList:[]}
 
-export default (state = { items: [], item: {} }, action) => {
+export default (state = { items: [], item: {}, filteredItems: [] }, action) => {
   switch (action.type) {
     case Types.FETCHED_PRODUCTS: {
       return {

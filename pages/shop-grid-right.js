@@ -30,10 +30,10 @@ const Products = ({ products, productFilters, fetchProduct }) => {
 
   useEffect(() => {
     fetchProduct(searchTerm, '/static/product.json', productFilters);
-    cratePagination();
+    createPagination();
   }, [productFilters, limit, pages, products.items.length]);
 
-  const cratePagination = () => {
+  const createPagination = () => {
     // set pagination
     let arr = new Array(Math.ceil(products.items.length / limit))
       .fill()
