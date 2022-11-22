@@ -45,7 +45,6 @@ const Cart = ({
                   </h6>
                   <h6 className="text-body">
                     <a href="#" className="text-muted">
-                      <i className="fi-rs-trash mr-5"></i>
                       Clear Cart
                     </a>
                   </h6>
@@ -150,10 +149,12 @@ const Cart = ({
                       <tr>
                         <td colSpan="6" className="text-end">
                           {cartItems.length > 0 && (
-                            <a onClick={clearCart} className="text-muted">
-                              <i className="fi-rs-cross-small"></i>
-                              Clear Cart
-                            </a>
+                            <h6 className="text-body">
+                              <a onClick={clearCart} className="text-muted">
+                                <i className="fi-rs-trash mr-5"></i>
+                                Clear Cart
+                              </a>
+                            </h6>
                           )}
                         </td>
                       </tr>

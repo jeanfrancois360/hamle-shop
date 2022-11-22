@@ -212,37 +212,7 @@ const Products = ({ products, productFilters, fetchProduct, getProducts }) => {
             </div>
           </div>
         </section>
-        {/* <WishlistModal /> */}
-        {/* <CompareModal /> */}
-        {/* <CartSidebar /> */}
         <QuickView />
-        {/* <div className="container">
-                    <div className="row">
-                        <div className="col-xl-6">
-                            <Search />
-                        </div>
-                        <div className="col-xl-6">
-                            <SideBarIcons />
-                        </div>
-                    </div>
-                    <div className="row justify-content-center text-center">
-                        <div className="col-xl-6">
-                            <CategoryProduct />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-xl-3">
-                            
-                        </div>
-                        <div className="col-md-9">
-                            
-
-                            
-
-                            
-                        </div>
-                    </div>
-                </div> */}
       </Layout>
     </>
   );
@@ -254,7 +224,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDidpatchToProps = {
-  // openCart,
   fetchProduct,
   getProducts,
 };

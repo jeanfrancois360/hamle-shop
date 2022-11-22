@@ -13,17 +13,10 @@ import IntroPopup from '../components/elements/IntroPopup';
 import CategorySlider2 from '../components/sliders/Category2';
 import Intro2 from '../components/sliders/Intro2';
 import Link from 'next/link';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { getProducts } from '../redux/action/product';
+import { connect } from 'react-redux';
 import QuickView from '../components/ecommerce/QuickView';
 
-function Test() {
-  const dispatch = useDispatch();
-  const { items } = useSelector((state) => state.products);
-  useEffect(() => {
-    dispatch(getProducts(3));
-  }, []);
+function Home({ products }) {
   return (
     <>
       {/* <IntroPopup /> */}
@@ -83,9 +76,9 @@ function Test() {
                 <h5 className="section-title style-1 mb-30">New products</h5>
                 <div className="bt-1 border-color-1"></div>
 
-                {items &&
-                  items.length > 0 &&
-                  items.map((product, index) => (
+                {products &&
+                  products.items.length > 0 &&
+                  products.items.slice(0, 3).map((product, index) => (
                     <div key={index} className="single-post clearfix">
                       <div className="image">
                         <img src={'https://' + product.cover_image} alt="#" />
@@ -111,29 +104,13 @@ function Test() {
           </div>
         </div>
         <QuickView />
-        {/* <section className='popular-categories section-padding'>
-          <div className='container'>
-            <div className='section-title'>
-              <div className='title'>
-                <h3>Shop by Categories</h3>
-                <Link href='/products'>
-                  <a className='show-all'>
-                    All Categories
-                    <i className='fi-rs-angle-right'></i>
-                  </a>
-                </Link>
-              </div>
-            </div>
-            <div className='carausel-8-columns-cover position-relative'>
-              <div className='carausel-8-columns' id='carausel-8-columns'>
-                <CategorySlider2 />
-              </div>
-            </div>
-          </div>
-        </section> */}
       </Layout>
     </>
   );
 }
 
-export default Test;
+const mapStateToProps = (state) => ({
+  products: state.products,
+  productFilters: state.productFilters,
+});
+export default connect(mapStateToProps)(Home);

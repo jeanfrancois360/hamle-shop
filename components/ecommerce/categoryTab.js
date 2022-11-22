@@ -17,32 +17,24 @@ function CategoryTab() {
   const [cat3, setCat3] = useState([]);
 
   const catPAll = async (items) => {
-    console.log({ items });
-    // const request = await fetch(`${server}/static/product.json`);
-    // const allProducts = await request.json();
-    // const catAllItem = allProducts.filter((item) => item.category);
-    // setCatAll(catAllItem);
-    // setActive('1');
+    const catAllItem = items.filter((item) => item.category_id);
+    setCatAll(catAllItem);
+    setActive('1');
   };
-  const catP1 = async () => {
-    const request = await fetch(`${server}/static/product.json`);
-    const allProducts = await request.json();
-    const cat1Item = allProducts.filter((item) => item.category == 'jersey');
+  const catP1 = async (items) => {
+    const cat1Item = items.filter((item) => item.category_id == 1);
     setCat1(cat1Item);
     setActive('2');
   };
 
-  const catP2 = async () => {
-    const request = await fetch(`${server}/static/product.json`);
-    const allProducts = await request.json();
-    const cat2Item = allProducts.filter((item) => item.category == 'shoe');
+  const catP2 = async (items) => {
+    const cat2Item = items.filter((item) => item.category_id == 2);
     setCat2(cat2Item);
     setActive('3');
   };
-  const catP3 = async () => {
-    const request = await fetch(`${server}/static/product.json`);
-    const allProducts = await request.json();
-    const cat3Item = allProducts.filter((item) => item.category == 'jacket');
+
+  const catP3 = async (items) => {
+    const cat3Item = items.filter((item) => item.category_id == 3);
     setCat3(cat3Item);
     setActive('4');
   };
@@ -65,7 +57,7 @@ function CategoryTab() {
           <li className="nav-item" role="presentation">
             <button
               className={active === '1' ? 'nav-link active' : 'nav-link'}
-              onClick={catPAll}
+              onClick={() => catPAll(items)}
             >
               All
             </button>
@@ -73,7 +65,7 @@ function CategoryTab() {
           <li className="nav-item" role="presentation">
             <button
               className={active === '2' ? 'nav-link active' : 'nav-link'}
-              onClick={catP1}
+              onClick={() => catP1(items)}
             >
               Featured
             </button>
@@ -81,7 +73,7 @@ function CategoryTab() {
           <li className="nav-item" role="presentation">
             <button
               className={active === '3' ? 'nav-link active' : 'nav-link'}
-              onClick={catP2}
+              onClick={() => catP2(items)}
             >
               Popular
             </button>
@@ -89,7 +81,7 @@ function CategoryTab() {
           <li className="nav-item" role="presentation">
             <button
               className={active === '4' ? 'nav-link active' : 'nav-link'}
-              onClick={catP3}
+              onClick={() => catP3(items)}
             >
               New added
             </button>
@@ -104,7 +96,7 @@ function CategoryTab() {
           }
         >
           <div className="product-grid-4 row">
-            <Cat1Tab products={items} />
+            <Cat1Tab products={catAll} />
           </div>
         </div>
 
@@ -114,7 +106,7 @@ function CategoryTab() {
           }
         >
           <div className="product-grid-4 row">
-            <Cat1Tab products={items} />
+            <Cat1Tab products={cat1} />
           </div>
         </div>
 
@@ -124,7 +116,7 @@ function CategoryTab() {
           }
         >
           <div className="product-grid-4 row">
-            <Cat3Tab products={items} />
+            <Cat3Tab products={cat2} />
           </div>
         </div>
         <div
@@ -133,7 +125,7 @@ function CategoryTab() {
           }
         >
           <div className="product-grid-4 row">
-            <Cat2Tab products={items} />
+            <Cat2Tab products={cat3} />
           </div>
         </div>
       </div>

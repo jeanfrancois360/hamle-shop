@@ -188,16 +188,6 @@ const ProductDetails = ({
                         </div>
                       </div>
                       <ul className="product-meta font-xs color-grey mt-50">
-                        <li className="mb-5">
-                          SKU:
-                          <a href="#">FWM15VKT</a>
-                        </li>
-                        <li className="mb-5">
-                          Tags:
-                          <a href="#" rel="tag" className="me-1">
-                            Cloth,
-                          </a>
-                        </li>
                         <li>
                           Availability:
                           <span className="in-stock text-success ml-5">
@@ -211,7 +201,7 @@ const ProductDetails = ({
 
                 {quickView ? null : (
                   <>
-                    <ProductTab />
+                    <ProductTab product={product} />
                     <div className="row mt-60">
                       <div className="col-12">
                         <h3 className="section-title style-1 mb-30">
