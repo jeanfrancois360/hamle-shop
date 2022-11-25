@@ -17,18 +17,6 @@ export default (state = { items: [], item: {}, filteredItems: [] }, action) => {
         item: [...action.payload.product],
       };
     }
-    case Types.FETCHED_MORE_PRODUCT: {
-      const mergeAllProducts = [...state.items, ...action.payload.products];
-      const limit =
-        action.payload.total && mergeAllProducts.length > action.payload.total
-          ? mergeAllProducts.splice(0, action.payload.total)
-          : mergeAllProducts;
-
-      return {
-        ...state,
-        items: [...limit],
-      };
-    }
     case Types.ADD_PRODUCT: {
       return {
         ...state,

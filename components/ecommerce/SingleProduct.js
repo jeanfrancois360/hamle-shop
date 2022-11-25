@@ -143,7 +143,9 @@ const SingleProduct = ({
             <span className="font-small text-muted">
               By{' '}
               <Link href="/vendor/1">
-                <a>{product.author_id}</a>
+                <a>
+                  {product.author.first_name + ' ' + product.author.last_name}
+                </a>
               </Link>
             </span>
           </div>
