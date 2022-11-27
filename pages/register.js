@@ -13,6 +13,8 @@ function Login() {
     last_name: '',
     email: '',
     phone: '',
+    country: '',
+    city: '',
     password: '',
   };
 
@@ -74,6 +76,8 @@ function Login() {
     last_name: Yup.string().trim().required().label('Last name'),
     email: Yup.string().trim().required().email().label('Email'),
     phone: Yup.string().trim().required().label('Phone'),
+    country: Yup.string().trim().required().label('Country'),
+    city: Yup.string().trim().required().label('City'),
     password: Yup.string()
       .trim()
       .required()
@@ -91,6 +95,8 @@ function Login() {
       last_name: payload.last_name,
       email: payload.email,
       phone: payload.phone,
+      country: payload.country,
+      city: payload.city,
       password: payload.password,
     };
 
@@ -108,7 +114,7 @@ function Login() {
         setIsLoading(false);
         console.log({ res });
         // eslint-disable-next-line no-prototype-builtins
-        if (res.data.hasOwnProperty('id')) {
+        if (res.data.hasOwnProperty('user')) {
           setSuccessMsg('Successfully registered!');
         }
       })
@@ -125,16 +131,16 @@ function Login() {
         <div className="page-content pt-150 pb-150">
           <div className="container">
             <div className="row">
-              <div className="col-xl-8 col-lg-10 col-md-12 m-auto">
+              <div className="col-xl-9 col-lg-10 col-md-12 m-auto">
                 <div className="row">
-                  <div className="col-lg-6 pr-30 d-none d-lg-block">
+                  <div className="col-lg-5 pr-30 d-none d-lg-block">
                     <img
                       className="border-radius-15"
                       src="assets/imgs/page/login-1.png"
                       alt=""
                     />
                   </div>
-                  <div className="col-lg-6 col-md-8">
+                  <div className="col-lg-7 col-md-8">
                     <div className="login_wrap widget-taber-content background-white">
                       <div className="padding_eight_all bg-white">
                         <div className="heading_s1">
@@ -162,96 +168,148 @@ function Login() {
                             errors,
                           }) => (
                             <form method="post" onSubmit={handleSubmit}>
-                              <div className="form-group">
-                                <input
-                                  type="text"
-                                  required=""
-                                  name="first_name"
-                                  placeholder="First name *"
-                                  value={values.first_name}
-                                  onChange={handleChange('first_name')}
-                                  onBlur={handleBlur('first_name')}
-                                  autoComplete={`${true}`}
-                                />
+                              <div className="row">
+                                <div class="col-md-6">
+                                  <div className="form-group">
+                                    <input
+                                      type="text"
+                                      required=""
+                                      name="first_name"
+                                      placeholder="First name *"
+                                      value={values.first_name}
+                                      onChange={handleChange('first_name')}
+                                      onBlur={handleBlur('first_name')}
+                                      autoComplete={`${true}`}
+                                    />
+                                  </div>
+                                  {touched.first_name && errors.first_name && (
+                                    <MsgText
+                                      text={errors.first_name}
+                                      textColor="danger"
+                                    />
+                                  )}
+                                </div>
+                                <div class="col-md-6">
+                                  <div className="form-group">
+                                    <input
+                                      type="text"
+                                      required=""
+                                      name="last_name"
+                                      placeholder="Last name *"
+                                      value={values.last_name}
+                                      onChange={handleChange('last_name')}
+                                      onBlur={handleBlur('last_name')}
+                                      autoComplete={`${true}`}
+                                    />
+                                  </div>
+                                  {touched.last_name && errors.last_name && (
+                                    <MsgText
+                                      text={errors.last_name}
+                                      textColor="danger"
+                                    />
+                                  )}
+                                </div>
+                                <div className="col-md-12">
+                                  <div className="form-group">
+                                    <input
+                                      type="email"
+                                      required=""
+                                      name="email"
+                                      placeholder="Email *"
+                                      value={values.email}
+                                      onChange={handleChange('email')}
+                                      onBlur={handleBlur('email')}
+                                      autoComplete={`${true}`}
+                                    />
+                                  </div>
+                                  {touched.email && errors.email && (
+                                    <MsgText
+                                      text={errors.email}
+                                      textColor="danger"
+                                    />
+                                  )}
+                                </div>
+                                <div className="col-md-6">
+                                  <div className="form-group">
+                                    <input
+                                      type="text"
+                                      required=""
+                                      name="phone"
+                                      placeholder="Phone *"
+                                      value={values.phone}
+                                      onChange={handleChange('phone')}
+                                      onBlur={handleBlur('phone')}
+                                      autoComplete={`${true}`}
+                                    />
+                                  </div>
+                                  {touched.phone && errors.phone && (
+                                    <MsgText
+                                      text={errors.phone}
+                                      textColor="danger"
+                                    />
+                                  )}
+                                </div>
+                                <div className="col-md-6">
+                                  <div className="form-group">
+                                    <input
+                                      type="text"
+                                      required=""
+                                      name="country"
+                                      placeholder="Country *"
+                                      value={values.country}
+                                      onChange={handleChange('country')}
+                                      onBlur={handleBlur('country')}
+                                      autoComplete={`${true}`}
+                                    />
+                                  </div>
+                                  {touched.country && errors.country && (
+                                    <MsgText
+                                      text={errors.country}
+                                      textColor="danger"
+                                    />
+                                  )}
+                                </div>
+                                <div className="col-md-6">
+                                  <div className="form-group">
+                                    <input
+                                      type="text"
+                                      required=""
+                                      name="city"
+                                      placeholder="city *"
+                                      value={values.city}
+                                      onChange={handleChange('city')}
+                                      onBlur={handleBlur('city')}
+                                      autoComplete={`${true}`}
+                                    />
+                                  </div>
+                                  {touched.city && errors.city && (
+                                    <MsgText
+                                      text={errors.city}
+                                      textColor="danger"
+                                    />
+                                  )}
+                                </div>
+                                <div className="col-md-6">
+                                  <div className="form-group">
+                                    <input
+                                      required=""
+                                      type="password"
+                                      name="password"
+                                      placeholder="Your password *"
+                                      value={values.password}
+                                      onChange={handleChange('password')}
+                                      onBlur={handleBlur('password')}
+                                      autoComplete={`${true}`}
+                                    />
+                                  </div>
+                                  {touched.password && errors.password && (
+                                    <MsgText
+                                      text={errors.password}
+                                      textColor="danger"
+                                    />
+                                  )}
+                                </div>
                               </div>
-                              {touched.first_name && errors.first_name && (
-                                <MsgText
-                                  text={errors.first_name}
-                                  textColor="danger"
-                                />
-                              )}
-                              <div className="form-group">
-                                <input
-                                  type="text"
-                                  required=""
-                                  name="last_name"
-                                  placeholder="Last name *"
-                                  value={values.last_name}
-                                  onChange={handleChange('last_name')}
-                                  onBlur={handleBlur('last_name')}
-                                  autoComplete={`${true}`}
-                                />
-                              </div>
-                              {touched.last_name && errors.last_name && (
-                                <MsgText
-                                  text={errors.last_name}
-                                  textColor="danger"
-                                />
-                              )}
-                              <div className="form-group">
-                                <input
-                                  type="email"
-                                  required=""
-                                  name="email"
-                                  placeholder="Email *"
-                                  value={values.email}
-                                  onChange={handleChange('email')}
-                                  onBlur={handleBlur('email')}
-                                  autoComplete={`${true}`}
-                                />
-                              </div>
-                              {touched.email && errors.email && (
-                                <MsgText
-                                  text={errors.email}
-                                  textColor="danger"
-                                />
-                              )}
-                              <div className="form-group">
-                                <input
-                                  type="text"
-                                  required=""
-                                  name="phone"
-                                  placeholder="Phone *"
-                                  value={values.phone}
-                                  onChange={handleChange('phone')}
-                                  onBlur={handleBlur('phone')}
-                                  autoComplete={`${true}`}
-                                />
-                              </div>
-                              {touched.phone && errors.phone && (
-                                <MsgText
-                                  text={errors.phone}
-                                  textColor="danger"
-                                />
-                              )}
-                              <div className="form-group">
-                                <input
-                                  required=""
-                                  type="password"
-                                  name="password"
-                                  placeholder="Your password *"
-                                  value={values.password}
-                                  onChange={handleChange('password')}
-                                  onBlur={handleBlur('password')}
-                                  autoComplete={`${true}`}
-                                />
-                              </div>
-                              {touched.password && errors.password && (
-                                <MsgText
-                                  text={errors.password}
-                                  textColor="danger"
-                                />
-                              )}
 
                               <div className="login_footer form-group mb-50">
                                 <div className="chek-form">

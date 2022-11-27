@@ -300,8 +300,8 @@ const Header = ({
                             </Link>
                           </li>
                           <li>
-                            <Link href="/login">
-                              <a>
+                            <Link href="#">
+                              <a onClick={() => console.log('Logged-out')}>
                                 <i className="fi fi-rs-sign-out mr-10"></i>
                                 Sign out
                               </a>
@@ -475,7 +475,6 @@ const Header = ({
                   1900 - 888<span>24/7 Support Center</span>
                 </p>
               </div> */}
-
               <div className="header-action-icon-2 d-block d-lg-none">
                 <div
                   className="burger-icon burger-icon-white"

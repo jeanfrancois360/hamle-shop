@@ -79,10 +79,12 @@ function Login() {
       .post('/auth/login', { ...data })
       .then((res) => {
         setIsLoading(false);
-        console.log({ res });
+
         // eslint-disable-next-line no-prototype-builtins
-        if (res.data.hasOwnProperty('id')) {
-          setSuccessMsg('Successfully registered!');
+        if (res.data.hasOwnProperty('token')) {
+          localStorage.setItem('token', res.data.token);
+          localStorage.setItem('user', JSON.stringify(res.data.user));
+          setSuccessMsg('Successfully logged in!');
         }
       })
       .catch((error) => {
