@@ -3,7 +3,10 @@ import * as Types from '../constants/actionTypes';
 
 // {items:[],filteredList:[]}
 
-export default (state = { items: [], item: {}, filteredItems: [] }, action) => {
+export default (
+  state = { items: [], item: {}, filteredItems: [], categories: [] },
+  action
+) => {
   switch (action.type) {
     case Types.FETCHED_PRODUCTS: {
       return {
@@ -31,6 +34,12 @@ export default (state = { items: [], item: {}, filteredItems: [] }, action) => {
       const index = findProductIndexById(state, action.payload.product.id);
       state[index] = action.payload.product;
       return { ...state };
+    }
+    case Types.FETCHED_CATEGORIES: {
+      return {
+        ...state,
+        categories: [...action.payload.categories],
+      };
     }
     default:
       return state;

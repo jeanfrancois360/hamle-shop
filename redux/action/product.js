@@ -4,9 +4,9 @@ import filterProductList from '../../util/filterProduct';
 import searchItemsByText from '../../util/searchItemsByText';
 import * as Types from '../constants/actionTypes';
 
-export const getProducts = (total) => async (dispatch) => {
+export const getProducts = (page) => async (dispatch) => {
   try {
-    const res = await axios.get(`/products/index/${total}`);
+    const res = await axios.get(`/products/index/${page}`);
     dispatch({
       type: Types.FETCHED_PRODUCTS,
       payload: {
@@ -47,5 +47,19 @@ export const fetchByCategory = async (url, filters) => {
     return filteredList;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getCategories = (page) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/categories/index/${page}`);
+    dispatch({
+      type: Types.FETCHED_CATEGORIES,
+      payload: {
+        categories: res.data.data.data,
+      },
+    });
+  } catch (error) {
+    console.error(error);
   }
 };

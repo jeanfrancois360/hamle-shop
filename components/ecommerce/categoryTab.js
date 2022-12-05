@@ -4,17 +4,14 @@ import Cat1Tab from '../elements/FeaturedTab';
 import Cat2Tab from '../elements/NewArrivalTab';
 import Cat3Tab from '../elements/TrendingTab';
 import Link from 'next/link';
-import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from '../../redux/action/product';
 
-function CategoryTab() {
-  const dispatch = useDispatch();
-  const { items } = useSelector((state) => state.products);
+function CategoryTab({ products, categories }) {
   const [active, setActive] = useState('1');
   const [catAll, setCatAll] = useState([]);
   const [cat1, setCat1] = useState([]);
   const [cat2, setCat2] = useState([]);
   const [cat3, setCat3] = useState([]);
+  const [customCategories, setCustomCategories] = useState([]);
 
   const catPAll = async (items) => {
     const catAllItem = items.filter((item) => item.category_id);
@@ -40,14 +37,31 @@ function CategoryTab() {
   };
 
   useEffect(() => {
-    dispatch(getProducts(9));
-  }, []);
-
-  useEffect(() => {
-    if (items && items.length > 0) {
-      catPAll(items);
+    if (products && products.length > 0) {
+      catPAll(products);
     }
-  }, [items]);
+
+    if (
+      products &&
+      products.length > 0 &&
+      categories &&
+      categories.length > 0
+    ) {
+      setCustomCategories([]);
+      let newArr = [];
+      categories.map((category) => {
+        let productCount = 0;
+        products.map((product) => {
+          if (product.category_id == category.id) {
+            productCount++;
+          }
+        });
+        category.products = productCount;
+        newArr.push(category);
+      });
+      setCustomCategories(newArr);
+    }
+  }, [products, categories]);
 
   return (
     <>
@@ -57,7 +71,7 @@ function CategoryTab() {
           <li className="nav-item" role="presentation">
             <button
               className={active === '1' ? 'nav-link active' : 'nav-link'}
-              onClick={() => catPAll(items)}
+              onClick={() => catPAll(products)}
             >
               All
             </button>
@@ -65,7 +79,7 @@ function CategoryTab() {
           <li className="nav-item" role="presentation">
             <button
               className={active === '2' ? 'nav-link active' : 'nav-link'}
-              onClick={() => catP1(items)}
+              onClick={() => catP1(products)}
             >
               Featured
             </button>
@@ -73,7 +87,7 @@ function CategoryTab() {
           <li className="nav-item" role="presentation">
             <button
               className={active === '3' ? 'nav-link active' : 'nav-link'}
-              onClick={() => catP2(items)}
+              onClick={() => catP2(products)}
             >
               Popular
             </button>
@@ -81,7 +95,7 @@ function CategoryTab() {
           <li className="nav-item" role="presentation">
             <button
               className={active === '4' ? 'nav-link active' : 'nav-link'}
-              onClick={() => catP3(items)}
+              onClick={() => catP3(products)}
             >
               New added
             </button>

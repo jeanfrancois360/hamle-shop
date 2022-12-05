@@ -15,8 +15,15 @@ import Intro2 from '../components/sliders/Intro2';
 import Link from 'next/link';
 import { connect } from 'react-redux';
 import QuickView from '../components/ecommerce/QuickView';
+import { getProducts, getCategories } from '../redux/action/product';
+import { useEffect } from 'react';
 
-function Home({ products }) {
+function Home({ products, getProducts, getCategories }) {
+  useEffect(() => {
+    getCategories(10);
+    getProducts(9);
+  }, []);
+
   return (
     <>
       {/* <IntroPopup /> */}
@@ -31,7 +38,10 @@ function Home({ products }) {
               </section>
 
               <section className="product-tabs section-padding position-relative">
-                <CategoryTab />
+                <CategoryTab
+                  products={products.items}
+                  categories={products.categories}
+                />
               </section>
 
               <section className="banners mb-15">
@@ -45,10 +55,13 @@ function Home({ products }) {
             <div className="col-lg-1-5 primary-sidebar sticky-sidebar pt-30">
               <div className="sidebar-widget widget-category-2 mb-30">
                 <h5 className="section-title style-1 mb-30">Category</h5>
-                <CategoryProduct />
+                <CategoryProduct
+                  products={products.items}
+                  categories={products.categories}
+                />
               </div>
 
-              <div className="sidebar-widget price_range range mb-30">
+              {/* <div className="sidebar-widget price_range range mb-30">
                 <h5 className="section-title style-1 mb-30">Fill by price</h5>
                 <div className="bt-1 border-color-1"></div>
 
@@ -70,7 +83,7 @@ function Home({ products }) {
                   </div>
                 </div>
                 <br />
-              </div>
+              </div> */}
 
               <div className="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                 <h5 className="section-title style-1 mb-30">New products</h5>
@@ -113,4 +126,9 @@ const mapStateToProps = (state) => ({
   products: state.products,
   productFilters: state.productFilters,
 });
-export default connect(mapStateToProps)(Home);
+
+const mapDidpatchToProps = {
+  getCategories,
+  getProducts,
+};
+export default connect(mapStateToProps, mapDidpatchToProps)(Home);

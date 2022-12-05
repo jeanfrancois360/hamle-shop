@@ -12,13 +12,15 @@ import Pagination from './../components/ecommerce/Pagination';
 import QuickView from './../components/ecommerce/QuickView';
 import SingleProduct from './../components/ecommerce/SingleProduct';
 import Layout from './../components/layout/Layout';
-import { getProducts } from './../redux/action/product';
+import { getProducts, getCategories } from './../redux/action/product';
 
-const Products = ({ products, getProducts }) => {
+const Products = ({ products, getProducts, getCategories }) => {
   let Router = useRouter(),
     searchTerm = Router.query.search,
     showLimit = 12,
     showPagination = 4;
+
+  const titlex = Router.query.cat;
 
   let [pagination, setPagination] = useState([]);
   let [limit, setLimit] = useState(showLimit);
@@ -26,6 +28,7 @@ const Products = ({ products, getProducts }) => {
   let [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
+    getCategories(10);
     getProducts(9);
   }, []);
 
@@ -45,7 +48,16 @@ const Products = ({ products, getProducts }) => {
 
   const startIndex = currentPage * limit - limit;
   const endIndex = startIndex + limit;
-  const getPaginatedProducts = products.items.slice(startIndex, endIndex);
+  let getPaginatedProducts = [];
+  if (titlex != undefined) {
+    console.log('filtering...' + titlex);
+    getPaginatedProducts = products.items
+      .filter((product) => product.category.name == titlex)
+      .slice(startIndex, endIndex);
+  } else {
+    console.log('not filtering...' + titlex);
+    getPaginatedProducts = products.items.slice(startIndex, endIndex);
+  }
 
   let start = Math.floor((currentPage - 1) / showPagination) * showPagination;
   let end = start + showPagination;
@@ -81,7 +93,7 @@ const Products = ({ products, getProducts }) => {
                     <p>
                       We found
                       <strong className="text-brand">
-                        {products.items.length}
+                        {getPaginatedProducts.length}
                       </strong>
                       items for you!
                     </p>
@@ -127,10 +139,13 @@ const Products = ({ products, getProducts }) => {
               <div className="col-lg-1-5 primary-sidebar sticky-sidebar">
                 <div className="sidebar-widget widget-category-2 mb-30">
                   <h5 className="section-title style-1 mb-30">Category</h5>
-                  <CategoryProduct />
+                  <CategoryProduct
+                    products={products.items}
+                    categories={products.categories}
+                  />
                 </div>
 
-                <div className="sidebar-widget price_range range mb-30">
+                {/* <div className="sidebar-widget price_range range mb-30">
                   <h5 className="section-title style-1 mb-30">Fill by price</h5>
 
                   <div className="price-filter">
@@ -150,7 +165,7 @@ const Products = ({ products, getProducts }) => {
                     </div>
                   </div>
                   <br />
-                </div>
+                </div> */}
 
                 <div className="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                   <h5 className="section-title style-1 mb-30">New products</h5>
@@ -196,6 +211,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDidpatchToProps = {
+  getCategories,
   getProducts,
 };
 

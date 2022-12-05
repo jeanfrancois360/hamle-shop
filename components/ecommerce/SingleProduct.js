@@ -62,7 +62,7 @@ const SingleProduct = ({
 
   return (
     <>
-      <div className="product-cart-wrap mb-30">
+      <div key={product.id} className="product-cart-wrap mb-30">
         <div className="product-img-action-wrap">
           <div className="product-img product-img-zoom">
             <Link href="/products/[id]" as={`/products/${product.id}`}>
@@ -142,11 +142,11 @@ const SingleProduct = ({
           <div>
             <span className="font-small text-muted">
               By{' '}
-              <Link href="/vendor/1">
+              {/* <Link href="/vendor/1">
                 <a>
                   {product.author.first_name + ' ' + product.author.last_name}
                 </a>
-              </Link>
+              </Link> */}
             </span>
           </div>
 

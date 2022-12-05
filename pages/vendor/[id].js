@@ -251,7 +251,7 @@ const Products = ({ products, productFilters, fetchProduct }) => {
                   <CategoryProduct />
                 </div>
 
-                <div className="sidebar-widget price_range range mb-30">
+                {/* <div className="sidebar-widget price_range range mb-30">
                   <h5 className="section-title style-1 mb-30">Fill by price</h5>
 
                   <div className="price-filter">
@@ -272,7 +272,7 @@ const Products = ({ products, productFilters, fetchProduct }) => {
                     </div>
                   </div>
                   <br />
-                </div>
+                </div> */}
 
                 <div className="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                   <h5 className="section-title style-1 mb-30">New products</h5>

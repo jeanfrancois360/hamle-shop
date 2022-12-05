@@ -1,41 +1,73 @@
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { connect } from 'react-redux';
 import { updateProductCategory } from '../../../redux/action/productFiltersAction';
 
-const CategoryProduct = ({ updateProductCategory }) => {
+const CategoryProduct = ({ updateProductCategory, products, categories }) => {
   const router = useRouter();
+  const [customCategories, setCustomCategories] = useState([]);
 
   const selectCategory = (e, category) => {
     e.preventDefault();
     // removeSearchTerm();
-    updateProductCategory(category);
-    router.push({
-      pathname: '/products',
-      query: {
-        cat: category, //
-      },
-    });
+    if (category != 'All') {
+      updateProductCategory(category);
+      router.push({
+        pathname: '/products',
+        query: {
+          cat: category, //
+        },
+      });
+    } else {
+      router.push({
+        pathname: '/products',
+      });
+    }
   };
+
+  useEffect(() => {
+    if (
+      products &&
+      products.length > 0 &&
+      categories &&
+      categories.length > 0
+    ) {
+      setCustomCategories([]);
+      let newArr = [];
+      categories.map((category) => {
+        let productCount = 0;
+        products.map((product) => {
+          if (product.category_id == category.id) {
+            productCount++;
+          }
+        });
+        category.products = productCount;
+        newArr.push(category);
+      });
+      setCustomCategories(newArr);
+    }
+  }, [products, categories]);
   return (
     <>
       <ul>
-        <li onClick={(e) => selectCategory(e, '')}>
+        <li onClick={(e) => selectCategory(e, 'All')}>
           <a>All</a>
         </li>
-        <li onClick={(e) => selectCategory(e, 'jersey')}>
-          <a>
-            <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
-            Jersey
-          </a>
-          <span className="count">2</span>
-        </li>
-        <li onClick={(e) => selectCategory(e, 'shoe')}>
-          <a>
-            <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
-            Shoes
-          </a>
-          <span className="count">1</span>
-        </li>
+        {customCategories &&
+          customCategories.length > 0 &&
+          customCategories.map((category) => (
+            <li
+              key={category.id}
+              onClick={(e) => selectCategory(e, category.name)}
+            >
+              <a>
+                <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
+                {category.name}
+              </a>
+              <span className="count">{category.products}</span>
+            </li>
+          ))}
       </ul>
     </>
   );
