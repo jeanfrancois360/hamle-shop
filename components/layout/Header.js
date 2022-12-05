@@ -10,9 +10,25 @@ const Header = ({
   totalCompareItems,
   toggleClick,
   totalWishlistItems,
+  auth,
 }) => {
   const [isToggled, setToggled] = useState(false);
   const [scroll, setScroll] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (localStorage.getItem('isAuthenticated')) {
+      setIsAuthenticated(localStorage.getItem('isAuthenticated'));
+      setUser(JSON.parse(localStorage.getItem('user')));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      console.log({ user });
+    }
+  }, [user]);
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -241,75 +257,82 @@ const Header = ({
                         </a>
                       </Link> */}
                     </div>
-
-                    <div className="header-action-icon-2">
-                      <Link href="/page-account">
-                        <a>
-                          <img
-                            className="svgInject"
-                            alt="Nest"
-                            src="/assets/imgs/theme/icons/icon-user.svg"
-                          />
-                        </a>
-                      </Link>
-                      {/* <Link href='/page-account'>
-                        <a>
-                          <span className='lable ml-0'>Account</span>
-                        </a>
-                      </Link> */}
-                      <div className="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
-                        <ul>
-                          <li>
-                            <Link href="/page-account">
-                              <a>
-                                <i className="fi fi-rs-user mr-10"></i>
-                                My Account
-                              </a>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="/page-account">
-                              <a>
-                                <i className="fi fi-rs-location-alt mr-10"></i>
-                                Order Tracking
-                              </a>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="/page-account">
-                              <a>
-                                <i className="fi fi-rs-label mr-10"></i>
-                                My Voucher
-                              </a>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="/shop-wishlist">
-                              <a>
-                                <i className="fi fi-rs-heart mr-10"></i>
-                                My Wishlist
-                              </a>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="/page-account">
-                              <a>
-                                <i className="fi fi-rs-settings-sliders mr-10"></i>
-                                Setting
-                              </a>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href="#">
-                              <a onClick={() => console.log('Logged-out')}>
-                                <i className="fi fi-rs-sign-out mr-10"></i>
-                                Sign out
-                              </a>
-                            </Link>
-                          </li>
-                        </ul>
+                    {isAuthenticated == false ? (
+                      <div className="header-action-icon-2">
+                        <button className="submit submit-auto-width">
+                          Login
+                        </button>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="header-action-icon-2">
+                        <Link href="/page-account">
+                          <a>
+                            <img
+                              className="svgInject"
+                              alt="Nest"
+                              src="/assets/imgs/theme/icons/icon-user.svg"
+                            />
+                          </a>
+                        </Link>
+                        <Link href="/page-account">
+                          <p>
+                            <span className="lable ml-0">Jean Francois</span>
+                          </p>
+                        </Link>
+                        <div className="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                          <ul>
+                            <li>
+                              <Link href="/page-account">
+                                <a>
+                                  <i className="fi fi-rs-user mr-10"></i>
+                                  My Account
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="/page-account">
+                                <a>
+                                  <i className="fi fi-rs-location-alt mr-10"></i>
+                                  Order Tracking
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="/page-account">
+                                <a>
+                                  <i className="fi fi-rs-label mr-10"></i>
+                                  My Voucher
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="/shop-wishlist">
+                                <a>
+                                  <i className="fi fi-rs-heart mr-10"></i>
+                                  My Wishlist
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="/page-account">
+                                <a>
+                                  <i className="fi fi-rs-settings-sliders mr-10"></i>
+                                  Setting
+                                </a>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link href="#">
+                                <a onClick={() => console.log('Logged-out')}>
+                                  <i className="fi fi-rs-sign-out mr-10"></i>
+                                  Sign out
+                                </a>
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -608,6 +631,7 @@ const mapStateToProps = (state) => ({
   totalCartItems: state.cart.length,
   totalCompareItems: state.compare.items.length,
   totalWishlistItems: state.wishlist.items.length,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, null)(Header);

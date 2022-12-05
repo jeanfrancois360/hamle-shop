@@ -12,7 +12,7 @@ import Pagination from './../components/ecommerce/Pagination';
 import QuickView from './../components/ecommerce/QuickView';
 import SingleProduct from './../components/ecommerce/SingleProduct';
 import Layout from './../components/layout/Layout';
-import { fetchProduct, getProducts } from './../redux/action/product';
+import { getProducts } from './../redux/action/product';
 
 const Products = ({ products, getProducts }) => {
   let Router = useRouter(),

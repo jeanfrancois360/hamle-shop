@@ -3,17 +3,35 @@ import * as Types from '../constants/actionTypes';
 import { setErrors, clearErrors } from './errors';
 import { openLoader, closeLoader } from './loader';
 
-let baseUrl = '';
-generateBaseUrl();
-function generateBaseUrl() {
-  baseUrl = window.location.origin;
-}
-
 export const clearMessage = () => {
   return {
     type: Types.CLEAR_MESSAGE,
   };
 };
+
+// Action for creating a user account
+export const SignUp = (payload) => async (dispatch) => {
+  dispatch(clearErrors());
+  dispatch(openLoader());
+  clearMessage();
+  try {
+    const response = await axios.post('/auth/register', payload);
+    dispatch({
+      type: Types.REGISTER,
+      payload: response.data,
+    });
+    dispatch(closeLoader());
+  } catch (error) {
+    dispatch(
+      setErrors({
+        error: error.response.data.errors,
+        error_msg: error.response.data.message,
+      })
+    );
+    dispatch(closeLoader());
+  }
+};
+
 // Action for logging in a user
 export const SignIn = (payload) => async (dispatch) => {
   dispatch(clearErrors());
@@ -29,14 +47,14 @@ export const SignIn = (payload) => async (dispatch) => {
     axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
 
     dispatch({
-      type: Types.LOGIN_SUCCESS,
+      type: Types.LOGIN,
       payload: response.data,
     });
     dispatch(closeLoader());
   } catch (error) {
     dispatch(
       setErrors({
-        error: [],
+        error: error.response.data.errors,
         error_msg: error.response.data.message,
       })
     );
@@ -55,7 +73,7 @@ export const Logout = (payload) => async (dispatch) => {
     });
     if (response.status === 200) {
       localStorage.clear();
-      window.location.replace(baseUrl + '/login');
+      window.location.replace('/login');
     }
     dispatch({
       type: Types.LOGOUT_SUCCESS,
@@ -64,7 +82,7 @@ export const Logout = (payload) => async (dispatch) => {
   } catch (error) {
     if (error.response.data.message == 'Unauthenticated.') {
       localStorage.clear();
-      window.location.replace(baseUrl + '/login');
+      window.location.replace('/login');
     }
     dispatch(closeLoader());
   }

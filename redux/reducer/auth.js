@@ -9,12 +9,12 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case Types.REGISTER_SUCCESS:
+    case Types.REGISTER:
       return {
         ...state,
-        message: 'registered',
+        message: 'Registered successfully!',
       };
-    case Types.LOGIN_SUCCESS:
+    case Types.LOGIN:
       return {
         ...state,
         isAuthenticated: true,
@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
         token: action.payload.token,
         message: "You're logged in successfully!",
       };
-    case Types.LOGOUT_SUCCESS:
+    case Types.LOGOUT:
       return {
         ...state,
         isAuthenticated: false,

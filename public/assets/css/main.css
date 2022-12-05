@@ -6759,6 +6759,11 @@ h6.post-title {
   line-height: 20px;
 }
 
+.header-action-icon-2 > button {
+  margin-left: 40px !important;
+  padding: 13px 50px !important;
+}
+
 .cart-dropdown-wrap ul li {
   display: -webkit-box;
   display: -ms-flexbox;

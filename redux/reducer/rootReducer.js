@@ -6,6 +6,8 @@ import quickView from './quickView';
 import compare from './compare';
 import productFilters from './productFilters';
 import auth from './auth';
+import errors from './errors';
+import loader from './loader';
 
 const rootReducer = combineReducers({
   auth,
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   quickView,
   compare,
   productFilters,
+  errors,
+  loader,
 });
 
 export default rootReducer;

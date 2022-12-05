@@ -6,8 +6,10 @@ import { toast } from 'react-toastify';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { MsgText } from '../components/elements/MsgText';
+import { connect } from 'react-redux';
+import { SignUp } from '../redux/action/auth';
 
-function Login() {
+function Register({ auth, SignUp, errors, loader }) {
   let initialValues = {
     first_name: '',
     last_name: '',
@@ -18,10 +20,8 @@ function Login() {
     password: '',
   };
 
-  const [currentForm, setCurrentForm] = useState('Candidate');
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [ip, setIp] = useState('');
   const notify = (msg_type) => {
     if (msg_type === 'success')
@@ -48,27 +48,30 @@ function Login() {
       });
   };
 
-  const getData = async () => {
-    const res = await axios.get('https://geolocation-db.com/json/');
-    console.log(res.data);
-    setIp(res.data.IPv4);
-  };
-
   useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    if (successMsg) {
-      notify('success');
+    if (errors.error_msg != '') {
+      setErrorMsg(errors.error_msg);
     }
-  }, [successMsg]);
+  }, [errors]);
+
+  useEffect(() => {
+    if (auth.message != '') {
+      setSuccessMsg(auth.message);
+    }
+  }, [auth]);
 
   useEffect(() => {
     if (errorMsg) {
       notify('error');
     }
   }, [errorMsg]);
+
+  useEffect(() => {
+    if (successMsg) {
+      console.log('success');
+      notify('success');
+    }
+  }, [successMsg]);
 
   // All Validations
   const FormValidationSchema = Yup.object().shape({
@@ -99,31 +102,7 @@ function Login() {
       city: payload.city,
       password: payload.password,
     };
-
-    if (isLoading) {
-      return;
-    }
-
-    setIsLoading(true);
-    setErrorMsg('');
-    setSuccessMsg('');
-
-    return await axios
-      .post('/auth/register', { ...data })
-      .then((res) => {
-        setIsLoading(false);
-        console.log({ res });
-        // eslint-disable-next-line no-prototype-builtins
-        if (res.data.hasOwnProperty('user')) {
-          setSuccessMsg('Successfully registered!');
-        }
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.error(error.response?.data?.message);
-        const errorMessage = error.response?.data?.message;
-        setErrorMsg(errorMessage || error.message);
-      });
+    SignUp(data);
   };
   return (
     <>
@@ -169,7 +148,7 @@ function Login() {
                           }) => (
                             <form method="post" onSubmit={handleSubmit}>
                               <div className="row">
-                                <div class="col-md-6">
+                                <div className="col-md-6">
                                   <div className="form-group">
                                     <input
                                       type="text"
@@ -189,7 +168,7 @@ function Login() {
                                     />
                                   )}
                                 </div>
-                                <div class="col-md-6">
+                                <div className="col-md-6">
                                   <div className="form-group">
                                     <input
                                       type="text"
@@ -339,7 +318,7 @@ function Login() {
                                   className="btn btn-heading btn-block hover-up"
                                   name="register"
                                 >
-                                  Register
+                                  {loader.isLoading ? 'loading...' : 'Register'}
                                 </button>
                               </div>
                             </form>
@@ -358,4 +337,14 @@ function Login() {
   );
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors,
+  loader: state.loader,
+});
+
+const mapDidpatchToProps = {
+  SignUp,
+};
+
+export default connect(mapStateToProps, mapDidpatchToProps)(Register);

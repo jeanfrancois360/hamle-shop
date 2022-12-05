@@ -30,7 +30,6 @@ export default (state = { items: [], item: {}, filteredItems: [] }, action) => {
     case Types.UPDATE_PRODUCT: {
       const index = findProductIndexById(state, action.payload.product.id);
       state[index] = action.payload.product;
-
       return { ...state };
     }
     default:

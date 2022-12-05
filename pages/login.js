@@ -6,30 +6,18 @@ import { toast } from 'react-toastify';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { MsgText } from '../components/elements/MsgText';
+import { connect } from 'react-redux';
+import { SignIn } from '../redux/action/auth';
+import { LineWave } from 'react-loader-spinner';
 
-function Login() {
+function Login({ auth, SignIn, errors, loader }) {
   let initialValues = {
     email: '',
     password: '',
   };
 
-  const [currentForm, setCurrentForm] = useState('Candidate');
-  const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [open, setOpen] = useState(false);
   const notify = (msg_type) => {
-    if (msg_type === 'success')
-      toast.success(successMsg, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
     if (msg_type === 'error')
       toast.error(errorMsg, {
         position: 'top-right',
@@ -44,10 +32,10 @@ function Login() {
   };
 
   useEffect(() => {
-    if (successMsg) {
-      notify('success');
+    if (errors.error_msg != '') {
+      setErrorMsg(errors.error_msg);
     }
-  }, [successMsg]);
+  }, [errors]);
 
   useEffect(() => {
     if (errorMsg) {
@@ -62,37 +50,12 @@ function Login() {
   });
 
   const handleSignIn = async (payload) => {
+    setErrorMsg('');
     const data = {
       email: payload.email,
       password: payload.password,
     };
-
-    if (isLoading) {
-      return;
-    }
-
-    setIsLoading(true);
-    setErrorMsg('');
-    setSuccessMsg('');
-
-    return await axios
-      .post('/auth/login', { ...data })
-      .then((res) => {
-        setIsLoading(false);
-
-        // eslint-disable-next-line no-prototype-builtins
-        if (res.data.hasOwnProperty('token')) {
-          localStorage.setItem('token', res.data.token);
-          localStorage.setItem('user', JSON.stringify(res.data.user));
-          setSuccessMsg('Successfully logged in!');
-        }
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.error(error.response?.data?.message);
-        const errorMessage = error.response?.data?.message;
-        setErrorMsg(errorMessage || error.message);
-      });
+    SignIn(data);
   };
   return (
     <>
@@ -202,7 +165,7 @@ function Login() {
                                   className="btn btn-heading btn-block hover-up"
                                   name="login"
                                 >
-                                  Login
+                                  {loader.isLoading ? 'loading...' : 'Login'}
                                 </button>
                               </div>
                             </form>
@@ -221,4 +184,14 @@ function Login() {
   );
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors,
+  loader: state.loader,
+});
+
+const mapDidpatchToProps = {
+  SignIn,
+};
+
+export default connect(mapStateToProps, mapDidpatchToProps)(Login);
