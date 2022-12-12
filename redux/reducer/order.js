@@ -3,18 +3,15 @@ import * as Types from '../constants/actionTypes';
 
 // {items:[],filteredList:[]}
 
-export default (
-  state = { items: [], item: {}, filteredItems: [], categories: [] },
-  action
-) => {
+export default (state = { items: [], item: {} }, action) => {
   switch (action.type) {
-    case Types.FETCHED_PRODUCTS: {
+    case Types.FETCHED_ORDERS: {
       return {
         ...state,
         items: [...action.payload.products],
       };
     }
-    case Types.FETCHED_PRODUCT: {
+    case Types.FETCHED_ORDER: {
       return {
         ...state,
         item: [...action.payload.product],
@@ -26,7 +23,7 @@ export default (
         items: [...state.items, action.payload],
       };
     }
-    case Types.DELETE_PRODUCT:
+    case Types.CANCEL_ORDER:
       return deleteProduct(state, action.payload.id);
 
     case Types.UPDATE_PRODUCT: {

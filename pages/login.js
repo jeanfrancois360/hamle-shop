@@ -68,7 +68,7 @@ function Login({ auth, SignIn, errors, loader }) {
                   <div className="col-lg-6 pr-30 d-none d-lg-block">
                     <img
                       className="border-radius-15"
-                      src="assets/imgs/page/login-1.png"
+                      src="assets/imgs/page/auth-bg.jpeg"
                       alt=""
                     />
                   </div>

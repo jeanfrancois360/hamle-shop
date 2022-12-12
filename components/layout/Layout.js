@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Breadcrumb from './Breadcrumb';
 import Footer from './Footer';
@@ -21,6 +21,18 @@ const Layout = ({
       : document.querySelector('body').classList.add('mobile-menu-active');
   };
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    if (localStorage.getItem('isAuthenticated')) {
+      setIsAuthenticated(localStorage.getItem('isAuthenticated'));
+      setUser(JSON.parse(localStorage.getItem('user')));
+      setToken(localStorage.getItem('token'));
+    }
+  }, []);
+
   return (
     <>
       <Head>
@@ -37,6 +49,9 @@ const Layout = ({
         headerStyle={headerStyle}
         isToggled={isToggled}
         toggleClick={toggleClick}
+        user={user}
+        isAuthenticated={isAuthenticated}
+        token={token}
       />
       <MobileMenu isToggled={isToggled} toggleClick={toggleClick} />
       <main className="main">
@@ -45,6 +60,8 @@ const Layout = ({
           sub={sub}
           subChild={subChild}
           noBreadcrumb={noBreadcrumb}
+          user={user}
+          isAuthenticated={isAuthenticated}
         />
         {children}
       </main>

@@ -4,31 +4,20 @@ import { connect } from 'react-redux';
 import CategoryProduct2 from '../ecommerce/Filter/CategoryProduct2';
 import CategoryProduct3 from '../ecommerce/Filter/CategoryProduct3';
 import Search from '../ecommerce/Search';
+import { Logout } from '../../redux/action/auth';
 
 const Header = ({
   totalCartItems,
   totalCompareItems,
   toggleClick,
   totalWishlistItems,
-  auth,
+  user,
+  isAuthenticated,
+  token,
+  Logout,
 }) => {
   const [isToggled, setToggled] = useState(false);
   const [scroll, setScroll] = useState(0);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    if (localStorage.getItem('isAuthenticated')) {
-      setIsAuthenticated(localStorage.getItem('isAuthenticated'));
-      setUser(JSON.parse(localStorage.getItem('user')));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      console.log({ user });
-    }
-  }, [user]);
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -38,6 +27,13 @@ const Header = ({
       }
     });
   });
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    if (token) {
+      Logout(token);
+    }
+  };
 
   const handleToggle = () => setToggled(!isToggled);
 
@@ -57,17 +53,17 @@ const Header = ({
                 <div className="header-info">
                   <ul>
                     <li>
-                      <Link href="/page-account">
+                      <Link href="/account">
                         <a>My Account</a>
                       </Link>
                     </li>
                     <li>
-                      <Link href="/shop-wishlist">
+                      <Link href="/wishlist">
                         <a>Wishlist</a>
                       </Link>
                     </li>
                     <li>
-                      <Link href="/page-account">
+                      <Link href="/account">
                         <a>Order Tracking</a>
                       </Link>
                     </li>
@@ -204,7 +200,7 @@ const Header = ({
                       </form>
                     </div>
                     <div className="header-action-icon-2">
-                      <Link href="/shop-compare">
+                      <Link href="/compare">
                         <a>
                           <img
                             className="svgInject"
@@ -216,14 +212,14 @@ const Header = ({
                           </span>
                         </a>
                       </Link>
-                      {/* <Link href='/shop-compare'>
+                      {/* <Link href='/compare'>
                         <a>
                           <span className='lable ml-0'>Compare</span>
                         </a>
                       </Link> */}
                     </div>
                     <div className="header-action-icon-2">
-                      <Link href="/shop-wishlist">
+                      <Link href="/wishlist">
                         <a>
                           <img
                             className="svgInject"
@@ -235,12 +231,12 @@ const Header = ({
                           </span>
                         </a>
                       </Link>
-                      {/* <Link href='/shop-wishlist'>
+                      {/* <Link href='/wishlist'>
                         <span className='lable'>Wishlist</span>
                       </Link> */}
                     </div>
                     <div className="header-action-icon-2">
-                      <Link href="/shop-cart">
+                      <Link href="cart">
                         <a className="mini-cart-icon">
                           <img
                             alt="Evara"
@@ -251,7 +247,7 @@ const Header = ({
                           </span>
                         </a>
                       </Link>
-                      {/* <Link href='/shop-cart'>
+                      {/* <Link href='cart'>
                         <a>
                           <span className='lable'>Cart</span>
                         </a>
@@ -259,13 +255,16 @@ const Header = ({
                     </div>
                     {isAuthenticated == false ? (
                       <div className="header-action-icon-2">
-                        <button className="submit submit-auto-width">
+                        <button
+                          onClick={() => window.location.replace('/login')}
+                          className="submit submit-auto-width"
+                        >
                           Login
                         </button>
                       </div>
                     ) : (
                       <div className="header-action-icon-2">
-                        <Link href="/page-account">
+                        <Link href="/account">
                           <a>
                             <img
                               className="svgInject"
@@ -274,15 +273,17 @@ const Header = ({
                             />
                           </a>
                         </Link>
-                        <Link href="/page-account">
+                        <Link href="/account">
                           <p>
-                            <span className="lable ml-0">Jean Francois</span>
+                            <span className="lable ml-0">
+                              {user.first_name} {user.last_name}
+                            </span>
                           </p>
                         </Link>
                         <div className="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
                           <ul>
                             <li>
-                              <Link href="/page-account">
+                              <Link href="/account">
                                 <a>
                                   <i className="fi fi-rs-user mr-10"></i>
                                   My Account
@@ -290,7 +291,7 @@ const Header = ({
                               </Link>
                             </li>
                             <li>
-                              <Link href="/page-account">
+                              <Link href="/account">
                                 <a>
                                   <i className="fi fi-rs-location-alt mr-10"></i>
                                   Order Tracking
@@ -298,7 +299,7 @@ const Header = ({
                               </Link>
                             </li>
                             <li>
-                              <Link href="/page-account">
+                              <Link href="/account">
                                 <a>
                                   <i className="fi fi-rs-label mr-10"></i>
                                   My Voucher
@@ -306,7 +307,7 @@ const Header = ({
                               </Link>
                             </li>
                             <li>
-                              <Link href="/shop-wishlist">
+                              <Link href="/wishlist">
                                 <a>
                                   <i className="fi fi-rs-heart mr-10"></i>
                                   My Wishlist
@@ -314,7 +315,7 @@ const Header = ({
                               </Link>
                             </li>
                             <li>
-                              <Link href="/page-account">
+                              <Link href="/account">
                                 <a>
                                   <i className="fi fi-rs-settings-sliders mr-10"></i>
                                   Setting
@@ -323,7 +324,7 @@ const Header = ({
                             </li>
                             <li>
                               <Link href="#">
-                                <a onClick={() => console.log('Logged-out')}>
+                                <a onClick={(e) => handleLogout(e)}>
                                   <i className="fi fi-rs-sign-out mr-10"></i>
                                   Sign out
                                 </a>
@@ -460,7 +461,7 @@ const Header = ({
                         </Link>
                       </li>
                       <li>
-                        <Link href="/page-about">
+                        <Link href="/about">
                           <a>About</a>
                         </Link>
                       </li>
@@ -470,17 +471,17 @@ const Header = ({
                         </Link>
                       </li>
                       <li>
-                        <Link href="/shop-cart">
+                        <Link href="cart">
                           <a>Cart</a>
                         </Link>
                       </li>
                       <li>
-                        <Link href="/shop-wishlist">
+                        <Link href="/wishlist">
                           <a>Wishlist</a>
                         </Link>
                       </li>
                       <li>
-                        <Link href="/page-contact">
+                        <Link href="/contact">
                           <a>Contact</a>
                         </Link>
                       </li>
@@ -512,7 +513,7 @@ const Header = ({
               <div className="header-action-right d-block d-lg-none">
                 <div className="header-action-2">
                   <div className="header-action-icon-2">
-                    <Link href="/shop-wishlist">
+                    <Link href="/wishlist">
                       <a>
                         <img
                           alt="Evara"
@@ -525,7 +526,7 @@ const Header = ({
                     </Link>
                   </div>
                   <div className="header-action-icon-2">
-                    <Link href="/shop-cart">
+                    <Link href="cart">
                       <a className="mini-cart-icon">
                         <img
                           alt="Evara"
@@ -607,10 +608,10 @@ const Header = ({
                           </h4>
                         </div>
                         <div className="shopping-cart-button">
-                          <Link href="/shop-cart">
+                          <Link href="cart">
                             <a>View cart</a>
                           </Link>
-                          <Link href="/shop-checkout">
+                          <Link href="/checkout">
                             <a>Checkout</a>
                           </Link>
                         </div>
@@ -631,7 +632,10 @@ const mapStateToProps = (state) => ({
   totalCartItems: state.cart.length,
   totalCompareItems: state.compare.items.length,
   totalWishlistItems: state.wishlist.items.length,
-  auth: state.auth,
 });
 
-export default connect(mapStateToProps, null)(Header);
+const mapDidpatchToProps = {
+  Logout,
+};
+
+export default connect(mapStateToProps, mapDidpatchToProps)(Header);

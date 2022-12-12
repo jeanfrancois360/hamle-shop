@@ -5,6 +5,13 @@ export const REGISTER = 'REGISTER';
 export const LOGOUT = 'LOGOUT';
 export const RESET_PASSWORD = 'RESET_PASSWORD';
 
+// ORDER TYPES
+
+export const ADD_ORDER = 'ADD_ORDER';
+export const FETCHED_ORDER = 'FETCHED_ORDER';
+export const FETCHED_ORDERS = 'FETCHED_ORDERS';
+export const CANCEL_ORDER = 'CANCEL_ORDER';
+
 // PRODUCT TYPES
 
 export const ADD_PRODUCT = 'ADD_PRODUCT';

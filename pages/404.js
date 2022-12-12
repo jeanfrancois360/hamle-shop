@@ -29,7 +29,7 @@ function Custom404() {
                       </a>
                     </Link>
                     or{' '}
-                    <Link href="/page-contact">
+                    <Link href="/contact">
                       <a>
                         <span>Contact us</span>
                       </a>

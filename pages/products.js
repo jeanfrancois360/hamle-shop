@@ -112,29 +112,29 @@ const Products = ({ products, getProducts, getCategories }) => {
                 </div>
                 <div className="row product-grid">
                   {getPaginatedProducts.length === 0 && (
-                    <h3>No Products Found </h3>
+                    <h3 class="text-center mt-20">No Products Found </h3>
                   )}
 
                   {getPaginatedProducts.map((item, i) => (
                     <div className="col-lg-4 col-md-4 col-12 col-sm-6" key={i}>
                       <SingleProduct product={item} />
-                      {/* <SingleProductList product={item}/> */}
                     </div>
                   ))}
                 </div>
-
-                <div className="pagination-area mt-15 mb-sm-5 mb-lg-0">
-                  <nav aria-label="Page navigation example">
-                    <Pagination
-                      getPaginationGroup={getPaginationGroup}
-                      currentPage={currentPage}
-                      pages={pages}
-                      next={next}
-                      prev={prev}
-                      handleActive={handleActive}
-                    />
-                  </nav>
-                </div>
+                {getPaginatedProducts.length > 0 && (
+                  <div className="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                    <nav aria-label="Page navigation example">
+                      <Pagination
+                        getPaginationGroup={getPaginationGroup}
+                        currentPage={currentPage}
+                        pages={pages}
+                        next={next}
+                        prev={prev}
+                        handleActive={handleActive}
+                      />
+                    </nav>
+                  </div>
+                )}
               </div>
               <div className="col-lg-1-5 primary-sidebar sticky-sidebar">
                 <div className="sidebar-widget widget-category-2 mb-30">

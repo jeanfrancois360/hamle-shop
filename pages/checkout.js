@@ -8,6 +8,8 @@ import {
   increaseQuantity,
   openCart,
 } from '../redux/action/cart';
+import { addOrder } from '../redux/action/order';
+import { numberWithCommas } from '../util/util';
 
 const Cart = ({
   openCart,
@@ -18,12 +20,31 @@ const Cart = ({
   decreaseQuantity,
   deleteFromCart,
   clearCart,
+  addOrder,
 }) => {
   const price = () => {
     let price = 0;
     cartItems.forEach((item) => (price += item.price * item.quantity));
 
     return price;
+  };
+
+  const handleOrder = (e) => {
+    e.preventDefault();
+    const orderItems = [];
+    let total = 0;
+    cartItems.map((item) => {
+      item.sub_total = item.qty * parseInt(item.unit_price);
+      total += item.sub_total;
+      orderItems.push(item);
+    });
+    let data = {
+      product_items: orderItems,
+      price: total,
+      state: 'Pending',
+      payment_method_id: 15000,
+    };
+    addOrder(data);
   };
 
   return (
@@ -890,7 +911,7 @@ const Cart = ({
                         {cartItems.map((item, i) => (
                           <tr key={i}>
                             <td className="image product-thumbnail">
-                              <img src={item.images[0].img} alt="#" />
+                              <img src={'https://' + item.cover_image} />
                             </td>
                             <td>
                               <h6 className="w-160 mb-5">
@@ -913,13 +934,12 @@ const Cart = ({
                             </td>
                             <td>
                               <h6 className="text-muted pl-20 pr-20">
-                                x {item.quantity}
+                                x {item.qty}
                               </h6>
                             </td>
                             <td>
                               <h4 className="text-brand">
-                                $$
-                                {item.quantity * item.price}
+                                {item.qty * parseInt(item.unit_price)} XAF
                               </h4>
                             </td>
                           </tr>
@@ -1018,7 +1038,11 @@ const Cart = ({
                       </div>
                     </div>
                   </div>
-                  <a href="#" className="btn btn-fill-out btn-block mt-30">
+                  <a
+                    href="#"
+                    onClick={(e) => handleOrder(e)}
+                    className="btn btn-fill-out btn-block mt-30"
+                  >
                     Place Order
                   </a>
                 </div>
@@ -1043,6 +1067,7 @@ const mapDispatchToProps = {
   deleteFromCart,
   openCart,
   clearCart,
+  addOrder,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

@@ -21,6 +21,7 @@ const Cart = ({
   decreaseQuantity,
   deleteFromCart,
   clearCart,
+  addOrder,
 }) => {
   const price = () => {
     let price = 0;
@@ -28,7 +29,6 @@ const Cart = ({
 
     return price;
   };
-
   return (
     <>
       <Layout parent="Home" sub="Shop" subChild="Cart">
@@ -162,7 +162,7 @@ const Cart = ({
                   </table>
                 </div>
                 <div className="cart-action text-end">
-                  <a className="btn ">
+                  <a href="products" className="btn ">
                     <i className="fi-rs-shopping-bag mr-10"></i>
                     Continue Shopping
                   </a>
@@ -551,7 +551,7 @@ const Cart = ({
                           </tbody>
                         </table>
                       </div>
-                      <a href="#" className="btn ">
+                      <a href="checkout" className="btn ">
                         <i className="fi-rs-box-alt mr-10"></i>
                         Proceed To CheckOut
                       </a>
