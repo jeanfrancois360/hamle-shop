@@ -8,6 +8,7 @@ import productFilters from './productFilters';
 import auth from './auth';
 import errors from './errors';
 import loader from './loader';
+import order from './order';
 
 const rootReducer = combineReducers({
   auth,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   productFilters,
   errors,
   loader,
+  order,
 });
 
 export default rootReducer;

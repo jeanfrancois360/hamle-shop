@@ -153,7 +153,10 @@ const SingleProduct = ({
           <div className="product-card-bottom">
             <div className="product-price">
               {/* <span>{numberWithCommas(product.unit_price)} XAF</span> */}
-              <span>{product.unit_price} XAF</span>
+              <span>
+                {new Intl.NumberFormat().format(product.unit_price?.toString())}{' '}
+                XAF
+              </span>
               {/* <span className="old-price">
                 {product.unit_price && `$ ${product.unit_price}`}
               </span> */}

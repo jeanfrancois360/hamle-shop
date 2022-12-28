@@ -4,6 +4,9 @@ export const LOGIN = 'LOGIN';
 export const REGISTER = 'REGISTER';
 export const LOGOUT = 'LOGOUT';
 export const RESET_PASSWORD = 'RESET_PASSWORD';
+export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
+export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
+export const VERIFY_ACCOUNT = 'VERIFY_ACCOUNT';
 
 // ORDER TYPES
 

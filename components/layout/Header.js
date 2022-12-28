@@ -284,7 +284,11 @@ const Header = ({
                           <ul>
                             <li>
                               <Link href="/account">
-                                <a>
+                                <a
+                                  onClick={() =>
+                                    localStorage.setItem('activeIndex', 5)
+                                  }
+                                >
                                   <i className="fi fi-rs-user mr-10"></i>
                                   My Account
                                 </a>
@@ -292,20 +296,17 @@ const Header = ({
                             </li>
                             <li>
                               <Link href="/account">
-                                <a>
-                                  <i className="fi fi-rs-location-alt mr-10"></i>
-                                  Order Tracking
+                                <a
+                                  onClick={() =>
+                                    localStorage.setItem('activeIndex', 2)
+                                  }
+                                >
+                                  <i className="fi fi-rs-shopping-bag mr-10"></i>
+                                  My order
                                 </a>
                               </Link>
                             </li>
-                            <li>
-                              <Link href="/account">
-                                <a>
-                                  <i className="fi fi-rs-label mr-10"></i>
-                                  My Voucher
-                                </a>
-                              </Link>
-                            </li>
+
                             <li>
                               <Link href="/wishlist">
                                 <a>
@@ -463,6 +464,11 @@ const Header = ({
                       <li>
                         <Link href="/about">
                           <a>About</a>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/membership">
+                          <a>Membership</a>
                         </Link>
                       </li>
                       <li>

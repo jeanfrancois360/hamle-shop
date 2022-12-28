@@ -12388,3 +12388,19 @@ footer .hotline img {
   z-index: 99999;
 }
 /*# sourceMappingURL=main.css.map */
+
+.remove-acc-btn {
+  margin-top: 35px !important;
+  border-color: red !important;
+}
+
+.remove-acc-btn a {
+  color: red !important;
+}
+.remove-acc-btn a i {
+  color: red !important;
+}
+.verify-loader {
+  width: 200px !important;
+  margin-bottom: 0px !important;
+}

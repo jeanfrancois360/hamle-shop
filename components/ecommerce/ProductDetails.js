@@ -84,7 +84,11 @@ const ProductDetails = ({
                       <div className="clearfix product-price-cover">
                         <div className="product-price primary-color float-left">
                           <span className="current-price  text-brand">
-                            {numberWithCommas(product ? product.unit_price : 0)}{' '}
+                            {product
+                              ? new Intl.NumberFormat().format(
+                                  product.unit_price?.toString()
+                                )
+                              : 0}{' '}
                             XAF
                           </span>
                           {/* <span>

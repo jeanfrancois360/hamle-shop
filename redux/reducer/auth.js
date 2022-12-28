@@ -12,7 +12,8 @@ export default (state = initialState, action) => {
     case Types.REGISTER:
       return {
         ...state,
-        message: 'Registered successfully!',
+        message:
+          'Registered successfully! Now check your email to verify your account.',
       };
     case Types.LOGIN:
       return {
@@ -22,6 +23,12 @@ export default (state = initialState, action) => {
         token: action.payload.token,
         message: "You're logged in successfully!",
       };
+    case Types.UPDATE_ACCOUNT:
+      localStorage.setItem('user', JSON.stringify(action.payload));
+      return {
+        ...state,
+        message: 'Account updated successfully!',
+      };
     case Types.LOGOUT:
       return {
         ...state,
@@ -29,6 +36,21 @@ export default (state = initialState, action) => {
         user: {},
         token: null,
         message: '',
+      };
+    case Types.DELETE_ACCOUNT:
+      return {
+        ...state,
+        message: 'Account deleted successfully!',
+      };
+    case Types.VERIFY_ACCOUNT:
+      return {
+        ...state,
+        message: 'Account verified successfully!',
+      };
+    case Types.RESET_PASSWORD:
+      return {
+        ...state,
+        message: 'Password changed successfully',
       };
     case Types.CLEAR_MESSAGE:
       return {

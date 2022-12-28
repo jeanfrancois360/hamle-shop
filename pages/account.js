@@ -4,20 +4,197 @@ import React, { useEffect, useState } from 'react';
 import { Protected } from '../components/Protected';
 import { connect } from 'react-redux';
 import { getOrders } from '../redux/action/order';
+import moment from 'moment';
+import {
+  Logout,
+  UpdateAccount,
+  DeleteAccount,
+  ChangePassword,
+} from '../redux/action/auth';
+import { toast } from 'react-toastify';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { MsgText } from '../components/elements/MsgText';
+import { useRouter } from 'next/router';
 
-function Account() {
+function Account({
+  getOrders,
+  orders,
+  Logout,
+  UpdateAccount,
+  errors,
+  auth,
+  DeleteAccount,
+  ChangePassword,
+}) {
+  const router = useRouter();
+  let initialValues = {
+    first_name: '',
+    last_name: '',
+    country: '',
+    city: '',
+    email: '',
+    phone: '',
+  };
+  let initialPWDValues = {
+    current_password: '',
+    new_password: '',
+  };
+  const [formValues, setFormValues] = useState(initialValues);
+  const [formPWDValues, setFormPWDValues] = useState(initialPWDValues);
   const [activeIndex, setActiveIndex] = useState(1);
+  const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const notify = (msg_type) => {
+    if (msg_type === 'success')
+      toast.success(successMsg, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    if (msg_type === 'error')
+      toast.error(errorMsg, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+  };
+
+  useEffect(() => {
+    if (errors.error_msg != '') {
+      setErrorMsg(errors.error_msg);
+    }
+  }, [errors]);
+
+  useEffect(() => {
+    if (auth.message != '') {
+      setSuccessMsg(auth.message);
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (errorMsg) {
+      notify('error');
+    }
+  }, [errorMsg]);
+
+  useEffect(() => {
+    if (successMsg) {
+      getOrders();
+      notify('success');
+    }
+  }, [successMsg]);
 
   const handleOnClick = (index) => {
+    localStorage.setItem('activeIndex', index);
     setActiveIndex(index); // remove the curly braces
   };
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
+    // Check active index
+    let index = parseInt(localStorage.getItem('activeIndex'));
+    if (index && index > 0) {
+      setActiveIndex(index);
+    }
     if (localStorage.getItem('isAuthenticated')) {
       setUser(JSON.parse(localStorage.getItem('user')));
+      setToken(localStorage.getItem('token'));
     }
+    getOrders();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      setFormValues({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        country: user.country,
+        city: user.city,
+        email: user.email,
+        phone: user.phone,
+      });
+    }
+  }, [user]);
+
+  // All Validations
+  const PwdValidationSchema = Yup.object().shape({
+    current_password: Yup.string()
+      .trim()
+      .required()
+      .min(8, 'Password is too short - should be 8 chars minimum.')
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
+      )
+      .label('Current Password'),
+    new_password: Yup.string()
+      .trim()
+      .required()
+      .min(8, 'Password is too short - should be 8 chars minimum.')
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
+      )
+      .label('New Password'),
+  });
+
+  // All Validations
+  const FormValidationSchema = Yup.object().shape({
+    first_name: Yup.string().trim().required().label('First name'),
+    last_name: Yup.string().trim().required().label('Last name'),
+    email: Yup.string().trim().required().email().label('Email'),
+    phone: Yup.string().trim().required().label('Phone'),
+    country: Yup.string().trim().required().label('Country'),
+    city: Yup.string().trim().required().label('City'),
+  });
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    if (token) {
+      Logout(token);
+    }
+  };
+
+  const handleDeleteAccount = (e) => {
+    e.preventDefault();
+    if (token) {
+      DeleteAccount(token);
+    }
+  };
+
+  const handleUpdateAccount = (payload) => {
+    const data = {
+      first_name: payload.first_name,
+      last_name: payload.last_name,
+      email: payload.email,
+      phone: payload.phone,
+      country: payload.country,
+      city: payload.city,
+    };
+
+    UpdateAccount(data);
+  };
+
+  const handleUpdatePassword = (payload) => {
+    const data = {
+      'current-password': payload.current_password,
+      'new-password': payload.new_password,
+    };
+
+    ChangePassword(data);
+  };
 
   return (
     <>
@@ -56,31 +233,7 @@ function Account() {
                               <i className="fi-rs-shopping-bag mr-10"></i>Orders
                             </a>
                           </li>
-                          <li className="nav-item">
-                            <a
-                              className={
-                                activeIndex === 3
-                                  ? 'nav-link active'
-                                  : 'nav-link'
-                              }
-                              onClick={() => handleOnClick(3)}
-                            >
-                              <i className="fi-rs-shopping-cart-check mr-10"></i>
-                              Track Your Order
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className={
-                                activeIndex === 4
-                                  ? 'nav-link active'
-                                  : 'nav-link'
-                              }
-                              onClick={() => handleOnClick(4)}
-                            >
-                              <i className="fi-rs-marker mr-10"></i>My Address
-                            </a>
-                          </li>
+
                           <li className="nav-item">
                             <a
                               className={
@@ -95,11 +248,21 @@ function Account() {
                             </a>
                           </li>
                           <li className="nav-item">
-                            <Link href="/login">
-                              <a className="nav-link">
-                                <i className="fi-rs-sign-out mr-10"></i>Logout
-                              </a>
-                            </Link>
+                            <a
+                              onClick={(e) => handleLogout(e)}
+                              className="nav-link"
+                            >
+                              <i className="fi-rs-sign-out mr-10"></i>Logout
+                            </a>
+                          </li>
+                          <li className="nav-item remove-acc-btn">
+                            <a
+                              onClick={(e) => handleDeleteAccount(e)}
+                              className="nav-link"
+                            >
+                              <i className="fi-rs-trash mr-10"></i>Delete
+                              Account
+                            </a>
                           </li>
                         </ul>
                       </div>
@@ -123,14 +286,13 @@ function Account() {
                               <p>
                                 From your account dashboard. you can easily
                                 check &amp; view your{' '}
-                                <a href="#">recent orders</a>,
+                                <a onClick={() => handleOnClick(2)} href="#">
+                                  recent orders
+                                </a>
+                                ,
                                 <br />
-                                manage your{' '}
-                                <a href="#">
-                                  shipping and billing addresses
-                                </a>{' '}
                                 and{' '}
-                                <a href="#">
+                                <a onClick={() => handleOnClick(5)} href="#">
                                   edit your password and account details.
                                 </a>
                               </p>
@@ -161,158 +323,41 @@ function Account() {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td>#1357</td>
-                                      <td>March 45, 2020</td>
-                                      <td>Processing</td>
-                                      <td>$125.00 for 2 item</td>
-                                      <td>
-                                        <a
-                                          href="#"
-                                          className="btn-small d-block"
-                                        >
-                                          View
-                                        </a>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>#2468</td>
-                                      <td>June 29, 2020</td>
-                                      <td>Completed</td>
-                                      <td>$364.00 for 5 item</td>
-                                      <td>
-                                        <a
-                                          href="#"
-                                          className="btn-small d-block"
-                                        >
-                                          View
-                                        </a>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>#2366</td>
-                                      <td>August 02, 2020</td>
-                                      <td>Completed</td>
-                                      <td>$280.00 for 3 item</td>
-                                      <td>
-                                        <a
-                                          href="#"
-                                          className="btn-small d-block"
-                                        >
-                                          View
-                                        </a>
-                                      </td>
-                                    </tr>
+                                    {orders &&
+                                      orders.items.length > 0 &&
+                                      orders.items.map((order) => (
+                                        <tr key={order.id}>
+                                          <td>#{order.id}</td>
+                                          <td>
+                                            {moment(order.created_at).format(
+                                              'MMM D, YYYY'
+                                            )}
+                                          </td>
+                                          <td>{order.state}</td>
+                                          <td>
+                                            {' '}
+                                            {new Intl.NumberFormat().format(
+                                              order.price?.toString()
+                                            )}{' '}
+                                            XAF
+                                          </td>
+                                          <td>
+                                            <a
+                                              href="#"
+                                              className="btn-small d-block"
+                                            >
+                                              View details
+                                            </a>
+                                          </td>
+                                        </tr>
+                                      ))}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div
-                          className={
-                            activeIndex === 3
-                              ? 'tab-pane fade active show'
-                              : 'tab-pane fade '
-                          }
-                        >
-                          <div className="card">
-                            <div className="card-header">
-                              <h3 className="mb-0">Orders tracking</h3>
-                            </div>
-                            <div className="card-body contact-from-area">
-                              <p>
-                                To track your order please enter your OrderID in
-                                the box below and press "Track" button. This was
-                                given to you on your receipt and in the
-                                confirmation email you should have received.
-                              </p>
-                              <div className="row">
-                                <div className="col-lg-8">
-                                  <form
-                                    className="contact-form-style mt-30 mb-50"
-                                    action="#"
-                                    method="post"
-                                  >
-                                    <div className="input-style mb-20">
-                                      <label>Order ID</label>
-                                      <input
-                                        name="order-id"
-                                        placeholder="Found in your order confirmation email"
-                                        type="text"
-                                      />
-                                    </div>
-                                    <div className="input-style mb-20">
-                                      <label>Billing email</label>
-                                      <input
-                                        name="billing-email"
-                                        placeholder="Email you used during checkout"
-                                        type="email"
-                                      />
-                                    </div>
-                                    <button
-                                      className="submit submit-auto-width"
-                                      type="submit"
-                                    >
-                                      Track
-                                    </button>
-                                  </form>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className={
-                            activeIndex === 4
-                              ? 'tab-pane fade active show'
-                              : 'tab-pane fade '
-                          }
-                        >
-                          <div className="row">
-                            <div className="col-lg-6">
-                              <div className="card mb-3 mb-lg-0">
-                                <div className="card-header">
-                                  <h3 className="mb-0">Billing Address</h3>
-                                </div>
-                                <div className="card-body">
-                                  <address>
-                                    3522 Interstate
-                                    <br />
-                                    75 Business Spur,
-                                    <br />
-                                    Sault Ste. <br />
-                                    Marie, MI 49783
-                                  </address>
-                                  <p>New York</p>
-                                  <a href="#" className="btn-small">
-                                    Edit
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-lg-6">
-                              <div className="card">
-                                <div className="card-header">
-                                  <h5 className="mb-0">Shipping Address</h5>
-                                </div>
-                                <div className="card-body">
-                                  <address>
-                                    4299 Express Lane
-                                    <br />
-                                    Sarasota, <br />
-                                    FL 34249 USA <br />
-                                    Phone: 1.941.227.4444
-                                  </address>
-                                  <p>Sarasota</p>
-                                  <a href="#" className="btn-small">
-                                    Edit
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+
                         <div
                           className={
                             activeIndex === 5
@@ -325,109 +370,284 @@ function Account() {
                               <h5>Account Details</h5>
                             </div>
                             <div className="card-body">
-                              <p>
-                                Already have an account?{' '}
-                                <Link href="/login">
-                                  <a>Log in instead!</a>
-                                </Link>
-                              </p>
-                              <form method="post" name="enq">
-                                <div className="row">
-                                  <div className="form-group col-md-6">
-                                    <label>
-                                      First Name{' '}
-                                      <span className="required">*</span>
-                                    </label>
-                                    <input
-                                      required=""
-                                      className="form-control"
-                                      name="name"
-                                      type="text"
-                                    />
-                                  </div>
-                                  <div className="form-group col-md-6">
-                                    <label>
-                                      Last Name{' '}
-                                      <span className="required">*</span>
-                                    </label>
-                                    <input
-                                      required=""
-                                      className="form-control"
-                                      name="phone"
-                                    />
-                                  </div>
-                                  <div className="form-group col-md-12">
-                                    <label>
-                                      Display Name{' '}
-                                      <span className="required">*</span>
-                                    </label>
-                                    <input
-                                      required=""
-                                      className="form-control"
-                                      name="dname"
-                                      type="text"
-                                    />
-                                  </div>
-                                  <div className="form-group col-md-12">
-                                    <label>
-                                      Email Address{' '}
-                                      <span className="required">*</span>
-                                    </label>
-                                    <input
-                                      required=""
-                                      className="form-control"
-                                      name="email"
-                                      type="email"
-                                    />
-                                  </div>
-                                  <div className="form-group col-md-12">
-                                    <label>
-                                      Current Password{' '}
-                                      <span className="required">*</span>
-                                    </label>
-                                    <input
-                                      required=""
-                                      className="form-control"
-                                      name="password"
-                                      type="password"
-                                    />
-                                  </div>
-                                  <div className="form-group col-md-12">
-                                    <label>
-                                      New Password{' '}
-                                      <span className="required">*</span>
-                                    </label>
-                                    <input
-                                      required=""
-                                      className="form-control"
-                                      name="npassword"
-                                      type="password"
-                                    />
-                                  </div>
-                                  <div className="form-group col-md-12">
-                                    <label>
-                                      Confirm Password{' '}
-                                      <span className="required">*</span>
-                                    </label>
-                                    <input
-                                      required=""
-                                      className="form-control"
-                                      name="cpassword"
-                                      type="password"
-                                    />
-                                  </div>
-                                  <div className="col-md-12">
-                                    <button
-                                      type="submit"
-                                      className="btn btn-fill-out submit font-weight-bold"
-                                      name="submit"
-                                      value="Submit"
-                                    >
-                                      Save Change
-                                    </button>
-                                  </div>
-                                </div>
-                              </form>
+                              <Formik
+                                enableReinitialize
+                                initialValues={formValues}
+                                onSubmit={handleUpdateAccount}
+                                validationSchema={FormValidationSchema}
+                              >
+                                {({
+                                  values,
+                                  handleChange,
+                                  handleSubmit,
+                                  setFieldValue,
+                                  touched,
+                                  handleBlur,
+                                  errors,
+                                }) => (
+                                  <form method="post" onSubmit={handleSubmit}>
+                                    <div className="row">
+                                      <div className="col-md-6">
+                                        <div className="form-group">
+                                          <label>
+                                            First Name{' '}
+                                            <span className="required">*</span>
+                                          </label>
+                                          <input
+                                            required=""
+                                            className="form-control"
+                                            name="first_name"
+                                            type="text"
+                                            value={values.first_name}
+                                            onChange={handleChange(
+                                              'first_name'
+                                            )}
+                                            onBlur={handleBlur('first_name')}
+                                            autoComplete={`${true}`}
+                                          />
+                                        </div>
+                                        {touched.first_name &&
+                                          errors.first_name && (
+                                            <MsgText
+                                              text={errors.first_name}
+                                              textColor="danger"
+                                            />
+                                          )}
+                                      </div>
+                                      <div className="col-md-6">
+                                        <div className="form-group">
+                                          <label>
+                                            Last Name{' '}
+                                            <span className="required">*</span>
+                                          </label>
+                                          <input
+                                            required=""
+                                            className="form-control"
+                                            name="last_name"
+                                            value={values.last_name}
+                                            onChange={handleChange('last_name')}
+                                            onBlur={handleBlur('last_name')}
+                                            autoComplete={`${true}`}
+                                          />
+                                        </div>
+                                        {touched.last_name &&
+                                          errors.last_name && (
+                                            <MsgText
+                                              text={errors.last_name}
+                                              textColor="danger"
+                                            />
+                                          )}
+                                      </div>
+
+                                      <div className="col-md-6">
+                                        <div className="form-group">
+                                          <label>
+                                            Email Address{' '}
+                                            <span className="required">*</span>
+                                          </label>
+                                          <input
+                                            required=""
+                                            className="form-control"
+                                            name="email"
+                                            type="email"
+                                            value={values.email}
+                                            onChange={handleChange('email')}
+                                            onBlur={handleBlur('email')}
+                                            autoComplete={`${true}`}
+                                          />
+                                        </div>
+                                        {touched.email && errors.email && (
+                                          <MsgText
+                                            text={errors.email}
+                                            textColor="danger"
+                                          />
+                                        )}
+                                      </div>
+
+                                      <div className="col-md-6">
+                                        <div className="form-group">
+                                          <label>
+                                            Phone{' '}
+                                            <span className="required">*</span>
+                                          </label>
+                                          <input
+                                            required=""
+                                            className="form-control"
+                                            name="phone"
+                                            type="text"
+                                            value={values.phone}
+                                            onChange={handleChange('phone')}
+                                            onBlur={handleBlur('phone')}
+                                            autoComplete={`${true}`}
+                                          />
+                                        </div>
+                                        {touched.phone && errors.phone && (
+                                          <MsgText
+                                            text={errors.phone}
+                                            textColor="danger"
+                                          />
+                                        )}
+                                      </div>
+
+                                      <div className="col-md-6">
+                                        <div className="form-group">
+                                          <label>
+                                            City{' '}
+                                            <span className="required">*</span>
+                                          </label>
+                                          <input
+                                            required=""
+                                            className="form-control"
+                                            name="city"
+                                            type="text"
+                                            value={values.city}
+                                            onChange={handleChange('city')}
+                                            onBlur={handleBlur('city')}
+                                            autoComplete={`${true}`}
+                                          />
+                                        </div>
+                                        {touched.city && errors.city && (
+                                          <MsgText
+                                            text={errors.city}
+                                            textColor="danger"
+                                          />
+                                        )}
+                                      </div>
+
+                                      <div className="col-md-6">
+                                        <div className="form-group">
+                                          <label>
+                                            Country{' '}
+                                            <span className="required">*</span>
+                                          </label>
+                                          <input
+                                            required=""
+                                            className="form-control"
+                                            name="country"
+                                            type="text"
+                                            value={values.country}
+                                            onChange={handleChange('country')}
+                                            onBlur={handleBlur('country')}
+                                            autoComplete={`${true}`}
+                                          />
+                                        </div>
+                                        {touched.country && errors.country && (
+                                          <MsgText
+                                            text={errors.country}
+                                            textColor="danger"
+                                          />
+                                        )}
+                                      </div>
+                                      <div className="col-md-12">
+                                        <button
+                                          type="submit"
+                                          className="btn btn-fill-out submit font-weight-bold"
+                                          name="submit"
+                                          value="Submit"
+                                        >
+                                          Update Account
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </form>
+                                )}
+                              </Formik>
+                            </div>
+                          </div>
+                          <div className="card">
+                            <div className="card-header">
+                              <h5>Change Password</h5>
+                            </div>
+                            <div className="card-body">
+                              <Formik
+                                enableReinitialize
+                                initialValues={formPWDValues}
+                                onSubmit={handleUpdatePassword}
+                                validationSchema={PwdValidationSchema}
+                              >
+                                {({
+                                  values,
+                                  handleChange,
+                                  handleSubmit,
+                                  setFieldValue,
+                                  touched,
+                                  handleBlur,
+                                  errors,
+                                }) => (
+                                  <form method="post" onSubmit={handleSubmit}>
+                                    <div className="row">
+                                      <div className="col-md-6">
+                                        <div className="form-group">
+                                          <label>
+                                            Current Password{' '}
+                                            <span className="required">*</span>
+                                          </label>
+                                          <input
+                                            required=""
+                                            className="form-control"
+                                            name="current_password"
+                                            type="password"
+                                            value={values.current_password}
+                                            onChange={handleChange(
+                                              'current_password'
+                                            )}
+                                            onBlur={handleBlur(
+                                              'current_password'
+                                            )}
+                                            autoComplete={`${true}`}
+                                          />
+                                        </div>
+                                        {touched.current_password &&
+                                          errors.current_password && (
+                                            <MsgText
+                                              text={errors.current_password}
+                                              textColor="danger"
+                                            />
+                                          )}
+                                      </div>
+
+                                      <div className="col-md-6">
+                                        <div className="form-group">
+                                          <label>
+                                            New Password{' '}
+                                            <span className="required">*</span>
+                                          </label>
+                                          <input
+                                            required=""
+                                            className="form-control"
+                                            name="new_password"
+                                            type="password"
+                                            value={values.new_password}
+                                            onChange={handleChange(
+                                              'new_password'
+                                            )}
+                                            onBlur={handleBlur('new_password')}
+                                            autoComplete={`${true}`}
+                                          />
+                                        </div>
+                                        {touched.new_password &&
+                                          errors.new_password && (
+                                            <MsgText
+                                              text={errors.new_password}
+                                              textColor="danger"
+                                            />
+                                          )}
+                                      </div>
+
+                                      <div className="col-md-12">
+                                        <button
+                                          type="submit"
+                                          className="btn btn-fill-out submit font-weight-bold"
+                                          name="submit"
+                                          value="Submit"
+                                        >
+                                          Update Password
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </form>
+                                )}
+                              </Formik>
                             </div>
                           </div>
                         </div>
@@ -446,10 +666,16 @@ function Account() {
 
 const mapStateToProps = (state) => ({
   orders: state.order,
+  errors: state.errors,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = {
   getOrders,
+  Logout,
+  UpdateAccount,
+  DeleteAccount,
+  ChangePassword,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

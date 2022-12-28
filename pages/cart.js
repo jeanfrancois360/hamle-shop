@@ -106,7 +106,10 @@ const Cart = ({
                           </td>
                           <td className="price" data-title="Price">
                             <h4 className="text-brand">
-                              {item.unit_price} XAF
+                              {new Intl.NumberFormat().format(
+                                item.unit_price?.toString()
+                              )}{' '}
+                              XAF
                             </h4>
                           </td>
                           <td
@@ -133,7 +136,10 @@ const Cart = ({
                           </td>
                           <td className="text-right" data-title="Cart">
                             <h4 className="text-body">
-                              {item.qty * item.unit_price} XAF
+                              {new Intl.NumberFormat().format(
+                                (item.qty * item.unit_price)?.toString()
+                              )}{' '}
+                              XAF
                             </h4>
                           </td>
                           <td className="action" data-title="Remove">
@@ -527,7 +533,10 @@ const Cart = ({
                               </td>
                               <td className="cart_total_amount">
                                 <span className="font-lg fw-900 text-brand">
-                                  {price()} XAF
+                                  {new Intl.NumberFormat().format(
+                                    price()?.toString()
+                                  )}{' '}
+                                  XAF
                                 </span>
                               </td>
                             </tr>
@@ -543,7 +552,10 @@ const Cart = ({
                               <td className="cart_total_amount">
                                 <strong>
                                   <span className="font-xl fw-900 text-brand">
-                                    {price()} XAF
+                                    {new Intl.NumberFormat().format(
+                                      price()?.toString()
+                                    )}{' '}
+                                    XAF
                                   </span>
                                 </strong>
                               </td>

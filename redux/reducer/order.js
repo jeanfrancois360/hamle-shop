@@ -1,9 +1,13 @@
 import { deleteProduct, findProductIndexById } from '../../util/util';
 import * as Types from '../constants/actionTypes';
 
-// {items:[],filteredList:[]}
+const initialState = {
+  items: [],
+  item: {},
+  message: '',
+};
 
-export default (state = { items: [], item: {} }, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case Types.FETCHED_ORDERS: {
       return {
@@ -15,6 +19,12 @@ export default (state = { items: [], item: {} }, action) => {
       return {
         ...state,
         item: [...action.payload.product],
+      };
+    }
+    case Types.ADD_ORDER: {
+      return {
+        ...state,
+        message: 'Order added successfully!',
       };
     }
     case Types.ADD_PRODUCT: {
