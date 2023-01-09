@@ -5,6 +5,8 @@ const initialState = {
   items: [],
   item: {},
   message: '',
+  payment_ref: null,
+  payment_status: null,
 };
 
 export default (state = initialState, action) => {
@@ -24,9 +26,22 @@ export default (state = initialState, action) => {
     case Types.ADD_ORDER: {
       return {
         ...state,
-        message: 'Order added successfully!',
+        message: 'Order saved successfully!',
       };
     }
+    case Types.PAYMENT_REFERENCE: {
+      return {
+        ...state,
+        payment_ref: action.payload,
+      };
+    }
+    case Types.PAID_ORDER: {
+      return {
+        ...state,
+        payment_status: action.payload,
+      };
+    }
+
     case Types.ADD_PRODUCT: {
       return {
         ...state,

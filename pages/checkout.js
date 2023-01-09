@@ -11,12 +11,13 @@ import {
   increaseQuantity,
   openCart,
 } from '../redux/action/cart';
-import { addOrder } from '../redux/action/order';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { MsgText } from '../components/elements/MsgText';
+import { useRouter } from 'next/router';
+import { addOrder, orderPayment } from '../redux/action/order';
 
-const Cart = ({ cartItems, addOrder, errors, order }) => {
+const Cart = ({ cartItems, errors, order, addOrder, orderPayment }) => {
   let initialValues = {
     shipping_full_name: '',
     shipping_address: '',
@@ -36,12 +37,20 @@ const Cart = ({ cartItems, addOrder, errors, order }) => {
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('');
   const [user, setUser] = useState(null);
+  const [orderType, setOrderType] = useState('');
+  const [planDetails, setPlanDetails] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     if (localStorage.getItem('isAuthenticated')) {
       setIsAuthenticated(localStorage.getItem('isAuthenticated'));
       setUser(JSON.parse(localStorage.getItem('user')));
+    }
+    if (localStorage.getItem('order-type')) {
+      setOrderType(localStorage.getItem('order-type'));
+      setPlanDetails(JSON.parse(localStorage.getItem('plan-details')));
     }
   }, []);
 
@@ -102,7 +111,14 @@ const Cart = ({ cartItems, addOrder, errors, order }) => {
 
   useEffect(() => {
     if (successMsg) {
-      notify('success');
+      if (paymentMethod == 'momo') {
+        window.location.replace('/payment');
+        // router.push({
+        //   pathname: '/payment',
+        // });
+      } else {
+        handleCardPayment();
+      }
     }
   }, [successMsg]);
 
@@ -116,28 +132,68 @@ const Cart = ({ cartItems, addOrder, errors, order }) => {
     shipping_phone: Yup.string().trim().required().label('Phone'),
   });
 
+  const handleCardPayment = () => {
+    const orderDetails = JSON.parse(
+      localStorage.getItem('order-details') || ''
+    );
+    let data = {
+      customer_email: user ? user.email : '',
+      product_name: 'You are about to pay',
+      total_amount: !orderDetails ? orderDetails.price : 50000,
+      type: orderType,
+      currency: 'usd',
+      order_id: orderDetails ? orderDetails.id : 0,
+    };
+
+    orderPayment(data, 'card');
+  };
+
   const handleOrder = (payload) => {
     const orderItems = [];
     let total = 0;
-    cartItems.map((item) => {
-      let newObj = {};
-      newObj['id'] = item.id;
-      newObj['quantity'] = item.qty;
-      newObj['name'] = item.name;
-      newObj['price'] = parseInt(item.unit_price);
-      newObj['total'] = item.qty * parseInt(item.unit_price);
+    if (orderType && orderType != 'subscription') {
+      cartItems.map((item) => {
+        let newObj = {};
+        newObj['id'] = item.id;
+        newObj['quantity'] = item.qty;
+        newObj['name'] = item.name;
+        newObj['price'] = parseInt(item.unit_price);
+        newObj['total'] = item.qty * parseInt(item.unit_price);
 
-      total += item.qty * parseInt(item.unit_price);
+        total += item.qty * parseInt(item.unit_price);
+        orderItems.push(newObj);
+      });
+      let data = {
+        ...payload,
+        product_items: orderItems,
+        price: total,
+        state: 'pending',
+        payment_method_id: 3,
+      };
+      addOrder(data);
+    } else {
+      let newObj = {
+          id: planDetails ? planDetails.id : 0,
+          name: planDetails ? planDetails.name : '',
+          price: planDetails ? planDetails.price : 0,
+          total: planDetails ? planDetails.price : 0,
+          quantity: 1,
+        },
+        total = planDetails ? planDetails.price : 0;
       orderItems.push(newObj);
-    });
-    let data = {
-      ...payload,
-      product_items: orderItems,
-      price: total,
-      state: 'pending',
-      payment_method_id: 3,
-    };
-    addOrder(data);
+      let data = {
+        ...payload,
+        product_items: orderItems,
+        price: total,
+        state: 'pending',
+        payment_method_id: 3,
+      };
+      addOrder(data);
+    }
+  };
+
+  const handlePaymentMethod = (e) => {
+    setPaymentMethod(e.target.value);
   };
 
   return (
@@ -148,13 +204,15 @@ const Cart = ({ cartItems, addOrder, errors, order }) => {
             <div className="row">
               <div className="col-lg-8 mb-40">
                 <h1 className="heading-2 mb-10">Checkout</h1>
-                <div className="d-flex justify-content-between">
-                  <h6 className="text-body">
-                    There are{' '}
-                    <span className="text-brand">{cartItems.length}</span>{' '}
-                    products in your cart
-                  </h6>
-                </div>
+                {orderType && orderType != 'subscription' && (
+                  <div className="d-flex justify-content-between">
+                    <h6 className="text-body">
+                      There are{' '}
+                      <span className="text-brand">{cartItems.length}</span>{' '}
+                      products in your cart
+                    </h6>
+                  </div>
+                )}
               </div>
             </div>
             <Formik
@@ -335,72 +393,152 @@ const Cart = ({ cartItems, addOrder, errors, order }) => {
                           <h6 className="text-muted">Subtotal</h6>
                         </div>
                         <div className="divider-2 mb-30"></div>
-                        <div className="table-responsive order_table">
-                          {cartItems.length <= 0 && 'No Products'}
-                          <table
-                            className={
-                              cartItems.length > 0
-                                ? 'table no-border'
-                                : 'd-none'
-                            }
-                          >
-                            <tbody>
-                              {cartItems.map((item, i) => (
-                                <tr key={i}>
-                                  <td className="image product-thumbnail">
-                                    <img src={'https://' + item.cover_image} />
-                                  </td>
-                                  <td>
-                                    <h6 className="w-160 mb-5">
-                                      <a>{item.title}</a>
-                                      <div className="product-rate-cover">
-                                        <div className="product-rate d-inline-block">
-                                          <div
-                                            className="product-rating"
-                                            style={{
-                                              width: '90%',
-                                            }}
-                                          ></div>
+                        {orderType && orderType != 'subscription' ? (
+                          <div className="table-responsive order_table">
+                            {cartItems.length <= 0 && 'No Products'}
+                            <table
+                              className={
+                                cartItems.length > 0
+                                  ? 'table no-border'
+                                  : 'd-none'
+                              }
+                            >
+                              <tbody>
+                                {cartItems.map((item, i) => (
+                                  <tr key={i}>
+                                    <td className="image product-thumbnail">
+                                      <img
+                                        src={'https://' + item.cover_image}
+                                      />
+                                    </td>
+                                    <td>
+                                      <h6 className="w-160 mb-5">
+                                        <a>{item.title}</a>
+                                        <div className="product-rate-cover">
+                                          <div className="product-rate d-inline-block">
+                                            <div
+                                              className="product-rating"
+                                              style={{
+                                                width: '90%',
+                                              }}
+                                            ></div>
+                                          </div>
+                                          <span className="font-small ml-5 text-muted">
+                                            {' '}
+                                            (4.0)
+                                          </span>
                                         </div>
-                                        <span className="font-small ml-5 text-muted">
-                                          {' '}
-                                          (4.0)
-                                        </span>
-                                      </div>
-                                    </h6>{' '}
-                                  </td>
-                                  <td>
-                                    <h6 className="text-muted pl-20 pr-20">
-                                      x {item.qty}
-                                    </h6>
-                                  </td>
-                                  <td>
-                                    <h4 className="text-brand">
-                                      {new Intl.NumberFormat().format(
-                                        (
-                                          item.qty * parseInt(item.unit_price)
-                                        )?.toString()
-                                      )}{' '}
-                                      XAF
-                                    </h4>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
+                                      </h6>{' '}
+                                    </td>
+                                    <td>
+                                      <h6 className="text-muted pl-20 pr-20">
+                                        x {item.qty}
+                                      </h6>
+                                    </td>
+                                    <td>
+                                      <h4 className="text-brand">
+                                        {new Intl.NumberFormat().format(
+                                          (
+                                            item.qty * parseInt(item.unit_price)
+                                          )?.toString()
+                                        )}{' '}
+                                        XAF
+                                      </h4>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        ) : (
+                          <div className="table-responsive order_table">
+                            {!planDetails && 'No Plan Selected'}
+                            <table
+                              className={
+                                planDetails ? 'table no-border' : 'd-none'
+                              }
+                            >
+                              <tbody>
+                                {planDetails && (
+                                  <tr key={planDetails.id}>
+                                    <td className="image product-thumbnail">
+                                      {/* <img
+                                        src={'https://' + item.cover_image}
+                                      /> */}
+                                      <img
+                                        src="/assets/imgs/theme/icons/icon-1.svg"
+                                        alt=""
+                                      />
+                                    </td>
+                                    <td>
+                                      <h6 className="w-160 mb-5">
+                                        <a>{planDetails.name}</a>
+                                        <div className="product-rate-cover">
+                                          <div className="product-rate d-inline-block">
+                                            <div
+                                              className="product-rating"
+                                              style={{
+                                                width: '90%',
+                                              }}
+                                            ></div>
+                                          </div>
+                                          <span className="font-small ml-5 text-muted">
+                                            {' '}
+                                            (4.0)
+                                          </span>
+                                        </div>
+                                      </h6>{' '}
+                                    </td>
+
+                                    <td>
+                                      <h4 className="text-brand">
+                                        {new Intl.NumberFormat().format(
+                                          parseInt(
+                                            planDetails.price
+                                          )?.toString()
+                                        )}{' '}
+                                        XAF
+                                      </h4>
+                                    </td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
                         <hr />
-                        <div className="price text-center">
-                          <h4 className="mt-4">
-                            Total:{' '}
-                            <span className="text-brand">
-                              {new Intl.NumberFormat().format(
-                                price()?.toString()
-                              )}{' '}
-                              XAF
-                            </span>
-                          </h4>
-                        </div>
+                        {orderType && orderType != 'subscription' ? (
+                          <div className="price text-center">
+                            <h4 className="mt-4">
+                              Total:{' '}
+                              <span className="text-brand">
+                                {new Intl.NumberFormat().format(
+                                  price()?.toString()
+                                )}{' '}
+                                XAF
+                              </span>
+                            </h4>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="price text-center">
+                              <h4 className="mt-4">
+                                Total:{' '}
+                                {planDetails && (
+                                  <span
+                                    key={planDetails.id}
+                                    className="text-brand"
+                                  >
+                                    {new Intl.NumberFormat().format(
+                                      planDetails.price?.toString()
+                                    )}{' '}
+                                    XAF
+                                  </span>
+                                )}
+                              </h4>
+                            </div>
+                          </>
+                        )}
                         <hr />
                         <div className="bt-1 border-color-1 mt-30 mb-30"></div>
                         <div className="payment_method">
@@ -414,8 +552,9 @@ const Cart = ({ cartItems, addOrder, errors, order }) => {
                                 required=""
                                 type="radio"
                                 name="payment_option"
+                                value="momo"
                                 id="exampleRadios4"
-                                defaultChecked={true}
+                                onChange={handlePaymentMethod}
                               />
                               <label
                                 className="form-check-label"
@@ -424,7 +563,7 @@ const Cart = ({ cartItems, addOrder, errors, order }) => {
                                 data-target="#mobileMoney"
                                 aria-controls="mobileMoney"
                               >
-                                Mobile money
+                                Mobile Money
                               </label>
                               <div
                                 className="form-group collapse in"
@@ -442,8 +581,9 @@ const Cart = ({ cartItems, addOrder, errors, order }) => {
                                 required=""
                                 type="radio"
                                 name="payment_option"
+                                value="card"
                                 id="exampleRadios5"
-                                defaultChecked={true}
+                                onChange={handlePaymentMethod}
                               />
                               <label
                                 className="form-check-label"
@@ -452,7 +592,7 @@ const Cart = ({ cartItems, addOrder, errors, order }) => {
                                 data-target="#stripe"
                                 aria-controls="stripe"
                               >
-                                Stripe
+                                Card
                               </label>
                               <div
                                 className="form-group collapse in"
@@ -467,7 +607,11 @@ const Cart = ({ cartItems, addOrder, errors, order }) => {
                           </div>
                         </div>
                         <div className="form-group col-lg-12 mt-30">
-                          <button type="submit" className="btn  btn-md">
+                          <button
+                            disabled={!paymentMethod}
+                            type="submit"
+                            className="btn  btn-md"
+                          >
                             Place Order
                           </button>
                         </div>
@@ -500,6 +644,7 @@ const mapDispatchToProps = {
   openCart,
   clearCart,
   addOrder,
+  orderPayment,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

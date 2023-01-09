@@ -563,7 +563,13 @@ const Cart = ({
                           </tbody>
                         </table>
                       </div>
-                      <a href="checkout" className="btn ">
+                      <a
+                        onClick={() =>
+                          localStorage.setItem('order-type', 'product')
+                        }
+                        href="checkout"
+                        className="btn "
+                      >
                         <i className="fi-rs-box-alt mr-10"></i>
                         Proceed To CheckOut
                       </a>

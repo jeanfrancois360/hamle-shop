@@ -10,14 +10,14 @@ function About() {
               <section className="row align-items-center mb-50">
                 <div className="col-lg-6">
                   <img
-                    src="/assets/imgs/page/about-1.png"
+                    src="/assets/imgs/page/auth-bg.jpeg"
                     alt=""
                     className="border-radius-15 mb-md-3 mb-lg-0 mb-sm-4"
                   />
                 </div>
                 <div className="col-lg-6">
                   <div className="pl-25">
-                    <h2 className="mb-30">Welcome to Nest</h2>
+                    <h2 className="mb-30">Welcome to Hemle Shop</h2>
                     <p className="mb-25">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                       sed do eiusmod tempor incididunt ut labore et dolore magna
@@ -116,7 +116,7 @@ function About() {
                   </div>
                 </div>
               </section>
-              <section className="row align-items-center mb-50">
+              {/* <section className="row align-items-center mb-50">
                 <div className="row mb-50 align-items-center">
                   <div className="col-lg-7 pr-30">
                     <img
@@ -169,11 +169,11 @@ function About() {
                     </p>
                   </div>
                 </div>
-              </section>
+              </section> */}
             </div>
           </div>
         </div>
-        <section className="container mb-50 d-none d-md-block">
+        {/* <section className="container mb-50 d-none d-md-block">
           <div className="row about-count">
             <div className="col-lg-1-5 col-md-6 text-center mb-lg-0 mb-md-5">
               <h1 className="heading-1">
@@ -206,8 +206,8 @@ function About() {
               <h4>Products Sale</h4>
             </div>
           </div>
-        </section>
-        <div className="container">
+        </section> */}
+        {/* <div className="container">
           <div className="row">
             <div className="col-xl-10 col-lg-12 m-auto">
               <section className="mb-50">
@@ -308,7 +308,7 @@ function About() {
               </section>
             </div>
           </div>
-        </div>
+        </div> */}
       </Layout>
     </>
   );

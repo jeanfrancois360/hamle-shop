@@ -4,7 +4,14 @@ import * as Types from '../constants/actionTypes';
 // {items:[],filteredList:[]}
 
 export default (
-  state = { items: [], item: {}, filteredItems: [], categories: [] },
+  state = {
+    items: [],
+    item: {},
+    filteredItems: [],
+    categories: [],
+    plans: [],
+    plan: {},
+  },
   action
 ) => {
   switch (action.type) {
@@ -38,6 +45,24 @@ export default (
       return {
         ...state,
         categories: [...action.payload.categories],
+      };
+    }
+    case Types.PLAN_SUBSCRIBED: {
+      return {
+        ...state,
+        message: 'Subscribed successfully',
+      };
+    }
+    case Types.FETCHED_PLANS: {
+      return {
+        ...state,
+        plans: [...action.payload.plans],
+      };
+    }
+    case Types.FETCHED_MY_PLAN: {
+      return {
+        ...state,
+        plan: action.payload.plan,
       };
     }
     default:

@@ -143,9 +143,7 @@ const Footer = () => {
                         />
                       </a>
                     </Link>
-                    <p className="font-lg text-heading">
-                      Awesome grocery store website template
-                    </p>
+                    <p className="font-lg text-heading">Hemle FC The Botko</p>
                   </div>
                   <ul className="contact-infor">
                     <li>
@@ -165,7 +163,7 @@ const Footer = () => {
                         alt=""
                       />
                       <strong>Call Us:</strong>
-                      <span>(+91) - 540-025-124553</span>
+                      <span>+(237) 670 799 135</span>
                     </li>
                     <li>
                       <img
@@ -173,7 +171,7 @@ const Footer = () => {
                         alt=""
                       />
                       <strong>Email:</strong>
-                      <span>sale@Nest.com</span>
+                      <span>sale@example.com</span>
                     </li>
                     <li>
                       <img
@@ -244,7 +242,7 @@ const Footer = () => {
                   </li>
                 </ul>
               </div>
-              <div
+              {/* <div
                 className="footer-link-widget col  wow animate__animated animate__fadeInUp"
                 data-wow-delay=".3s"
               >
@@ -272,8 +270,8 @@ const Footer = () => {
                     <a href="#">Promotions</a>
                   </li>
                 </ul>
-              </div>
-              <div
+              </div> */}
+              {/* <div
                 className="footer-link-widget col  wow animate__animated animate__fadeInUp"
                 data-wow-delay=".4s"
               >
@@ -326,7 +324,7 @@ const Footer = () => {
                   src="/assets/imgs/theme/payment-method.png"
                   alt=""
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
@@ -353,16 +351,7 @@ const Footer = () => {
                   alt="hotline"
                 />
                 <p>
-                  1900 - 6666<span>Working 8:00 - 22:00</span>
-                </p>
-              </div>
-              <div className="hotline d-lg-inline-flex">
-                <img
-                  src="/assets/imgs/theme/icons/phone-call.svg"
-                  alt="hotline"
-                />
-                <p>
-                  1900 - 8888<span>24/7 Support Center</span>
+                  +237 670 799 135<span>Working 8:00 - 22:00</span>
                 </p>
               </div>
             </div>

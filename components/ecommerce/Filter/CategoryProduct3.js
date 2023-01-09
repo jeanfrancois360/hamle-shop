@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { updateProductCategory } from '../../../redux/action/productFiltersAction';
+import { useEffect } from 'react';
 
-const CategoryProduct3 = ({ updateProductCategory }) => {
+const CategoryProduct3 = ({ updateProductCategory, categories }) => {
   const router = useRouter();
 
   // const removeSearchTerm = () => {
@@ -22,21 +23,20 @@ const CategoryProduct3 = ({ updateProductCategory }) => {
       },
     });
   };
+
   return (
     <>
-      <ul className="end">
-        <li onClick={(e) => selectCategory(e, 'jersey')}>
-          <a>
-            <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
-            Shoes
-          </a>
-        </li>
-        <li onClick={(e) => selectCategory(e, 'jersey')}>
-          <a>
-            <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
-            Jersey
-          </a>
-        </li>
+      <ul>
+        {categories &&
+          categories.length > 0 &&
+          categories.map((cat, i) => (
+            <li key={i} onClick={(e) => selectCategory(e, cat.name)}>
+              <a>
+                <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
+                {cat.name}
+              </a>
+            </li>
+          ))}
       </ul>
     </>
   );

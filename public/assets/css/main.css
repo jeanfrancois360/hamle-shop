@@ -7999,7 +7999,7 @@ h6.post-title {
 
 .hotline p {
   color: #244193;
-  font-size: 26px;
+  font-size: 19px;
   font-weight: 700;
   font-family: 'Quicksand', sans-serif;
   display: block;
@@ -12403,4 +12403,24 @@ footer .hotline img {
 .verify-loader {
   width: 200px !important;
   margin-bottom: 0px !important;
+}
+
+.card_tabs {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 30px;
+}
+
+.card_tab {
+  width: 170px;
+  padding-bottom: 10px;
+}
+
+.tab_btn {
+  font-size: 20px !important;
+}
+
+.active_tab {
+  transition: all 0.2s ease-out;
+  border-bottom: 2px solid #244193;
 }
