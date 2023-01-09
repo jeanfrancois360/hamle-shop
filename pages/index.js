@@ -101,7 +101,10 @@ function Home({ products, getProducts, getCategories }) {
                           <a>{product.name}</a>
                         </h6>
                         <p className="price mb-0 mt-5">
-                          {product.unit_price} XAF
+                          {new Intl.NumberFormat().format(
+                            product.unit_price?.toString()
+                          )}{' '}
+                          XAF
                         </p>
                         <div className="product-rate">
                           <div

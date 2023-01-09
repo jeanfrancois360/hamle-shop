@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-const Search = () => {
+const Search = ({ categories }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
 
@@ -27,10 +27,13 @@ const Search = () => {
       <form>
         <select className="select-active">
           <option>All Categories</option>
-          <option>Shoes</option>
-          <option>Jersey</option>
-          <option>{`Women's`}</option>
-          <option>{`Men's`}</option>
+          {categories &&
+            categories.length > 0 &&
+            categories.map((cat, i) => (
+              <option key={i} value={cat.name}>
+                {cat.name}
+              </option>
+            ))}
         </select>
         <input
           value={searchTerm}

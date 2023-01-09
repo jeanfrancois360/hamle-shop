@@ -5,6 +5,7 @@ import CategoryProduct2 from '../ecommerce/Filter/CategoryProduct2';
 import CategoryProduct3 from '../ecommerce/Filter/CategoryProduct3';
 import Search from '../ecommerce/Search';
 import { Logout } from '../../redux/action/auth';
+import { getCategories } from '../../redux/action/product';
 
 const Header = ({
   totalCartItems,
@@ -15,6 +16,8 @@ const Header = ({
   isAuthenticated,
   token,
   Logout,
+  getCategories,
+  products,
 }) => {
   const [isToggled, setToggled] = useState(false);
   const [scroll, setScroll] = useState(0);
@@ -35,6 +38,10 @@ const Header = ({
     }
   };
 
+  useEffect(() => {
+    getCategories(10);
+  }, []);
+
   const handleToggle = () => setToggled(!isToggled);
 
   return (
@@ -54,7 +61,11 @@ const Header = ({
                   <ul>
                     <li>
                       <Link href="/account">
-                        <a>My Account</a>
+                        <a
+                          onClick={() => localStorage.setItem('activeIndex', 5)}
+                        >
+                          My Account
+                        </a>
                       </Link>
                     </li>
                     <li>
@@ -64,7 +75,11 @@ const Header = ({
                     </li>
                     <li>
                       <Link href="/account">
-                        <a>Order Tracking</a>
+                        <a
+                          onClick={() => localStorage.setItem('activeIndex', 2)}
+                        >
+                          Order Tracking
+                        </a>
                       </Link>
                     </li>
                   </ul>
@@ -78,14 +93,14 @@ const Header = ({
                         Need help? Call Us:{' '}
                         <strong className="text-brand">
                           {' '}
-                          +250 786 506 040
+                          +237 670 799 135
                         </strong>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <div className="col-xl-3 col-lg-4">
+              {/* <div className="col-xl-3 col-lg-4">
                 <div className="header-info header-info-right">
                   <ul>
                     <li>
@@ -159,7 +174,7 @@ const Header = ({
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -175,7 +190,7 @@ const Header = ({
               </div>
               <div className="header-right">
                 <div className="search-style-2">
-                  <Search />
+                  <Search categories={products.categories} />
                 </div>
                 <div className="header-action-right">
                   <div className="header-action-2">
@@ -376,8 +391,12 @@ const Header = ({
                     }
                   >
                     <div className="d-flex categori-dropdown-inner">
-                      <CategoryProduct2 />
-                      <CategoryProduct3 />
+                      <CategoryProduct2
+                        categories={products.categories.slice(0, 3)}
+                      />
+                      <CategoryProduct3
+                        categories={products.categories.slice(3, 6)}
+                      />
                     </div>
                     <div
                       className="more_slide_open"
@@ -635,12 +654,14 @@ const Header = ({
 };
 
 const mapStateToProps = (state) => ({
+  products: state.products,
   totalCartItems: state.cart.length,
   totalCompareItems: state.compare.items.length,
   totalWishlistItems: state.wishlist.items.length,
 });
 
 const mapDidpatchToProps = {
+  getCategories,
   Logout,
 };
 

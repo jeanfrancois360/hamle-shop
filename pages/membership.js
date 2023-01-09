@@ -1,6 +1,43 @@
+import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import Layout from '../components/layout/Layout';
+import { getPlans, getMyPlan } from '../redux/action/product';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
-function MemberShip() {
+function MemberShip({ getPlans, products, getMyPlan, errors }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [myPlan, setMyPlan] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    getPlans();
+    if (localStorage.getItem('isAuthenticated')) {
+      setIsAuthenticated(localStorage.getItem('isAuthenticated'));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getMyPlan();
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (products.plan) {
+      setMyPlan(products.plan);
+    }
+  }, [products]);
+
+  const handlePlan = (payload) => {
+    localStorage.setItem('order-type', 'subscription');
+    localStorage.setItem('plan-details', JSON.stringify(payload));
+    router.push({
+      pathname: '/checkout',
+    });
+  };
+
   return (
     <>
       <Layout parent="Home" sub="Pages" subChild="About">
@@ -10,42 +47,36 @@ function MemberShip() {
               <section className="text-center mb-50">
                 <h2 className="title style-3 mb-40">Become a member</h2>
                 <div className="row">
-                  <div className="col-lg-4 col-md-6 mb-24">
-                    <div className="featured-card">
-                      <img src="/assets/imgs/theme/icons/icon-1.svg" alt="" />
-                      <h4>Baby Plan</h4>
-                      <p>
-                        There are m any variations of passages of Lorem Ipsum
-                        available, but the majority have suffered alteration in
-                        some form
-                      </p>
-                      <a href="#">Subscribe Now</a>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 mb-24">
-                    <div className="featured-card">
-                      <img src="/assets/imgs/theme/icons/icon-2.svg" alt="" />
-                      <h4>Master Plan</h4>
-                      <p>
-                        There are many variations of passages of Lorem Ipsum
-                        available, but the majority have suffered alteration in
-                        some form
-                      </p>
-                      <a href="#">Subscribe Now</a>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-6 mb-24">
-                    <div className="featured-card">
-                      <img src="/assets/imgs/theme/icons/icon-3.svg" alt="" />
-                      <h4>Premium Plan</h4>
-                      <p>
-                        There are many variations of passages of Lorem Ipsum
-                        available, but the majority have suffered alteration in
-                        some form
-                      </p>
-                      <a href="#">Subscribe Now</a>
-                    </div>
-                  </div>
+                  {products &&
+                    products.plans.length > 0 &&
+                    products.plans.map((plan) => (
+                      <div key={plan.id} className="col-lg-3 col-md-6 mb-24">
+                        <div className="featured-card">
+                          <img
+                            src="/assets/imgs/theme/icons/icon-1.svg"
+                            alt=""
+                          />
+                          <h4>{plan.name.toUpperCase()}</h4>
+                          <h5>
+                            {' '}
+                            {new Intl.NumberFormat().format(
+                              plan.price?.toString()
+                            )}{' '}
+                            XAF
+                          </h5>
+                          <p>{plan.description}</p>
+                          <button
+                            disabled={
+                              myPlan && myPlan.name == plan.name ? true : false
+                            }
+                            onClick={() => handlePlan(plan)}
+                            className="btn  btn-md"
+                          >
+                            Subscribe Now
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </section>
             </div>
@@ -55,5 +86,15 @@ function MemberShip() {
     </>
   );
 }
+const mapStateToProps = (state) => ({
+  products: state.products,
+  productFilters: state.productFilters,
+  errors: state.errors,
+});
 
-export default MemberShip;
+const mapDidpatchToProps = {
+  getPlans,
+  getMyPlan,
+};
+
+export default connect(mapStateToProps, mapDidpatchToProps)(MemberShip);
