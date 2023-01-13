@@ -339,7 +339,7 @@ const Footer = () => {
             <div className="col-xl-4 col-lg-6 col-md-6">
               <p className="font-sm mb-0">
                 &copy; {new Date().getFullYear()},{' '}
-                <strong className="text-brand">Hemle</strong> FC The Botko
+                <strong className="text-brand">Hémlè</strong> FC De Bokto
                 <br />
                 All rights reserved
               </p>
