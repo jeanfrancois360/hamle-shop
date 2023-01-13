@@ -143,7 +143,7 @@ const Footer = () => {
                         />
                       </a>
                     </Link>
-                    <p className="font-lg text-heading">Hemle FC The Botko</p>
+                    <p className="font-lg text-heading">Hémlè FC De Bokto</p>
                   </div>
                   <ul className="contact-infor">
                     <li>

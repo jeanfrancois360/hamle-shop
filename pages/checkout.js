@@ -17,7 +17,7 @@ import { MsgText } from '../components/elements/MsgText';
 import { useRouter } from 'next/router';
 import { addOrder, orderPayment } from '../redux/action/order';
 
-const Cart = ({ cartItems, errors, order, addOrder, orderPayment }) => {
+const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
   let initialValues = {
     shipping_full_name: '',
     shipping_address: '',
@@ -113,9 +113,6 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment }) => {
     if (successMsg) {
       if (paymentMethod == 'momo') {
         window.location.replace('/payment');
-        // router.push({
-        //   pathname: '/payment',
-        // });
       } else {
         handleCardPayment();
       }
@@ -139,7 +136,7 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment }) => {
     let data = {
       customer_email: user ? user.email : '',
       product_name: 'You are about to pay',
-      total_amount: !orderDetails ? orderDetails.price : 50000,
+      total_amount: orderDetails ? orderDetails.price : 0,
       type: orderType,
       currency: 'usd',
       order_id: orderDetails ? orderDetails.id : 0,
@@ -149,6 +146,7 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment }) => {
   };
 
   const handleOrder = (payload) => {
+    let currentOrder = localStorage.getItem('order-details');
     const orderItems = [];
     let total = 0;
     if (orderType && orderType != 'subscription') {
@@ -170,7 +168,16 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment }) => {
         state: 'pending',
         payment_method_id: 3,
       };
+      if(!currentOrder){
       addOrder(data);
+      }
+      else{
+        if (paymentMethod == 'momo') {
+          window.location.replace('/payment');
+        } else {
+          handleCardPayment();
+        }
+      }
     } else {
       let newObj = {
           id: planDetails ? planDetails.id : 0,
@@ -188,7 +195,16 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment }) => {
         state: 'pending',
         payment_method_id: 3,
       };
-      addOrder(data);
+      if(!currentOrder){
+        addOrder(data);
+      }
+      else{
+        if (paymentMethod == 'momo') {
+          window.location.replace('/payment');
+        } else {
+          handleCardPayment();
+        }
+      }
     }
   };
 
@@ -608,11 +624,11 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment }) => {
                         </div>
                         <div className="form-group col-lg-12 mt-30">
                           <button
-                            disabled={!paymentMethod}
+                            disabled={!paymentMethod || loader.isLoading}
                             type="submit"
                             className="btn  btn-md"
                           >
-                            Place Order
+                            {!loader.isLoading ? 'Place Order' : 'Loading...'}
                           </button>
                         </div>
                       </div>

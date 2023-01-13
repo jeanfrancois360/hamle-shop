@@ -155,9 +155,13 @@ function Login({ auth, SignIn, errors, loader }) {
                                     </label>
                                   </div>
                                 </div>
-                                <a className="text-muted" href="#">
+                                <Link href="/request-password-reset">
+                                <a
+                                  className="text-muted"
+                                >
                                   Forgot password?
                                 </a>
+                                </Link>
                               </div>
                               <div className="form-group">
                                 <button

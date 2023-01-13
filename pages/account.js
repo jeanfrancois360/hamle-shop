@@ -169,8 +169,11 @@ function Account({
 
   const handleDeleteAccount = (e) => {
     e.preventDefault();
-    if (token) {
-      DeleteAccount(token);
+    var result = confirm('Are you sure you want to delete this account?');
+    if (result) {
+      if (token) {
+        DeleteAccount(token);
+      }
     }
   };
 

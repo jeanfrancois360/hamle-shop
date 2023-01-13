@@ -22,6 +22,7 @@ function Register({ auth, SignUp, errors, loader }) {
 
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [error, setError] = useState('');
   const [ip, setIp] = useState('');
   const notify = (msg_type) => {
     if (msg_type === 'success')
@@ -51,6 +52,9 @@ function Register({ auth, SignUp, errors, loader }) {
   useEffect(() => {
     if (errors.error_msg != '') {
       setErrorMsg(errors.error_msg);
+    }
+    if(errors.error != ''){
+      setError(errors.error)
     }
   }, [errors]);
 
@@ -93,6 +97,7 @@ function Register({ auth, SignUp, errors, loader }) {
   });
 
   const handleSignUp = async (payload) => {
+    setError('');
     const data = {
       first_name: payload.first_name,
       last_name: payload.last_name,
@@ -167,6 +172,13 @@ function Register({ auth, SignUp, errors, loader }) {
                                       textColor="danger"
                                     />
                                   )}
+                                  {error.first_name && (
+                                    <MsgText
+                                      text={error.first_name[0]}
+                                      textColor="danger"
+                                    />
+                                  )}
+
                                 </div>
                                 <div className="col-md-6">
                                   <div className="form-group">
@@ -184,6 +196,12 @@ function Register({ auth, SignUp, errors, loader }) {
                                   {touched.last_name && errors.last_name && (
                                     <MsgText
                                       text={errors.last_name}
+                                      textColor="danger"
+                                    />
+                                  )}
+                                  {error.last_name && (
+                                    <MsgText
+                                      text={error.last_name[0]}
                                       textColor="danger"
                                     />
                                   )}
@@ -207,6 +225,12 @@ function Register({ auth, SignUp, errors, loader }) {
                                       textColor="danger"
                                     />
                                   )}
+                                  {error.email && (
+                                    <MsgText
+                                      text={error.email[0]}
+                                      textColor="danger"
+                                    />
+                                  )}
                                 </div>
                                 <div className="col-md-6">
                                   <div className="form-group">
@@ -224,6 +248,12 @@ function Register({ auth, SignUp, errors, loader }) {
                                   {touched.phone && errors.phone && (
                                     <MsgText
                                       text={errors.phone}
+                                      textColor="danger"
+                                    />
+                                  )}
+                                  {error.phone && (
+                                    <MsgText
+                                      text={error.phone[0]}
                                       textColor="danger"
                                     />
                                   )}
@@ -247,6 +277,12 @@ function Register({ auth, SignUp, errors, loader }) {
                                       textColor="danger"
                                     />
                                   )}
+                                  {error.country && (
+                                    <MsgText
+                                      text={error.country[0]}
+                                      textColor="danger"
+                                    />
+                                  )}
                                 </div>
                                 <div className="col-md-6">
                                   <div className="form-group">
@@ -264,6 +300,12 @@ function Register({ auth, SignUp, errors, loader }) {
                                   {touched.city && errors.city && (
                                     <MsgText
                                       text={errors.city}
+                                      textColor="danger"
+                                    />
+                                  )}
+                                  {error.city && (
+                                    <MsgText
+                                      text={error.city[0]}
                                       textColor="danger"
                                     />
                                   )}
@@ -287,32 +329,15 @@ function Register({ auth, SignUp, errors, loader }) {
                                       textColor="danger"
                                     />
                                   )}
-                                </div>
-                              </div>
-
-                              <div className="login_footer form-group mb-50">
-                                <div className="chek-form">
-                                  <div className="custome-checkbox">
-                                    <input
-                                      className="form-check-input"
-                                      type="checkbox"
-                                      name="checkbox"
-                                      id="exampleCheckbox1"
-                                      value=""
+                                  {error.password && (
+                                    <MsgText
+                                      text={error.password[0]}
+                                      textColor="danger"
                                     />
-                                    <label
-                                      className="form-check-label"
-                                      htmlFor="exampleCheckbox1"
-                                    >
-                                      <span>Remember me</span>
-                                    </label>
-                                  </div>
+                                  )}
                                 </div>
-                                <a className="text-muted" href="#">
-                                  Forgot password?
-                                </a>
                               </div>
-                              <div className="form-group">
+                              <div className="form-group mt-40">
                                 <button
                                   type="submit"
                                   className="btn btn-heading btn-block hover-up"

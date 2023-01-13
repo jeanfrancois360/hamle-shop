@@ -190,6 +190,61 @@ export const ChangePassword = (payload) => async (dispatch) => {
   }
 };
 
+export const RequestResetPassword = (payload) => async (dispatch) => {
+  dispatch(clearErrors());
+  dispatch(openLoader());
+  clearMessage();
+
+  try {
+    const response = await axios.post('/request-reset-password', payload);
+    dispatch({
+      type: Types.REQUEST_RESET_PASSWORD,
+      payload: response.data,
+    });
+    dispatch(closeLoader());
+  } catch (error) {
+    if (error.response.data.message.includes('Unauthenticated')) {
+      localStorage.setItem('prev_page', 'account');
+      dispatch(Logout());
+    }
+    dispatch(
+      setErrors({
+        error: error.response.data.errors,
+        error_msg: error.response.data.message,
+      })
+    );
+    dispatch(closeLoader());
+  }
+};
+
+// Action for reset a user account
+export const ResetPassword = (payload) => async (dispatch) => {
+  dispatch(clearErrors());
+  dispatch(openLoader());
+  clearMessage();
+  try {
+    const response = await axios.post('/reset-password', payload, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+    dispatch({
+      type: Types.RESET_PASSWORD,
+    });
+    dispatch(closeLoader());
+  } catch (error) {
+    if (error.response.data.message.includes('Unauthenticated')) {
+      localStorage.setItem('prev_page', 'account');
+      dispatch(Logout());
+    }
+    dispatch(
+      setErrors({
+        error: error.response.data.errors,
+        error_msg: error.response.data.message,
+      })
+    );
+    dispatch(closeLoader());
+  }
+};
+
 export const VerifyAccount = (code) => async (dispatch) => {
   dispatch(clearErrors());
   dispatch(openLoader());
