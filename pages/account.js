@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import Layout from '../components/layout/Layout';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -16,6 +17,8 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { MsgText } from '../components/elements/MsgText';
 import { useRouter } from 'next/router';
+import { getMyPlan } from '../redux/action/product';
+import { cancelPlan } from '../redux/action/product';
 
 function Account({
   getOrders,
@@ -26,6 +29,9 @@ function Account({
   auth,
   DeleteAccount,
   ChangePassword,
+  getMyPlan,
+  products,
+  cancelPlan
 }) {
   const router = useRouter();
   let initialValues = {
@@ -45,6 +51,7 @@ function Account({
   const [activeIndex, setActiveIndex] = useState(1);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [myPlan, setMyPlan] = useState('')
   const notify = (msg_type) => {
     if (msg_type === 'success')
       toast.success(successMsg, {
@@ -83,6 +90,12 @@ function Account({
   }, [auth]);
 
   useEffect(() => {
+    if (products.message != '') {
+      setSuccessMsg(products.message);
+    }
+  }, [products]);
+
+  useEffect(() => {
     if (errorMsg) {
       notify('error');
     }
@@ -113,6 +126,7 @@ function Account({
       setToken(localStorage.getItem('token'));
     }
     getOrders();
+    getMyPlan();
   }, []);
 
   useEffect(() => {
@@ -127,6 +141,13 @@ function Account({
       });
     }
   }, [user]);
+
+  useEffect(() => {
+    if (products.plan) {
+      console.log(products.plan)
+      setMyPlan(products.plan);
+    }
+  }, [products]);
 
   // All Validations
   const PwdValidationSchema = Yup.object().shape({
@@ -169,10 +190,25 @@ function Account({
 
   const handleDeleteAccount = (e) => {
     e.preventDefault();
-    if (token) {
-      DeleteAccount(token);
+    var result = confirm('Are you sure you want to delete this account?');
+    if (result) {
+      if (token) {
+        DeleteAccount(token);
+      }
     }
   };
+
+  const handleCancelPlan = (e) => {
+    e.preventDefault();
+    cancelPlan();
+  }
+
+  const handleChangePlan = (e) => {
+    e.preventDefault();
+    router.push({
+      pathname: '/membership',
+    });
+  }
 
   const handleUpdateAccount = (payload) => {
     const data = {
@@ -650,6 +686,43 @@ function Account({
                               </Formik>
                             </div>
                           </div>
+                          {myPlan && myPlan.hasOwnProperty('name') && (<div className="card">
+                            <div className="card-header">
+                              <h5>My Plan</h5>
+                            </div>
+                            <div className="card-body">
+                            <div className="row">
+                            <div className="col-md-12">
+                              <div className="form-group">
+                                  <label>
+                                    Current Plan{' '}
+                                    <span className="required">*</span>
+                                  </label>
+                                  <input
+                                    readOnly
+                                    required
+                                    className="form-control"
+                                    name="current_plan"
+                                    type="text"
+                                    value={myPlan && myPlan.name}    
+                                  />
+                              </div>
+                            </div>
+                            <></>
+                            <div className="col-md-3">
+                              <button onClick={handleCancelPlan} className="cancel-plan-btn">
+                                  Cancel Plan
+                              </button>
+                            </div>
+                            <div className="col-md-4">
+                              <button onClick={handleChangePlan} className="btn btn-fill-out submit font-weight-bold">
+                                  Change Plan
+                              </button>
+                            </div>
+                            </div>
+                            
+                            </div>
+                          </div>)}
                         </div>
                       </div>
                     </div>
@@ -668,6 +741,7 @@ const mapStateToProps = (state) => ({
   orders: state.order,
   errors: state.errors,
   auth: state.auth,
+  products: state.products
 });
 
 const mapDispatchToProps = {
@@ -676,6 +750,8 @@ const mapDispatchToProps = {
   UpdateAccount,
   DeleteAccount,
   ChangePassword,
+  getMyPlan,
+  cancelPlan
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

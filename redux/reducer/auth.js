@@ -47,6 +47,11 @@ export default (state = initialState, action) => {
         ...state,
         message: 'Account verified successfully!',
       };
+    case Types.REQUEST_RESET_PASSWORD:
+      return {
+        ...state,
+        message: action.payload.message,
+      };
     case Types.RESET_PASSWORD:
       return {
         ...state,

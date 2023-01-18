@@ -148,7 +148,6 @@ export const changePlan = (payload) => async (dispatch) => {
     const response = await axios.post('/change-my-plan', payload, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
-    console.log('subscription results: ', response.data);
     localStorage.removeItem('order-details');
     localStorage.removeItem('plan-details');
     localStorage.removeItem('my-plan');
@@ -162,7 +161,36 @@ export const changePlan = (payload) => async (dispatch) => {
     dispatch(closeLoader());
   } catch (error) {
     if (error.response.data.message.includes('Unauthenticated')) {
-      localStorage.setItem('prev_page', 'checkout');
+      localStorage.setItem('prev_page', 'account');
+      dispatch(Logout());
+    }
+    dispatch(
+      setErrors({
+        error: error.response.data.errors,
+        error_msg: error.response.data.message,
+      })
+    );
+    dispatch(closeLoader());
+  }
+};
+
+export const cancelPlan = () => async (dispatch) => {
+  dispatch(clearErrors());
+  dispatch(openLoader());
+  clearMessage();
+  try {
+    const response = await axios.post('/cancel-my-plan', {}, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+    localStorage.removeItem('my-plan');
+    dispatch({
+      type: Types.CANCEL_PLAN,
+      payload: response.data,
+    });
+    dispatch(closeLoader());
+  } catch (error) {
+    if (error.response.data.message.includes('Unauthenticated')) {
+      localStorage.setItem('prev_page', 'account');
       dispatch(Logout());
     }
     dispatch(
