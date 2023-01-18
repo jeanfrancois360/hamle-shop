@@ -83,6 +83,7 @@ function RequestPasswordReset({
   });
 
   const handleSubmit = (payload) => {
+    localStorage.setItem('user_email', payload.email)
     const data = {
       email: payload.email,
       device: 'web',
