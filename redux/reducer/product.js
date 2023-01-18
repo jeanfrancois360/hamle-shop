@@ -65,6 +65,13 @@ export default (
         plan: action.payload.plan,
       };
     }
+    case Types.CANCEL_PLAN: {
+      return {
+        ...state,
+        message: 'Plan canceled successfully',
+        plan: {}
+      };
+    }
     default:
       return state;
   }
