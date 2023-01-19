@@ -12447,3 +12447,7 @@ footer .hotline img {
 .password_with_icon{
   padding-right: 40px
 }
+
+.detail_view{
+  width: 900px;
+}

@@ -88,3 +88,9 @@ export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
 
 export const OPEN_LOADER = 'OPEN_LOADER';
 export const CLOSE_LOADER = 'CLOSE_LOADER';
+
+
+//  DETAILS VIEW
+
+export const OPEN_DETAILS_VIEW = 'OPEN_DETAILS_VIEW';
+export const CLOSE_DETAILS_VIEW = 'CLOSE_DETAILS_VIEW';

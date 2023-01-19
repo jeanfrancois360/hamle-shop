@@ -19,6 +19,8 @@ import { MsgText } from '../components/elements/MsgText';
 import { useRouter } from 'next/router';
 import { getMyPlan } from '../redux/action/product';
 import { cancelPlan } from '../redux/action/product';
+import { openDetailsView } from '../redux/action/detailsViewAction';
+import DetailsView from '../components/ecommerce/DetailsView';
 
 function Account({
   getOrders,
@@ -31,7 +33,8 @@ function Account({
   ChangePassword,
   getMyPlan,
   products,
-  cancelPlan
+  cancelPlan,
+  openDetailsView
 }) {
   const router = useRouter();
   let initialValues = {
@@ -381,6 +384,7 @@ function Account({
                                           </td>
                                           <td>
                                             <a
+                                             onClick={(e) => openDetailsView(order.product_items)}
                                               href="#"
                                               className="btn-small d-block"
                                             >
@@ -733,6 +737,7 @@ function Account({
               </div>
             </div>
           </div>
+          <DetailsView />
         </Layout>
       </Protected>
     </>
@@ -753,7 +758,8 @@ const mapDispatchToProps = {
   DeleteAccount,
   ChangePassword,
   getMyPlan,
-  cancelPlan
+  cancelPlan,
+  openDetailsView
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);
