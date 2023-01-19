@@ -223,9 +223,12 @@ export const ResetPassword = (payload) => async (dispatch) => {
   dispatch(openLoader());
   clearMessage();
   try {
+    
+
     const response = await axios.post('/reset-password', payload, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
+    localStorage.removeItem('user_email')
     dispatch({
       type: Types.RESET_PASSWORD,
     });

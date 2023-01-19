@@ -2,13 +2,12 @@ import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import Layout from '../components/layout/Layout';
+import Layout from '../../components/layout/Layout';
 import { LineWave } from 'react-loader-spinner';
-import { ResetPassword } from '../redux/action/auth';
+import { ResetPassword } from '../../redux/action/auth';
 import { useEffect, useState } from 'react';
-import { MsgText } from '../components/elements/MsgText';
-import { closeLoader } from '../redux/action/loader';
-import { BsFillEnvelopeFill } from 'react-icons/bs';
+import { MsgText } from '../../components/elements/MsgText';
+import { closeLoader } from '../../redux/action/loader';
 import { useRouter } from 'next/router';
 
 function PasswordReset({
@@ -19,13 +18,15 @@ function PasswordReset({
   closeLoader,
 }) {
   let initialValues = {
-    password: ''
+    password: '',
+    passwordConfirmation: '' 
   };
-
+  
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [formValues, setFormValues] = useState(initialValues);
   const router = useRouter();
+  const {token} = router.query;
 
   const notify = (msg_type) => {
     if (msg_type === 'success')
@@ -58,6 +59,12 @@ function PasswordReset({
   }, [errors]);
 
   useEffect(() => {
+    if (auth.message != '') {
+      setSuccessMsg(auth.message);
+    }
+  }, [auth]);
+
+  useEffect(() => {
     if (errorMsg) {
       notify('error');
     }
@@ -80,13 +87,17 @@ function PasswordReset({
       'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
     )
     .label('Password'),
+    passwordConfirmation: Yup.string()
+     .oneOf([Yup.ref('password'), null], 'Passwords must match')
   });
 
   const handleSubmit = (payload) => {
+   
     const data = {
         device: 'web',
         email: localStorage.getItem('user_email') || 'No found',
         password: payload.password,
+        token
     };
     ResetPassword(data);
   };
@@ -134,6 +145,24 @@ function PasswordReset({
                               {touched.password && errors.password && (
                                 <MsgText
                                   text={errors.password}
+                                  textColor="danger"
+                                />
+                              )}
+                              
+                              <div className="form-group">
+                                <input
+                                  type="password"
+                                  name="password"
+                                  placeholder="Confirm new password"
+                                  value={values.email}
+                                  onChange={handleChange('passwordConfirmation')}
+                                  onBlur={handleBlur('passwordConfirmation')}
+                                  autoComplete={`${true}`}
+                                />
+                              </div>
+                              {touched.passwordConfirmation && errors.passwordConfirmation && (
+                                <MsgText
+                                  text={errors.passwordConfirmation}
                                   textColor="danger"
                                 />
                               )}
