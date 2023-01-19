@@ -12434,3 +12434,16 @@ footer .hotline img {
   border-radius: 10px;
   cursor: pointer;
 }
+
+.toggle_pwd{
+  float: right;
+  margin: -40px 15px -10px 0px;
+  position: relative;
+  cursor: pointer
+}
+.toggle_pwd i {
+  font-size: 20px;
+}
+.password_with_icon{
+  padding-right: 40px
+}

@@ -19,12 +19,12 @@ function PasswordReset({
 }) {
   let initialValues = {
     password: '',
-    passwordConfirmation: '' 
   };
   
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [formValues, setFormValues] = useState(initialValues);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const {token} = router.query;
 
@@ -132,40 +132,26 @@ function PasswordReset({
                           }) => (
                             <form method="post" onSubmit={handleSubmit}>
                               <div className="form-group">
-                                <input
-                                  type="password"
-                                  name="password"
-                                  placeholder="Enter new password"
-                                  value={values.email}
-                                  onChange={handleChange('password')}
-                                  onBlur={handleBlur('password')}
-                                  autoComplete={`${true}`}
-                                />
-                              </div>
+                                    <input
+                                      className="password_with_icon"
+                                      required=""
+                                      type={showPassword ? 'text' : 'password'}
+                                      name="password"
+                                      placeholder="Enter your new password"
+                                      value={values.password}
+                                      onChange={handleChange('password')}
+                                      onBlur={handleBlur('password')}
+                                      autoComplete={`${true}`}
+                                    />
+                                    <span className="toggle_pwd" onClick={() => setShowPassword(!showPassword)}><i class={!showPassword ? 'fi-rs-eye' : 'fi-rs-eye-crossed'}></i></span>
+                                  </div>
                               {touched.password && errors.password && (
                                 <MsgText
                                   text={errors.password}
                                   textColor="danger"
                                 />
                               )}
-                              
-                              <div className="form-group">
-                                <input
-                                  type="password"
-                                  name="password"
-                                  placeholder="Confirm new password"
-                                  value={values.email}
-                                  onChange={handleChange('passwordConfirmation')}
-                                  onBlur={handleBlur('passwordConfirmation')}
-                                  autoComplete={`${true}`}
-                                />
-                              </div>
-                              {touched.passwordConfirmation && errors.passwordConfirmation && (
-                                <MsgText
-                                  text={errors.passwordConfirmation}
-                                  textColor="danger"
-                                />
-                              )}
+                        
                               <br />
                               {loader.isLoading ? (
                                 <button
