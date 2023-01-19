@@ -17,6 +17,7 @@ function Login({ auth, SignIn, errors, loader }) {
   };
 
   const [errorMsg, setErrorMsg] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const notify = (msg_type) => {
     if (msg_type === 'error')
       toast.error(errorMsg, {
@@ -118,18 +119,20 @@ function Login({ auth, SignIn, errors, loader }) {
                                   textColor="danger"
                                 />
                               )}
-                              <div className="form-group">
-                                <input
-                                  required=""
-                                  type="password"
-                                  name="password"
-                                  placeholder="Your password *"
-                                  value={values.password}
-                                  onChange={handleChange('password')}
-                                  onBlur={handleBlur('password')}
-                                  autoComplete={`${true}`}
-                                />
-                              </div>
+                             <div className="form-group">
+                                    <input
+                                      className="password_with_icon"
+                                      required=""
+                                      type={showPassword ? 'text' : 'password'}
+                                      name="password"
+                                      placeholder="Your password *"
+                                      value={values.password}
+                                      onChange={handleChange('password')}
+                                      onBlur={handleBlur('password')}
+                                      autoComplete={`${true}`}
+                                    />
+                                    <span className="toggle_pwd" onClick={() => setShowPassword(!showPassword)}><i class={!showPassword ? 'fi-rs-eye' : 'fi-rs-eye-crossed'}></i></span>
+                                  </div>
                               {touched.password && errors.password && (
                                 <MsgText
                                   text={errors.password}

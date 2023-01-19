@@ -9,6 +9,8 @@ import auth from './auth';
 import errors from './errors';
 import loader from './loader';
 import order from './order';
+import detailsView from './detailsView';
+
 
 const rootReducer = combineReducers({
   auth,
@@ -21,6 +23,8 @@ const rootReducer = combineReducers({
   errors,
   loader,
   order,
+  detailsView
+
 });
 
 export default rootReducer;

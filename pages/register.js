@@ -24,6 +24,7 @@ function Register({ auth, SignUp, errors, loader }) {
   const [errorMsg, setErrorMsg] = useState('');
   const [error, setError] = useState('');
   const [ip, setIp] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const notify = (msg_type) => {
     if (msg_type === 'success')
       toast.success(successMsg, {
@@ -313,8 +314,9 @@ function Register({ auth, SignUp, errors, loader }) {
                                 <div className="col-md-6">
                                   <div className="form-group">
                                     <input
+                                      className="password_with_icon"
                                       required=""
-                                      type="password"
+                                      type={showPassword ? 'text' : 'password'}
                                       name="password"
                                       placeholder="Your password *"
                                       value={values.password}
@@ -322,6 +324,7 @@ function Register({ auth, SignUp, errors, loader }) {
                                       onBlur={handleBlur('password')}
                                       autoComplete={`${true}`}
                                     />
+                                    <span className="toggle_pwd" onClick={() => setShowPassword(!showPassword)}><i class={!showPassword ? 'fi-rs-eye' : 'fi-rs-eye-crossed'}></i></span>
                                   </div>
                                   {touched.password && errors.password && (
                                     <MsgText
