@@ -52,6 +52,8 @@ function Account({
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [myPlan, setMyPlan] = useState('')
+  const [showPassword, setShowPassword] = useState(false);
+  const [_showPassword, _setShowPassword] = useState(false);
   const notify = (msg_type) => {
     if (msg_type === 'success')
       toast.success(successMsg, {
@@ -613,25 +615,24 @@ function Account({
                                   <form method="post" onSubmit={handleSubmit}>
                                     <div className="row">
                                       <div className="col-md-6">
-                                        <div className="form-group">
+                                      <div className="form-group">
                                           <label>
                                             Current Password{' '}
                                             <span className="required">*</span>
                                           </label>
                                           <input
                                             required=""
+                                            type={_showPassword ? 'text' : 'password'}
                                             className="form-control"
                                             name="current_password"
-                                            type="password"
                                             value={values.current_password}
                                             onChange={handleChange(
                                               'current_password'
                                             )}
-                                            onBlur={handleBlur(
-                                              'current_password'
-                                            )}
+                                            onBlur={handleBlur('current_password')}
                                             autoComplete={`${true}`}
                                           />
+                                          <span className="toggle_pwd" onClick={() => _setShowPassword(!_showPassword)}><i class={!_showPassword ? 'fi-rs-eye' : 'fi-rs-eye-crossed'}></i></span>
                                         </div>
                                         {touched.current_password &&
                                           errors.current_password && (
@@ -650,9 +651,9 @@ function Account({
                                           </label>
                                           <input
                                             required=""
+                                            type={showPassword ? 'text' : 'password'}
                                             className="form-control"
                                             name="new_password"
-                                            type="password"
                                             value={values.new_password}
                                             onChange={handleChange(
                                               'new_password'
@@ -660,6 +661,7 @@ function Account({
                                             onBlur={handleBlur('new_password')}
                                             autoComplete={`${true}`}
                                           />
+                                          <span className="toggle_pwd" onClick={() => setShowPassword(!showPassword)}><i class={!showPassword ? 'fi-rs-eye' : 'fi-rs-eye-crossed'}></i></span>
                                         </div>
                                         {touched.new_password &&
                                           errors.new_password && (
