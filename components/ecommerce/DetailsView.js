@@ -3,8 +3,8 @@ import React from 'react';
 /* eslint-disable @next/next/no-img-element */
 import { connect } from 'react-redux';
 import { Modal } from 'react-responsive-modal';
-import { closeDetailsView } from '../../redux/action/DetailsViewAction';
 import OrderDetails from './OrderDetails';
+import { closeDetailsView } from '../../redux/action/detailsViewAction';
 
 const DetailsView = ({ detailsView, closeDetailsView }) => {
   return (
