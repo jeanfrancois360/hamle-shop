@@ -55,7 +55,7 @@ export default (state = initialState, action) => {
     case Types.RESET_PASSWORD:
       return {
         ...state,
-        message: 'Password changed successfully',
+        message: 'Your password has been reset!',
       };
     case Types.CLEAR_MESSAGE:
       return {
@@ -67,3 +67,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+
