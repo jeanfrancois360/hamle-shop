@@ -57,6 +57,7 @@ function Account({
   const [myPlan, setMyPlan] = useState('')
   const [showPassword, setShowPassword] = useState(false);
   const [_showPassword, _setShowPassword] = useState(false);
+  const [hasExpired, setHasExpired] = useState(false);
   const notify = (msg_type) => {
     if (msg_type === 'success')
       toast.success(successMsg, {
@@ -151,6 +152,18 @@ function Account({
     if (products.plan) {
       console.log(products.plan)
       setMyPlan(products.plan);
+      // Check expiration time
+      let currentDate = new Date();
+      let expirationDate = moment(products.plan.ends_at);
+       expirationDate =  new Date(expirationDate);
+      let diff = currentDate.getTime() - expirationDate.getTime();   
+      let daydiff = diff / (1000 * 60 * 60 * 24);  
+      if(daydiff <= 0){
+        setHasExpired(true);
+      }
+      else{
+        setHasExpired(false);
+      }
     }
   }, [products]);
 
@@ -209,6 +222,13 @@ function Account({
   }
 
   const handleChangePlan = (e) => {
+    e.preventDefault();
+    router.push({
+      pathname: '/membership',
+    });
+  }
+
+  const handleRenewPlan = (e) => {
     e.preventDefault();
     router.push({
       pathname: '/membership',
@@ -364,6 +384,7 @@ function Account({
                                     </tr>
                                   </thead>
                                   <tbody>
+                                  
                                     {orders &&
                                       orders.items.length > 0 &&
                                       orders.items.map((order) => (
@@ -395,6 +416,14 @@ function Account({
                                       ))}
                                   </tbody>
                                 </table>
+                                {orders &&
+                                      orders.items.length == 0 && (
+                                      <div className="text-center"><h6 className="text-center">Loading...</h6></div>
+                                  )}
+                                  {!orders &&
+                                     (
+                                      <div className="text-center"><h6 className="text-center">No data found!</h6></div>
+                                  )}
                               </div>
                             </div>
                           </div>
@@ -698,21 +727,15 @@ function Account({
                             </div>
                             <div className="card-body">
                             <div className="row">
-                            <div className="col-md-12">
-                              <div className="form-group">
-                                  <label>
-                                    Current Plan{' '}
-                                    <span className="required">*</span>
-                                  </label>
-                                  <input
-                                    readOnly
-                                    required
-                                    className="form-control"
-                                    name="current_plan"
-                                    type="text"
-                                    value={myPlan && myPlan.name}    
-                                  />
-                              </div>
+                            <div className="col-md-12 mb-30">
+                            <ul class="list-group list-group-flush ">
+                              <li class="list-group-item"><strong className="text-primary">Name: </strong>{myPlan && myPlan.name} </li>
+                              <li class="list-group-item"><strong className="text-primary">Description: </strong>{myPlan && myPlan.description} </li>
+                              <li class="list-group-item"><strong className="text-primary">Expiration date: </strong>{moment(myPlan && myPlan.ends_at).format(
+                                              'MMM D, YYYY'
+                                            )} </li>
+                            </ul>
+                              
                             </div>
                             <></>
                             <div className="col-md-3">
@@ -720,11 +743,17 @@ function Account({
                                   Cancel Plan
                               </button>
                             </div>
-                            <div className="col-md-4">
+                            {!hasExpired ?(<div className="col-md-4">
                               <button onClick={handleChangePlan} className="btn btn-fill-out submit font-weight-bold">
                                   Change Plan
                               </button>
+                            </div>): (
+                              <div className="col-md-4">
+                              <button onClick={handleRenewPlan} className="renew-plan-btn">
+                                  Renew Plan
+                              </button>
                             </div>
+                            )}
                             </div>
                             
                             </div>
