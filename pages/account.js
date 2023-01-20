@@ -57,6 +57,7 @@ function Account({
   const [myPlan, setMyPlan] = useState('')
   const [showPassword, setShowPassword] = useState(false);
   const [_showPassword, _setShowPassword] = useState(false);
+  const [hasExpired, setHasExpired] = useState(false);
   const notify = (msg_type) => {
     if (msg_type === 'success')
       toast.success(successMsg, {
@@ -151,6 +152,18 @@ function Account({
     if (products.plan) {
       console.log(products.plan)
       setMyPlan(products.plan);
+      // Check expiration time
+      let currentDate = new Date();
+      let expirationDate = moment(products.plan.ends_at);
+       expirationDate =  new Date(expirationDate);
+      let diff = currentDate.getTime() - expirationDate.getTime();   
+      let daydiff = diff / (1000 * 60 * 60 * 24);  
+      if(daydiff <= 0){
+        setHasExpired(true);
+      }
+      else{
+        setHasExpired(false);
+      }
     }
   }, [products]);
 
@@ -209,6 +222,13 @@ function Account({
   }
 
   const handleChangePlan = (e) => {
+    e.preventDefault();
+    router.push({
+      pathname: '/membership',
+    });
+  }
+
+  const handleRenewPlan = (e) => {
     e.preventDefault();
     router.push({
       pathname: '/membership',
@@ -723,11 +743,17 @@ function Account({
                                   Cancel Plan
                               </button>
                             </div>
-                            <div className="col-md-4">
+                            {!hasExpired ?(<div className="col-md-4">
                               <button onClick={handleChangePlan} className="btn btn-fill-out submit font-weight-bold">
                                   Change Plan
                               </button>
+                            </div>): (
+                              <div className="col-md-4">
+                              <button onClick={handleRenewPlan} className="renew-plan-btn">
+                                  Renew Plan
+                              </button>
                             </div>
+                            )}
                             </div>
                             
                             </div>

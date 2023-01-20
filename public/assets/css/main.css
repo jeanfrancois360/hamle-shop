@@ -12451,3 +12451,14 @@ footer .hotline img {
 .detail_view{
   width: 900px;
 }
+
+.renew-plan-btn{
+  color: #000 !important;
+  background-color: orange;
+  border: 1px solid orange;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 15px 40px;
+  border-radius: 10px;
+  cursor: pointer;
+}

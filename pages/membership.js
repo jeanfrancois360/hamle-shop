@@ -72,7 +72,8 @@ function MemberShip({ getPlans, products, getMyPlan, errors }) {
                             onClick={() => handlePlan(plan)}
                             className="btn  btn-md"
                           >
-                            Subscribe Now
+                            {myPlan && myPlan.name == plan.name ? 'Current' : 'Change Now'}
+                            {!myPlan && 'Subscribe Now'}
                           </button>
                         </div>
                       </div>
