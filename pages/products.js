@@ -54,6 +54,11 @@ const Products = ({ products, getProducts, getCategories }) => {
     getPaginatedProducts = products.items
       .filter((product) => product.category.name == titlex)
       .slice(startIndex, endIndex);
+  } else if (searchTerm != undefined) {
+    console.log('filtering...' + searchTerm);
+    getPaginatedProducts = products.items
+      .filter((product) => product.name.includes(searchTerm))
+      .slice(startIndex, endIndex);
   } else {
     console.log('not filtering...' + titlex);
     getPaginatedProducts = products.items.slice(startIndex, endIndex);
@@ -140,7 +145,7 @@ const Products = ({ products, getProducts, getCategories }) => {
                 <div className="sidebar-widget widget-category-2 mb-30">
                   <h5 className="section-title style-1 mb-30">Category</h5>
                   <CategoryProduct
-                    products={products.items}
+                    products={getPaginatedProducts}
                     categories={products.categories}
                   />
                 </div>
