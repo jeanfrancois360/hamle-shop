@@ -9,6 +9,9 @@ import { addToCompare } from '../../redux/action/compareAction';
 import { openQuickView } from '../../redux/action/quickViewAction';
 import { addToWishlist } from '../../redux/action/wishlistAction';
 import { numberWithCommas } from '../../util/util';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { currencyRate } from '../../constants';
 
 const SingleProduct = ({
   product,
@@ -17,6 +20,13 @@ const SingleProduct = ({
   addToWishlist,
   openQuickView,
 }) => {
+  const [currency, setCurrency] = useState('XAF');
+  useEffect(() => {
+    if (localStorage.getItem('default_currency')) {
+      setCurrency(localStorage.getItem('default_currency'));
+    }
+  }, []);
+
   const handleCart = (product) => {
     addToCart(product);
 
@@ -152,11 +162,21 @@ const SingleProduct = ({
 
           <div className="product-card-bottom">
             <div className="product-price">
-              {/* <span>{numberWithCommas(product.unit_price)} XAF</span> */}
-              <span>
-                {new Intl.NumberFormat().format(product.unit_price?.toString())}{' '}
-                XAF
-              </span>
+              {currency == 'XAF' ? (
+                <span>
+                  {new Intl.NumberFormat().format(
+                    product.unit_price?.toString()
+                  )}{' '}
+                  {currency}
+                </span>
+              ) : (
+                <span>
+                  {'$'}
+                  {new Intl.NumberFormat().format(
+                    Math.ceil(product.unit_price / currencyRate)?.toString()
+                  )}
+                </span>
+              )}
               {/* <span className="old-price">
                 {product.unit_price && `$ ${product.unit_price}`}
               </span> */}

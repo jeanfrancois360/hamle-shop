@@ -5,16 +5,21 @@ import { getPlans, getMyPlan } from '../redux/action/product';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { currencyRate } from '../constants';
 
 function MemberShip({ getPlans, products, getMyPlan, errors }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [myPlan, setMyPlan] = useState('');
+  const [currency, setCurrency] = useState('XAF');
   const router = useRouter();
 
   useEffect(() => {
     getPlans();
     if (localStorage.getItem('isAuthenticated')) {
       setIsAuthenticated(localStorage.getItem('isAuthenticated'));
+    }
+    if (localStorage.getItem('default_currency')) {
+      setCurrency(localStorage.getItem('default_currency'));
     }
   }, []);
 
@@ -57,13 +62,22 @@ function MemberShip({ getPlans, products, getMyPlan, errors }) {
                             alt=""
                           />
                           <h4>{plan.name.toUpperCase()}</h4>
-                          <h5>
-                            {' '}
-                            {new Intl.NumberFormat().format(
-                              plan.price?.toString()
-                            )}{' '}
-                            XAF
-                          </h5>
+                          {currency == 'XAF' ? (
+                            <h5>
+                              {new Intl.NumberFormat().format(
+                                plan.price?.toString()
+                              )}{' '}
+                              {currency}
+                            </h5>
+                          ) : (
+                            <h5>
+                              {'$'}
+                              {new Intl.NumberFormat().format(
+                                Math.ceil(plan.price / currencyRate)?.toString()
+                              )}
+                            </h5>
+                          )}
+
                           <p>{plan.description}</p>
                           <button
                             disabled={
@@ -72,7 +86,9 @@ function MemberShip({ getPlans, products, getMyPlan, errors }) {
                             onClick={() => handlePlan(plan)}
                             className="btn  btn-md"
                           >
-                            {myPlan && myPlan.name == plan.name ? 'Current' : 'Change Now'}
+                            {myPlan && myPlan.name == plan.name
+                              ? 'Current'
+                              : 'Change Now'}
                             {!myPlan && 'Subscribe Now'}
                           </button>
                         </div>

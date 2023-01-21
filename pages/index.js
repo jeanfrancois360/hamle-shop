@@ -17,9 +17,15 @@ import { connect } from 'react-redux';
 import QuickView from '../components/ecommerce/QuickView';
 import { getProducts, getCategories } from '../redux/action/product';
 import { useEffect } from 'react';
+import { useState } from 'react';
+import { currencyRate } from '../constants';
 
 function Home({ products, getProducts, getCategories }) {
+  const [currency, setCurrency] = useState('XAF');
   useEffect(() => {
+    if (localStorage.getItem('default_currency')) {
+      setCurrency(localStorage.getItem('default_currency'));
+    }
     getCategories(10);
     getProducts(9);
   }, []);
@@ -100,12 +106,23 @@ function Home({ products, getProducts, getCategories }) {
                         <h6>
                           <a>{product.name}</a>
                         </h6>
-                        <p className="price mb-0 mt-5">
-                          {new Intl.NumberFormat().format(
-                            product.unit_price?.toString()
-                          )}{' '}
-                          XAF
-                        </p>
+                        {currency == 'XAF' ? (
+                          <p className="price mb-0 mt-5">
+                            {new Intl.NumberFormat().format(
+                              product.unit_price?.toString()
+                            )}{' '}
+                            {currency}
+                          </p>
+                        ) : (
+                          <p className="price mb-0 mt-5">
+                            {'$'}
+                            {new Intl.NumberFormat().format(
+                              Math.ceil(
+                                product.unit_price / currencyRate
+                              )?.toString()
+                            )}
+                          </p>
+                        )}
                         <div className="product-rate">
                           <div
                             className="product-rating"

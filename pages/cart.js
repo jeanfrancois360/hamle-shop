@@ -11,6 +11,8 @@ import {
   openCart,
 } from '../redux/action/cart';
 import { useState } from 'react';
+import { currencyRate } from '../constants';
+import { useEffect } from 'react';
 
 const Cart = ({
   openCart,
@@ -23,9 +25,20 @@ const Cart = ({
   clearCart,
   addOrder,
 }) => {
+  const [currency, setCurrency] = useState('XAF');
+
+  useEffect(() => {
+    if (localStorage.getItem('default_currency')) {
+      setCurrency(localStorage.getItem('default_currency'));
+    }
+  }, []);
   const price = () => {
     let price = 0;
-    cartItems.forEach((item) => (price += item.unit_price * item.qty));
+    cartItems.forEach(
+      (item) =>
+        (price +=
+          parseInt(Math.ceil(item.unit_price / currencyRate)) * item.qty)
+    );
 
     return price;
   };
@@ -105,12 +118,23 @@ const Cart = ({
                             </div>
                           </td>
                           <td className="price" data-title="Price">
-                            <h4 className="text-brand">
-                              {new Intl.NumberFormat().format(
-                                item.unit_price?.toString()
-                              )}{' '}
-                              XAF
-                            </h4>
+                            {currency == 'XAF' ? (
+                              <h4 className="text-brand">
+                                {new Intl.NumberFormat().format(
+                                  item.unit_price?.toString()
+                                )}{' '}
+                                {currency}
+                              </h4>
+                            ) : (
+                              <h4 className="text-brand">
+                                {'$'}
+                                {new Intl.NumberFormat().format(
+                                  Math.ceil(
+                                    item.unit_price / currencyRate
+                                  )?.toString()
+                                )}
+                              </h4>
+                            )}
                           </td>
                           <td
                             className="text-center detail-info"
@@ -135,12 +159,23 @@ const Cart = ({
                             </div>
                           </td>
                           <td className="text-right" data-title="Cart">
-                            <h4 className="text-body">
-                              {new Intl.NumberFormat().format(
-                                (item.qty * item.unit_price)?.toString()
-                              )}{' '}
-                              XAF
-                            </h4>
+                            {currency == 'XAF' ? (
+                              <h4 className="text-body">
+                                {new Intl.NumberFormat().format(
+                                  (item.qty * item.unit_price)?.toString()
+                                )}{' '}
+                                {currency}
+                              </h4>
+                            ) : (
+                              <h4 className="text-body">
+                                {'$'}
+                                {new Intl.NumberFormat().format(
+                                  parseInt(
+                                    Math.ceil(item.unit_price / currencyRate)
+                                  ) * item.qty?.toString()
+                                )}
+                              </h4>
+                            )}
                           </td>
                           <td className="action" data-title="Remove">
                             <a
@@ -177,7 +212,6 @@ const Cart = ({
                   <i className="fi-rs-fingerprint"></i>
                 </div>
                 <div className="row mb-50">
-                 
                   <div className="col-lg-12 col-md-12">
                     <div className="border p-md-4 p-30 border-radius cart-totals">
                       <div className="heading_s1 mb-3">
@@ -191,12 +225,21 @@ const Cart = ({
                                 Cart Subtotal
                               </td>
                               <td className="cart_total_amount">
-                                <span className="font-lg fw-900 text-brand">
-                                  {new Intl.NumberFormat().format(
-                                    price()?.toString()
-                                  )}{' '}
-                                  XAF
-                                </span>
+                                {currency == 'XAF' ? (
+                                  <span className="font-xl fw-900 text-brand">
+                                    {new Intl.NumberFormat().format(
+                                      price()?.toString()
+                                    )}{' '}
+                                    {currency}
+                                  </span>
+                                ) : (
+                                  <span className="font-xl fw-900 text-brand">
+                                    {'$'}
+                                    {new Intl.NumberFormat().format(
+                                      price()?.toString()
+                                    )}
+                                  </span>
+                                )}
                               </td>
                             </tr>
                             <tr>
@@ -210,28 +253,38 @@ const Cart = ({
                               <td className="cart_total_label">Total</td>
                               <td className="cart_total_amount">
                                 <strong>
-                                  <span className="font-xl fw-900 text-brand">
-                                    {new Intl.NumberFormat().format(
-                                      price()?.toString()
-                                    )}{' '}
-                                    XAF
-                                  </span>
+                                  {currency == 'XAF' ? (
+                                    <span className="font-xl fw-900 text-brand">
+                                      {new Intl.NumberFormat().format(
+                                        price()?.toString()
+                                      )}{' '}
+                                      {currency}
+                                    </span>
+                                  ) : (
+                                    <span className="font-xl fw-900 text-brand">
+                                      {'$'}
+                                      {new Intl.NumberFormat().format(
+                                        price()?.toString()
+                                      )}
+                                    </span>
+                                  )}
                                 </strong>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
-                      <div className="text-end"><a
-                        onClick={() =>
-                          localStorage.setItem('order-type', 'product')
-                        }
-                        href="checkout"
-                        className="btn"
-                      >
-                        <i className="fi-rs-box-alt mr-10"></i>
-                        Proceed To CheckOut
-                      </a>
+                      <div className="text-end">
+                        <a
+                          onClick={() =>
+                            localStorage.setItem('order-type', 'product')
+                          }
+                          href="checkout"
+                          className="btn"
+                        >
+                          <i className="fi-rs-box-alt mr-10"></i>
+                          Proceed To CheckOut
+                        </a>
                       </div>
                     </div>
                   </div>

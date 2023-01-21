@@ -21,6 +21,7 @@ import { getMyPlan } from '../redux/action/product';
 import { cancelPlan } from '../redux/action/product';
 import { openDetailsView } from '../redux/action/detailsViewAction';
 import DetailsView from '../components/ecommerce/DetailsView';
+import { currencyRate } from '../constants';
 
 function Account({
   getOrders,
@@ -34,7 +35,7 @@ function Account({
   getMyPlan,
   products,
   cancelPlan,
-  openDetailsView
+  openDetailsView,
 }) {
   const router = useRouter();
   let initialValues = {
@@ -54,10 +55,11 @@ function Account({
   const [activeIndex, setActiveIndex] = useState(1);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [myPlan, setMyPlan] = useState('')
+  const [myPlan, setMyPlan] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [_showPassword, _setShowPassword] = useState(false);
   const [hasExpired, setHasExpired] = useState(false);
+  const [currency, setCurrency] = useState('XAF');
   const notify = (msg_type) => {
     if (msg_type === 'success')
       toast.success(successMsg, {
@@ -131,6 +133,9 @@ function Account({
       setUser(JSON.parse(localStorage.getItem('user')));
       setToken(localStorage.getItem('token'));
     }
+    if (localStorage.getItem('default_currency')) {
+      setCurrency(localStorage.getItem('default_currency'));
+    }
     getOrders();
     getMyPlan();
   }, []);
@@ -150,18 +155,17 @@ function Account({
 
   useEffect(() => {
     if (products.plan) {
-      console.log(products.plan)
+      console.log(products.plan);
       setMyPlan(products.plan);
       // Check expiration time
       let currentDate = new Date();
       let expirationDate = moment(products.plan.ends_at);
-       expirationDate =  new Date(expirationDate);
-      let diff = currentDate.getTime() - expirationDate.getTime();   
-      let daydiff = diff / (1000 * 60 * 60 * 24);  
-      if(daydiff <= 0){
+      expirationDate = new Date(expirationDate);
+      let diff = currentDate.getTime() - expirationDate.getTime();
+      let daydiff = diff / (1000 * 60 * 60 * 24);
+      if (daydiff <= 0) {
         setHasExpired(true);
-      }
-      else{
+      } else {
         setHasExpired(false);
       }
     }
@@ -219,21 +223,21 @@ function Account({
   const handleCancelPlan = (e) => {
     e.preventDefault();
     cancelPlan();
-  }
+  };
 
   const handleChangePlan = (e) => {
     e.preventDefault();
     router.push({
       pathname: '/membership',
     });
-  }
+  };
 
   const handleRenewPlan = (e) => {
     e.preventDefault();
     router.push({
       pathname: '/membership',
     });
-  }
+  };
 
   const handleUpdateAccount = (payload) => {
     const data = {
@@ -384,7 +388,6 @@ function Account({
                                     </tr>
                                   </thead>
                                   <tbody>
-                                  
                                     {orders &&
                                       orders.items.length > 0 &&
                                       orders.items.map((order) => (
@@ -396,16 +399,30 @@ function Account({
                                             )}
                                           </td>
                                           <td>{order.state}</td>
-                                          <td>
-                                            {' '}
-                                            {new Intl.NumberFormat().format(
-                                              order.price?.toString()
-                                            )}{' '}
-                                            XAF
-                                          </td>
+                                          {currency == 'XAF' ? (
+                                            <td>
+                                              {new Intl.NumberFormat().format(
+                                                order.price?.toString()
+                                              )}{' '}
+                                              {currency}
+                                            </td>
+                                          ) : (
+                                            <td>
+                                              {'$'}
+                                              {new Intl.NumberFormat().format(
+                                                Math.ceil(
+                                                  order.price / currencyRate
+                                                )?.toString()
+                                              )}
+                                            </td>
+                                          )}
                                           <td>
                                             <a
-                                             onClick={(e) => openDetailsView(order.product_items)}
+                                              onClick={(e) =>
+                                                openDetailsView(
+                                                  order.product_items
+                                                )
+                                              }
                                               href="#"
                                               className="btn-small d-block"
                                             >
@@ -416,14 +433,18 @@ function Account({
                                       ))}
                                   </tbody>
                                 </table>
-                                {orders &&
-                                      orders.items.length == 0 && (
-                                      <div className="text-center"><h6 className="text-center">Loading...</h6></div>
-                                  )}
-                                  {!orders &&
-                                     (
-                                      <div className="text-center"><h6 className="text-center">No data found!</h6></div>
-                                  )}
+                                {orders && orders.items.length == 0 && (
+                                  <div className="text-center">
+                                    <h6 className="text-center">Loading...</h6>
+                                  </div>
+                                )}
+                                {!orders && (
+                                  <div className="text-center">
+                                    <h6 className="text-center">
+                                      No data found!
+                                    </h6>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -648,24 +669,43 @@ function Account({
                                   <form method="post" onSubmit={handleSubmit}>
                                     <div className="row">
                                       <div className="col-md-6">
-                                      <div className="form-group">
+                                        <div className="form-group">
                                           <label>
                                             Current Password{' '}
                                             <span className="required">*</span>
                                           </label>
                                           <input
                                             required=""
-                                            type={_showPassword ? 'text' : 'password'}
+                                            type={
+                                              _showPassword
+                                                ? 'text'
+                                                : 'password'
+                                            }
                                             className="form-control"
                                             name="current_password"
                                             value={values.current_password}
                                             onChange={handleChange(
                                               'current_password'
                                             )}
-                                            onBlur={handleBlur('current_password')}
+                                            onBlur={handleBlur(
+                                              'current_password'
+                                            )}
                                             autoComplete={`${true}`}
                                           />
-                                          <span className="toggle_pwd" onClick={() => _setShowPassword(!_showPassword)}><i class={!_showPassword ? 'fi-rs-eye' : 'fi-rs-eye-crossed'}></i></span>
+                                          <span
+                                            className="toggle_pwd"
+                                            onClick={() =>
+                                              _setShowPassword(!_showPassword)
+                                            }
+                                          >
+                                            <i
+                                              class={
+                                                !_showPassword
+                                                  ? 'fi-rs-eye'
+                                                  : 'fi-rs-eye-crossed'
+                                              }
+                                            ></i>
+                                          </span>
                                         </div>
                                         {touched.current_password &&
                                           errors.current_password && (
@@ -684,7 +724,9 @@ function Account({
                                           </label>
                                           <input
                                             required=""
-                                            type={showPassword ? 'text' : 'password'}
+                                            type={
+                                              showPassword ? 'text' : 'password'
+                                            }
                                             className="form-control"
                                             name="new_password"
                                             value={values.new_password}
@@ -694,7 +736,20 @@ function Account({
                                             onBlur={handleBlur('new_password')}
                                             autoComplete={`${true}`}
                                           />
-                                          <span className="toggle_pwd" onClick={() => setShowPassword(!showPassword)}><i class={!showPassword ? 'fi-rs-eye' : 'fi-rs-eye-crossed'}></i></span>
+                                          <span
+                                            className="toggle_pwd"
+                                            onClick={() =>
+                                              setShowPassword(!showPassword)
+                                            }
+                                          >
+                                            <i
+                                              class={
+                                                !showPassword
+                                                  ? 'fi-rs-eye'
+                                                  : 'fi-rs-eye-crossed'
+                                              }
+                                            ></i>
+                                          </span>
                                         </div>
                                         {touched.new_password &&
                                           errors.new_password && (
@@ -721,43 +776,69 @@ function Account({
                               </Formik>
                             </div>
                           </div>
-                          {myPlan && myPlan.hasOwnProperty('name') && (<div className="card">
-                            <div className="card-header">
-                              <h5>My Plan</h5>
+                          {myPlan && myPlan.hasOwnProperty('name') && (
+                            <div className="card">
+                              <div className="card-header">
+                                <h5>My Plan</h5>
+                              </div>
+                              <div className="card-body">
+                                <div className="row">
+                                  <div className="col-md-12 mb-30">
+                                    <ul class="list-group list-group-flush ">
+                                      <li class="list-group-item">
+                                        <strong className="text-primary">
+                                          Name:{' '}
+                                        </strong>
+                                        {myPlan && myPlan.name}{' '}
+                                      </li>
+                                      <li class="list-group-item">
+                                        <strong className="text-primary">
+                                          Description:{' '}
+                                        </strong>
+                                        {myPlan && myPlan.description}{' '}
+                                      </li>
+                                      <li class="list-group-item">
+                                        <strong className="text-primary">
+                                          Expiration date:{' '}
+                                        </strong>
+                                        {moment(
+                                          myPlan && myPlan.ends_at
+                                        ).format('MMM D, YYYY')}{' '}
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  <></>
+                                  <div className="col-md-3">
+                                    <button
+                                      onClick={handleCancelPlan}
+                                      className="cancel-plan-btn"
+                                    >
+                                      Cancel Plan
+                                    </button>
+                                  </div>
+                                  {!hasExpired ? (
+                                    <div className="col-md-4">
+                                      <button
+                                        onClick={handleChangePlan}
+                                        className="btn btn-fill-out submit font-weight-bold"
+                                      >
+                                        Change Plan
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div className="col-md-4">
+                                      <button
+                                        onClick={handleRenewPlan}
+                                        className="renew-plan-btn"
+                                      >
+                                        Renew Plan
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                            <div className="card-body">
-                            <div className="row">
-                            <div className="col-md-12 mb-30">
-                            <ul class="list-group list-group-flush ">
-                              <li class="list-group-item"><strong className="text-primary">Name: </strong>{myPlan && myPlan.name} </li>
-                              <li class="list-group-item"><strong className="text-primary">Description: </strong>{myPlan && myPlan.description} </li>
-                              <li class="list-group-item"><strong className="text-primary">Expiration date: </strong>{moment(myPlan && myPlan.ends_at).format(
-                                              'MMM D, YYYY'
-                                            )} </li>
-                            </ul>
-                              
-                            </div>
-                            <></>
-                            <div className="col-md-3">
-                              <button onClick={handleCancelPlan} className="cancel-plan-btn">
-                                  Cancel Plan
-                              </button>
-                            </div>
-                            {!hasExpired ?(<div className="col-md-4">
-                              <button onClick={handleChangePlan} className="btn btn-fill-out submit font-weight-bold">
-                                  Change Plan
-                              </button>
-                            </div>): (
-                              <div className="col-md-4">
-                              <button onClick={handleRenewPlan} className="renew-plan-btn">
-                                  Renew Plan
-                              </button>
-                            </div>
-                            )}
-                            </div>
-                            
-                            </div>
-                          </div>)}
+                          )}
                         </div>
                       </div>
                     </div>
@@ -777,7 +858,7 @@ const mapStateToProps = (state) => ({
   orders: state.order,
   errors: state.errors,
   auth: state.auth,
-  products: state.products
+  products: state.products,
 });
 
 const mapDispatchToProps = {
@@ -788,7 +869,7 @@ const mapDispatchToProps = {
   ChangePassword,
   getMyPlan,
   cancelPlan,
-  openDetailsView
+  openDetailsView,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

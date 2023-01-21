@@ -2,7 +2,17 @@ import Link from 'next/link';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import { addToCart } from '../../redux/action/cart';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { currencyRate } from '../../constants';
 const CompareTable = ({ data, features, deleteFromCompare, addToCart }) => {
+  const [currency, setCurrency] = useState('XAF');
+
+  useEffect(() => {
+    if (localStorage.getItem('default_currency')) {
+      setCurrency(localStorage.getItem('default_currency'));
+    }
+  }, []);
   const handleCart = (product) => {
     addToCart(product);
     toast('Product added to Cart !');
@@ -21,44 +31,43 @@ const CompareTable = ({ data, features, deleteFromCompare, addToCart }) => {
             {data.map((product) =>
               feature == 'preview' ? (
                 <td className="row_img">
-                  <img src={product.images[0].img} />
+                  <img src={'https://' + product.cover_image} />
                 </td>
               ) : feature == 'name' ? (
                 <td className="product_name">
                   <h5>
-                    <a href="#">{product.title}</a>
+                    <a href="#">{product.name}</a>
                   </h5>
                 </td>
               ) : feature == 'price' ? (
                 <td className="product_price">
-                  <span className="price">${product.price}</span>
-                </td>
-              ) : feature == 'rating' ? (
-                <td>
-                  <div className="rating_wrap">
-                    {product.review >= 0 && (
-                      <>
-                        <div className="product-rate d-inline-block">
-                          <div
-                            className="product-rating"
-                            style={{
-                              width: `${product.ratingScore}%`,
-                            }}
-                          ></div>
-                        </div>
-
-                        <span className="rating_num">({product.review})</span>
-                      </>
+                  <span className="price">
+                    {currency == 'XAF' ? (
+                      <h3 className="text-brand">
+                        {new Intl.NumberFormat().format(
+                          product.unit_price?.toString()
+                        )}{' '}
+                        {currency}
+                      </h3>
+                    ) : (
+                      <h3 className="text-brand">
+                        {'$'}
+                        {new Intl.NumberFormat().format(
+                          Math.ceil(
+                            product.unit_price / currencyRate
+                          )?.toString()
+                        )}
+                      </h3>
                     )}
-                  </div>
+                  </span>
                 </td>
               ) : feature == 'description' ? (
                 <td className="row_text font-xs">
-                  <p>{product.desc}</p>
+                  <p>{product.description}</p>
                 </td>
               ) : feature == 'stock' ? (
                 <td className="row_stock">
-                  {product.stock >= 0 ? (
+                  {product.quantity >= 0 ? (
                     <span>In Stock</span>
                   ) : (
                     <span className="text-danger font-weight-bold">
@@ -66,13 +75,9 @@ const CompareTable = ({ data, features, deleteFromCompare, addToCart }) => {
                     </span>
                   )}
                 </td>
-              ) : feature == 'weight' ? (
-                <td className="row_weight">{product.weight} gram</td>
-              ) : feature == 'dimensions' ? (
-                <td className="row_dimensions">N/A</td>
               ) : feature == 'buy' ? (
                 <td className="row_btn">
-                  {product.stock >= 0 ? (
+                  {product.quantity >= 0 ? (
                     <button
                       className="btn  btn-sm"
                       onClick={() => handleCart(product)}

@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import { MsgText } from '../components/elements/MsgText';
 import { useRouter } from 'next/router';
 import { addOrder, orderPayment } from '../redux/action/order';
+import { currencyRate } from '../constants';
 
 const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
   let initialValues = {
@@ -29,7 +30,12 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
 
   const price = () => {
     let price = 0;
-    cartItems.forEach((item) => (price += item.unit_price * item.qty));
+    cartItems.forEach(
+      (item) =>
+        (price +=
+          parseInt(Math.ceil(item.unit_price / currencyRate)) * item.qty)
+    );
+
     return price;
   };
 
@@ -41,6 +47,7 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
   const [user, setUser] = useState(null);
   const [orderType, setOrderType] = useState('');
   const [planDetails, setPlanDetails] = useState('');
+  const [currency, setCurrency] = useState('XAF');
   const router = useRouter();
 
   useEffect(() => {
@@ -52,7 +59,16 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
       setOrderType(localStorage.getItem('order-type'));
       setPlanDetails(JSON.parse(localStorage.getItem('plan-details')));
     }
+    if (localStorage.getItem('default_currency')) {
+      setCurrency(localStorage.getItem('default_currency'));
+    }
   }, []);
+
+  useEffect(() => {
+    if (currency == 'USD') {
+      setPaymentMethod('card');
+    }
+  }, [currency]);
 
   useEffect(() => {
     if (user) {
@@ -133,12 +149,26 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
     const orderDetails = JSON.parse(
       localStorage.getItem('order-details') || ''
     );
+    let amount = 0;
+    if (orderDetails) {
+      let items = JSON.parse(orderDetails.product_items);
+      items.map((item) => {
+        if (currency == 'USD') {
+          amount +=
+            parseInt(Math.ceil(item.price / currencyRate)) *
+            parseInt(item.quantity);
+        } else {
+          amount += item.price * parseInt(item.quantity);
+        }
+      });
+    }
+
     let data = {
       customer_email: user ? user.email : '',
       product_name: 'You are about to pay',
-      total_amount: orderDetails ? orderDetails.price : 0,
+      total_amount: amount,
       type: orderType,
-      currency: 'usd',
+      currency: currency.toLowerCase(),
       order_id: orderDetails ? orderDetails.id : 0,
     };
 
@@ -168,10 +198,9 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
         state: 'pending',
         payment_method_id: 3,
       };
-      if(!currentOrder){
-      addOrder(data);
-      }
-      else{
+      if (!currentOrder) {
+        addOrder(data);
+      } else {
         if (paymentMethod == 'momo') {
           window.location.replace('/payment');
         } else {
@@ -195,10 +224,9 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
         state: 'pending',
         payment_method_id: 3,
       };
-      if(!currentOrder){
+      if (!currentOrder) {
         addOrder(data);
-      }
-      else{
+      } else {
         if (paymentMethod == 'momo') {
           window.location.replace('/payment');
         } else {
@@ -452,14 +480,29 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
                                       </h6>
                                     </td>
                                     <td>
-                                      <h4 className="text-brand">
-                                        {new Intl.NumberFormat().format(
-                                          (
-                                            item.qty * parseInt(item.unit_price)
-                                          )?.toString()
-                                        )}{' '}
-                                        XAF
-                                      </h4>
+                                      {currency == 'XAF' ? (
+                                        <h4 className="text-brand">
+                                          {new Intl.NumberFormat().format(
+                                            (
+                                              item.qty *
+                                              parseInt(item.unit_price)
+                                            )?.toString()
+                                          )}{' '}
+                                          {currency}
+                                        </h4>
+                                      ) : (
+                                        <h4 className="text-brand">
+                                          {'$'}
+                                          {new Intl.NumberFormat().format(
+                                            parseInt(
+                                              Math.ceil(
+                                                parseInt(item.unit_price) /
+                                                  currencyRate
+                                              )?.toString()
+                                            )
+                                          ) * item.qty}
+                                        </h4>
+                                      )}
                                     </td>
                                   </tr>
                                 ))}
@@ -507,14 +550,23 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
                                     </td>
 
                                     <td>
-                                      <h4 className="text-brand">
-                                        {new Intl.NumberFormat().format(
-                                          parseInt(
-                                            planDetails.price
-                                          )?.toString()
-                                        )}{' '}
-                                        XAF
-                                      </h4>
+                                      {currency == 'XAF' ? (
+                                        <h4 className="text-brand">
+                                          {new Intl.NumberFormat().format(
+                                            planDetails.price?.toString()
+                                          )}{' '}
+                                          {currency}
+                                        </h4>
+                                      ) : (
+                                        <h4 className="text-brand">
+                                          {'$'}
+                                          {new Intl.NumberFormat().format(
+                                            Math.ceil(
+                                              planDetails.price / currencyRate
+                                            )?.toString()
+                                          )}
+                                        </h4>
+                                      )}
                                     </td>
                                   </tr>
                                 )}
@@ -527,12 +579,21 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
                           <div className="price text-center">
                             <h4 className="mt-4">
                               Total:{' '}
-                              <span className="text-brand">
-                                {new Intl.NumberFormat().format(
-                                  price()?.toString()
-                                )}{' '}
-                                XAF
-                              </span>
+                              {currency == 'XAF' ? (
+                                <span className="text-brand">
+                                  {new Intl.NumberFormat().format(
+                                    price()?.toString()
+                                  )}{' '}
+                                  {currency}
+                                </span>
+                              ) : (
+                                <span className="text-brand">
+                                  {'$'}
+                                  {new Intl.NumberFormat().format(
+                                    price()?.toString()
+                                  )}
+                                </span>
+                              )}
                             </h4>
                           </div>
                         ) : (
@@ -540,17 +601,30 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
                             <div className="price text-center">
                               <h4 className="mt-4">
                                 Total:{' '}
-                                {planDetails && (
-                                  <span
-                                    key={planDetails.id}
-                                    className="text-brand"
-                                  >
-                                    {new Intl.NumberFormat().format(
-                                      planDetails.price?.toString()
-                                    )}{' '}
-                                    XAF
-                                  </span>
-                                )}
+                                {planDetails &&
+                                  (currency == 'XAF' ? (
+                                    <span
+                                      key={planDetails.id}
+                                      className="text-brand"
+                                    >
+                                      {new Intl.NumberFormat().format(
+                                        planDetails.price?.toString()
+                                      )}{' '}
+                                      {currency}
+                                    </span>
+                                  ) : (
+                                    <span
+                                      key={planDetails.id}
+                                      className="text-brand"
+                                    >
+                                      {'$'}
+                                      {new Intl.NumberFormat().format(
+                                        Math.ceil(
+                                          planDetails.price / currencyRate
+                                        )?.toString()
+                                      )}
+                                    </span>
+                                  ))}
                               </h4>
                             </div>
                           </>
@@ -562,35 +636,37 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
                             <h5>Payment</h5>
                           </div>
                           <div className="payment_option">
-                            <div className="custome-radio">
-                              <input
-                                className="form-check-input"
-                                required=""
-                                type="radio"
-                                name="payment_option"
-                                value="momo"
-                                id="exampleRadios4"
-                                onChange={handlePaymentMethod}
-                              />
-                              <label
-                                className="form-check-label"
-                                htmlFor="exampleRadios4"
-                                data-bs-toggle="collapse"
-                                data-target="#mobileMoney"
-                                aria-controls="mobileMoney"
-                              >
-                                Mobile Money
-                              </label>
-                              <div
-                                className="form-group collapse in"
-                                id="checkPayment"
-                              >
-                                <p className="text-muted mt-5">
-                                  Pay via mobile money, you can pay using your
-                                  mobile money account{' '}
-                                </p>
+                            {currency == 'XAF' && (
+                              <div className="custome-radio">
+                                <input
+                                  className="form-check-input"
+                                  required=""
+                                  type="radio"
+                                  name="payment_option"
+                                  value="momo"
+                                  id="exampleRadios4"
+                                  onChange={handlePaymentMethod}
+                                />
+                                <label
+                                  className="form-check-label"
+                                  htmlFor="exampleRadios4"
+                                  data-bs-toggle="collapse"
+                                  data-target="#mobileMoney"
+                                  aria-controls="mobileMoney"
+                                >
+                                  Mobile Money
+                                </label>
+                                <div
+                                  className="form-group collapse in"
+                                  id="checkPayment"
+                                >
+                                  <p className="text-muted mt-5">
+                                    Pay via mobile money, you can pay using your
+                                    mobile money account{' '}
+                                  </p>
+                                </div>
                               </div>
-                            </div>
+                            )}
                             <div className="custome-radio">
                               <input
                                 className="form-check-input"
@@ -599,6 +675,7 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
                                 name="payment_option"
                                 value="card"
                                 id="exampleRadios5"
+                                checked={currency != 'XAF' ? true : false}
                                 onChange={handlePaymentMethod}
                               />
                               <label
