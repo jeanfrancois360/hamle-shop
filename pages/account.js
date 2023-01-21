@@ -161,7 +161,7 @@ function Account({
       let currentDate = new Date();
       let expirationDate = moment(products.plan.ends_at);
       expirationDate = new Date(expirationDate);
-      let diff = currentDate.getTime() - expirationDate.getTime();
+      let diff = expirationDate.getTime() - currentDate.getTime();
       let daydiff = diff / (1000 * 60 * 60 * 24);
       if (daydiff <= 0) {
         setHasExpired(true);
@@ -807,8 +807,8 @@ function Account({
                                       </li>
                                     </ul>
                                   </div>
-                                  <></>
-                                  <div className="col-md-3">
+
+                                  <div className="col-md-5">
                                     <button
                                       onClick={handleCancelPlan}
                                       className="cancel-plan-btn"
@@ -817,7 +817,7 @@ function Account({
                                     </button>
                                   </div>
                                   {!hasExpired ? (
-                                    <div className="col-md-4">
+                                    <div className="col-md-5">
                                       <button
                                         onClick={handleChangePlan}
                                         className="btn btn-fill-out submit font-weight-bold"
@@ -826,7 +826,7 @@ function Account({
                                       </button>
                                     </div>
                                   ) : (
-                                    <div className="col-md-4">
+                                    <div className="col-md-5">
                                       <button
                                         onClick={handleRenewPlan}
                                         className="renew-plan-btn"
