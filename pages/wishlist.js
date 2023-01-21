@@ -7,6 +7,9 @@ import {
   closeWishlistModal,
   deleteFromWishlist,
 } from '../redux/action/wishlistAction';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { currencyRate } from '../constants';
 
 const Wishlist = ({
   wishlist,
@@ -15,6 +18,13 @@ const Wishlist = ({
   deleteFromWishlist,
   addToCart,
 }) => {
+  const [currency, setCurrency] = useState('XAF');
+
+  useEffect(() => {
+    if (localStorage.getItem('default_currency')) {
+      setCurrency(localStorage.getItem('default_currency'));
+    }
+  }, []);
   const handleCart = (product) => {
     addToCart(product);
     toast('Product added to Cart !');
@@ -76,9 +86,23 @@ const Wishlist = ({
                               </div>
                             </td>
                             <td className="price" data-title="Price">
-                              <h3 className="text-brand">
-                                {product.unit_price} XAF
-                              </h3>
+                              {currency == 'XAF' ? (
+                                <h3 className="text-brand">
+                                  {new Intl.NumberFormat().format(
+                                    product.unit_price?.toString()
+                                  )}{' '}
+                                  {currency}
+                                </h3>
+                              ) : (
+                                <h3 className="text-brand">
+                                  {'$'}
+                                  {new Intl.NumberFormat().format(
+                                    Math.ceil(
+                                      product.unit_price / currencyRate
+                                    )?.toString()
+                                  )}
+                                </h3>
+                              )}
                             </td>
                             <td
                               className="text-center detail-info"

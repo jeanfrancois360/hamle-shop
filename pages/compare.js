@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import CompareTable from '../components/ecommerce/CompareTable';
 import Layout from '../components/layout/Layout';
 import { clearCompare, deleteFromCompare } from '../redux/action/compareAction';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Compare = ({ compare, clearCompare, deleteFromCompare }) => {
   return (
@@ -29,22 +31,24 @@ const Compare = ({ compare, clearCompare, deleteFromCompare }) => {
                           'preview',
                           'name',
                           'price',
-                          'rating',
                           'description',
-                          'color',
-                          // "sizes",
                           'stock',
-                          'weight',
-                          'dimensions',
                           'buy',
                           ' ',
                         ]}
                         deleteFromCompare={deleteFromCompare}
                       />
                       <div className="text-right">
-                        <span className="clear-btn" onClick={clearCompare}>
+                        <a
+                          href="#"
+                          className="clear-btn"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            clearCompare();
+                          }}
+                        >
                           Clear All
-                        </span>
+                        </a>
                       </div>
                     </>
                   ) : (

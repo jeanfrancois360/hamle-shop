@@ -12,6 +12,8 @@ import { numberWithCommas } from '../../util/util';
 import ProductTab from '../elements/ProductTab';
 import RelatedSlider from '../sliders/Related';
 import ThumbSlider from '../sliders/Thumb';
+import { useEffect } from 'react';
+import { currencyRate } from '../../constants';
 
 const ProductDetails = ({
   product,
@@ -24,6 +26,12 @@ const ProductDetails = ({
   quickView,
 }) => {
   const [quantity, setQuantity] = useState(1);
+  const [currency, setCurrency] = useState('XAF');
+  useEffect(() => {
+    if (localStorage.getItem('default_currency')) {
+      setCurrency(localStorage.getItem('default_currency'));
+    }
+  }, []);
 
   const handleCart = (product) => {
     addToCart(product);
@@ -83,14 +91,23 @@ const ProductDetails = ({
                       </div>
                       <div className="clearfix product-price-cover">
                         <div className="product-price primary-color float-left">
-                          <span className="current-price  text-brand">
-                            {product
-                              ? new Intl.NumberFormat().format(
-                                  product.unit_price?.toString()
-                                )
-                              : 0}{' '}
-                            XAF
-                          </span>
+                          {currency == 'XAF' ? (
+                            <span className="current-price  text-brand">
+                              {new Intl.NumberFormat().format(
+                                product.unit_price?.toString()
+                              )}{' '}
+                              {currency}
+                            </span>
+                          ) : (
+                            <span className="current-price  text-brand">
+                              {'$'}
+                              {new Intl.NumberFormat().format(
+                                Math.ceil(
+                                  product.unit_price / currencyRate
+                                )?.toString()
+                              )}
+                            </span>
+                          )}
                           {/* <span>
                             <span className="save-price font-md color3 ml-15">
                               {product.discount.percentage}% Off
@@ -150,7 +167,7 @@ const ProductDetails = ({
                             <i className="fi-rs-angle-small-down"></i>
                           </a>
                           <span className="qty-val">
-                            {inCart?.quantity || quantity}
+                            {inCart?.qty || quantity}
                           </span>
                           <a
                             onClick={() =>
@@ -202,7 +219,7 @@ const ProductDetails = ({
                     </div>
                   </div>
                 </div>
-
+                {/* 
                 {quickView ? null : (
                   <>
                     <ProductTab product={product} />
@@ -219,7 +236,7 @@ const ProductDetails = ({
                       </div>
                     </div>
                   </>
-                )}
+                )} */}
               </div>
             </div>
           </div>

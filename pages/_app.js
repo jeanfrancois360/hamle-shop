@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import { useEffect, useState } from 'react';
 // import "react-input-range/lib/css/index.css";
 import 'react-perfect-scrollbar/dist/css/styles.css';
@@ -18,8 +19,14 @@ import Preloader from './../components/elements/Preloader';
 
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
+  const [wasCalled, setWasCalled] = useState(false);
   useEffect(() => {
     setLoading(true);
+    // Get user location
+    let defaultExists = localStorage.getItem('default_currency');
+    if (defaultExists === null) {
+      getLocation();
+    }
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -28,6 +35,47 @@ function MyApp({ Component, pageProps }) {
     //     live: false
     //   }).init()
   }, []);
+
+  const getLocation = () => {
+    let chosenCurrency = localStorage.getItem('default_currency');
+    let counter = 0;
+    let token = 'e46cc087c50c0e'
+    const settings = {
+      async: true,
+      crossDomain: true,
+      method: 'GET',
+      processData: false,
+    };
+
+    if (chosenCurrency === null && wasCalled === false) {
+      counter++;
+      console.log('counter:', wasCalled);
+      setWasCalled(true);
+      fetch(`https://ipinfo.io/json?token=${token}`, settings)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (payload) {
+          setWasCalled(true);
+          if (payload.hasOwnProperty('country')) {
+            if(payload.country != 'CM'){
+            localStorage.setItem('default_currency', 'USD');
+            }
+            else{
+              localStorage.setItem('default_currency', 'XAF');
+            }
+            return true;
+          } else {
+            localStorage.setItem('default_currency', 'XAF');
+            return true;
+          }
+        });
+    } else {
+      localStorage.setItem('default_currency', chosenCurrency);
+    }
+  }
+
+
   return (
     <>
       {!loading ? (

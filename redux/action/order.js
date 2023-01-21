@@ -95,17 +95,6 @@ export const orderPayment = (payload, type) => async (dispatch) => {
       });
     }
     if (type == 'card') {
-      let default_rate = 1;
-      const res = await axios.get(
-        `https://v6.exchangerate-api.com/v6/aaff6e16e44bc367fb2c3a65/latest/USD`
-      );
-      if (res && res.data && res.data.conversion_rates) {
-        default_rate = res.data.conversion_rates.XAF;
-      }
-      payload.total_amount = Math.ceil(
-        parseFloat(payload.total_amount / default_rate)
-      );
-
       const response = await axios.post('/stripe-checkout', payload, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });

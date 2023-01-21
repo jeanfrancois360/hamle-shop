@@ -496,7 +496,7 @@ const Header = ({
                         </Link>
                       </li>
                       <li>
-                        <Link href="cart">
+                        <Link href="/cart">
                           <a>Cart</a>
                         </Link>
                       </li>
