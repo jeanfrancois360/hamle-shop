@@ -12424,7 +12424,7 @@ footer .hotline img {
   transition: all 0.2s ease-out;
   border-bottom: 2px solid #244193;
 }
-.cancel-plan-btn{
+.cancel-plan-btn {
   color: red !important;
   border: 1px solid red;
   background: transparent;
@@ -12435,24 +12435,24 @@ footer .hotline img {
   cursor: pointer;
 }
 
-.toggle_pwd{
+.toggle_pwd {
   float: right;
   margin: -40px 15px -10px 0px;
   position: relative;
-  cursor: pointer
+  cursor: pointer;
 }
 .toggle_pwd i {
   font-size: 20px;
 }
-.password_with_icon{
-  padding-right: 40px
+.password_with_icon {
+  padding-right: 40px;
 }
 
-.detail_view{
+.detail_view {
   width: 900px;
 }
 
-.renew-plan-btn{
+.renew-plan-btn {
   color: #000 !important;
   background-color: orange;
   border: 1px solid orange;
