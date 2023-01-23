@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
 import Layout from '../components/layout/Layout';
@@ -42,6 +43,12 @@ function MemberShip({ getPlans, products, getMyPlan, errors }) {
       pathname: '/checkout',
     });
   };
+
+  useEffect(() => {
+    if (myPlan) {
+      console.log({ myPlan });
+    }
+  }, [myPlan]);
 
   return (
     <>
@@ -88,8 +95,9 @@ function MemberShip({ getPlans, products, getMyPlan, errors }) {
                           >
                             {myPlan && myPlan.name == plan.name
                               ? 'Current'
+                              : myPlan && !myPlan.hasOwnProperty('name')
+                              ? 'Subscribe Now'
                               : 'Change Now'}
-                            {!myPlan && 'Subscribe Now'}
                           </button>
                         </div>
                       </div>
