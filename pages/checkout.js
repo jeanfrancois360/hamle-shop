@@ -679,7 +679,6 @@ const Cart = ({ cartItems, errors, order, addOrder, orderPayment, loader }) => {
                                 name="payment_option"
                                 value="card"
                                 id="exampleRadios5"
-                                checked={currency != 'XAF' ? true : false}
                                 onChange={handlePaymentMethod}
                               />
                               <label
