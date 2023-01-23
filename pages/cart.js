@@ -34,11 +34,15 @@ const Cart = ({
   }, []);
   const price = () => {
     let price = 0;
-    cartItems.forEach(
-      (item) =>
-        (price +=
-          parseInt(Math.ceil(item.unit_price / currencyRate)) * item.qty)
-    );
+    if (currency != 'XAF') {
+      cartItems.forEach(
+        (item) =>
+          (price +=
+            parseInt(Math.ceil(item.unit_price / currencyRate)) * item.qty)
+      );
+    } else {
+      cartItems.forEach((item) => (price += item.unit_price * item.qty));
+    }
 
     return price;
   };
