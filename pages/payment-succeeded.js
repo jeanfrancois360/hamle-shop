@@ -3,18 +3,24 @@ import Layout from '../components/layout/Layout';
 import { BsFillBagCheckFill } from 'react-icons/bs';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { planSubscription, changePlan } from '../redux/action/product';
+import {
+  planSubscription,
+  changePlan,
+  renewPlan,
+} from '../redux/action/product';
 
-function PaymentSucceeded({ planSubscription, changePlan }) {
+function PaymentSucceeded({ planSubscription, changePlan, renewPlan }) {
   const [orderType, setOrderType] = useState('');
   const [planDetails, setPlanDetails] = useState('');
   const [myPlan, setMyPlan] = useState('');
+  const [isRenewing, setIsRenewing] = useState('');
 
   useEffect(() => {
     if (localStorage.getItem('order-type')) {
       setOrderType(localStorage.getItem('order-type'));
       setPlanDetails(JSON.parse(localStorage.getItem('plan-details')));
       setMyPlan(JSON.parse(localStorage.getItem('my-plan')));
+      setIsRenewing(JSON.parse(localStorage.getItem('is_renewing')));
     }
   }, []);
 
@@ -32,6 +38,8 @@ function PaymentSucceeded({ planSubscription, changePlan }) {
     if (planDetails) {
       if (!myPlan) {
         planSubscription({ plan_id: planDetails.id });
+      } else if (isRenewing) {
+        renewPlan({ plan_id: planDetails.id });
       } else {
         changePlan({ plan_id: planDetails.id });
       }
@@ -73,6 +81,7 @@ const mapStateToProps = (state) => ({});
 const mapDidpatchToProps = {
   planSubscription,
   changePlan,
+  renewPlan,
 };
 
 export default connect(mapStateToProps, mapDidpatchToProps)(PaymentSucceeded);
