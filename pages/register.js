@@ -1,4 +1,3 @@
-import axios from '../axios';
 import Link from 'next/link';
 import Layout from '../components/layout/Layout';
 import { useEffect, useState } from 'react';
@@ -8,6 +7,7 @@ import * as Yup from 'yup';
 import { MsgText } from '../components/elements/MsgText';
 import { connect } from 'react-redux';
 import { SignUp } from '../redux/action/auth';
+import { useRouter } from 'next/router';
 
 function Register({ auth, SignUp, errors, loader }) {
   let initialValues = {
@@ -19,11 +19,10 @@ function Register({ auth, SignUp, errors, loader }) {
     city: '',
     password: '',
   };
-
+  const router = useRouter();
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [error, setError] = useState('');
-  const [ip, setIp] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const notify = (msg_type) => {
     if (msg_type === 'success')
@@ -54,8 +53,8 @@ function Register({ auth, SignUp, errors, loader }) {
     if (errors.error_msg != '') {
       setErrorMsg(errors.error_msg);
     }
-    if(errors.error != ''){
-      setError(errors.error)
+    if (errors.error != '') {
+      setError(errors.error);
     }
   }, [errors]);
 
@@ -75,6 +74,12 @@ function Register({ auth, SignUp, errors, loader }) {
     if (successMsg) {
       console.log('success');
       notify('success');
+
+      setTimeout(() => {
+        router.push({
+          pathname: '/login',
+        });
+      }, 1500);
     }
   }, [successMsg]);
 
@@ -179,7 +184,6 @@ function Register({ auth, SignUp, errors, loader }) {
                                       textColor="danger"
                                     />
                                   )}
-
                                 </div>
                                 <div className="col-md-6">
                                   <div className="form-group">
@@ -324,7 +328,20 @@ function Register({ auth, SignUp, errors, loader }) {
                                       onBlur={handleBlur('password')}
                                       autoComplete={`${true}`}
                                     />
-                                    <span className="toggle_pwd" onClick={() => setShowPassword(!showPassword)}><i class={!showPassword ? 'fi-rs-eye' : 'fi-rs-eye-crossed'}></i></span>
+                                    <span
+                                      className="toggle_pwd"
+                                      onClick={() =>
+                                        setShowPassword(!showPassword)
+                                      }
+                                    >
+                                      <i
+                                        class={
+                                          !showPassword
+                                            ? 'fi-rs-eye'
+                                            : 'fi-rs-eye-crossed'
+                                        }
+                                      ></i>
+                                    </span>
                                   </div>
                                   {touched.password && errors.password && (
                                     <MsgText

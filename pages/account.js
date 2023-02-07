@@ -163,7 +163,7 @@ function Account({
       expirationDate = new Date(expirationDate);
       let diff = expirationDate.getTime() - currentDate.getTime();
       let daydiff = diff / (1000 * 60 * 60 * 24);
-      if (daydiff <= 0) {
+      if (daydiff >= 1 && daydiff <= 5) {
         setHasExpired(true);
       } else {
         setHasExpired(false);
@@ -232,10 +232,12 @@ function Account({
     });
   };
 
-  const handleRenewPlan = (e) => {
-    e.preventDefault();
+  const handleRenewPlan = (payload) => {
+    localStorage.setItem('order-type', 'subscription');
+    localStorage.setItem('plan-details', JSON.stringify(payload));
+    localStorage.setItem('is_renewing', true);
     router.push({
-      pathname: '/membership',
+      pathname: '/checkout',
     });
   };
 
@@ -828,7 +830,7 @@ function Account({
                                   ) : (
                                     <div className="col-md-5">
                                       <button
-                                        onClick={handleRenewPlan}
+                                        onClick={() => handleRenewPlan(myPlan)}
                                         className="renew-plan-btn"
                                       >
                                         Renew Plan

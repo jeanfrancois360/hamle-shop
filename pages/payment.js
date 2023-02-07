@@ -25,7 +25,7 @@ function Payment({
   closeLoader,
 }) {
   let momoInitialValues = {
-    phone: '',
+    phone: '+237',
   };
   let cardInitialValues = {
     card_number: '',
@@ -131,14 +131,14 @@ function Payment({
           setCounter(0);
           closeLoader();
         }
-      } else if (order.payment_status.status == 'FAILED') {
+      } else if (order.payment_status.status == 'SUCCESSFUL') {
         setSuccessMsg('Your payment was successful!');
         setPaymentStatus('SUCCESSFUL');
         console.log('current status: ', order.payment_status.status);
         setCheckStatus(false);
         closeLoader();
       } else {
-        // setPaymentStatus('FAILED');
+        setPaymentStatus('FAILED');
         console.log('current status: ', order.payment_status.status);
         setCheckStatus(false);
         closeLoader();
@@ -156,6 +156,15 @@ function Payment({
     };
 
     orderPayment(data, 'momo');
+  };
+
+  const handleKeyDown = (e) => {
+    var oldVal = e.target.value;
+    setTimeout(function () {
+      if (e.target.value.indexOf('+237') !== 0) {
+        e.target.value = oldVal;
+      }
+    }, 1);
   };
   return (
     <>
@@ -204,6 +213,7 @@ function Payment({
                                   type="text"
                                   name="phone"
                                   placeholder="Enter phone number"
+                                  onKeyDown={handleKeyDown}
                                   value={values.phone}
                                   onChange={handleChange('phone')}
                                   onBlur={handleBlur('phone')}

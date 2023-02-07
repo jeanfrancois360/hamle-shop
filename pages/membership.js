@@ -64,10 +64,7 @@ function MemberShip({ getPlans, products, getMyPlan, errors }) {
                     products.plans.map((plan) => (
                       <div key={plan.id} className="col-lg-3 col-md-6 mb-24">
                         <div className="featured-card">
-                          <img
-                            src="/assets/imgs/theme/icons/icon-1.svg"
-                            alt=""
-                          />
+                          <img src={plan.url} alt="" width={100} />
                           <h4>{plan.name.toUpperCase()}</h4>
                           {currency == 'XAF' ? (
                             <h5>

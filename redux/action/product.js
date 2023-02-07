@@ -179,10 +179,51 @@ export const cancelPlan = () => async (dispatch) => {
   dispatch(openLoader());
   clearMessage();
   try {
-    const response = await axios.post('/cancel-my-plan', {}, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    });
+    const response = await axios.post(
+      '/cancel-my-plan',
+      {},
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      }
+    );
     localStorage.removeItem('my-plan');
+    dispatch({
+      type: Types.CANCEL_PLAN,
+      payload: response.data,
+    });
+    dispatch(closeLoader());
+  } catch (error) {
+    if (error.response.data.message.includes('Unauthenticated')) {
+      localStorage.setItem('prev_page', 'account');
+      dispatch(Logout());
+    }
+    dispatch(
+      setErrors({
+        error: error.response.data.errors,
+        error_msg: error.response.data.message,
+      })
+    );
+    dispatch(closeLoader());
+  }
+};
+export const renewPlan = () => async (dispatch) => {
+  dispatch(clearErrors());
+  dispatch(openLoader());
+  clearMessage();
+  try {
+    const response = await axios.post(
+      '/renew-my-plan',
+      {},
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      }
+    );
+    localStorage.removeItem('order-details');
+    localStorage.removeItem('plan-details');
+    localStorage.removeItem('my-plan');
+    localStorage.removeItem('order-type');
+    localStorage.removeItem('hemle_cart');
+    localStorage.removeItem('is_renewing');
     dispatch({
       type: Types.CANCEL_PLAN,
       payload: response.data,
