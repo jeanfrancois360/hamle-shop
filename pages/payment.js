@@ -131,14 +131,14 @@ function Payment({
           setCounter(0);
           closeLoader();
         }
-      } else if (order.payment_status.status == 'FAILED') {
+      } else if (order.payment_status.status == 'SUCCESSFUL') {
         setSuccessMsg('Your payment was successful!');
         setPaymentStatus('SUCCESSFUL');
         console.log('current status: ', order.payment_status.status);
         setCheckStatus(false);
         closeLoader();
       } else {
-        // setPaymentStatus('FAILED');
+        setPaymentStatus('FAILED');
         console.log('current status: ', order.payment_status.status);
         setCheckStatus(false);
         closeLoader();
